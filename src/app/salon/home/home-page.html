@@ -1,0 +1,205 @@
+<section class="home-hero">
+  <figure class="home-hero__portrait">
+    <!-- EXCEPTION (design.md §6, task 4.9): the ONLY duotone image in this
+         change. Sourced from info/virginia.jpeg, copied verbatim to
+         public/images/retrato-virginia.jpg — every other pz-picture usage on
+         this page/route ships untinted. This is the LCP element: priority +
+         no lazy loading. -->
+    <pz-picture
+      base="retrato-virginia"
+      alt="Virginia, peluquera y propietaria de Pureza, en su salón de Ciudad Real"
+      [width]="1504"
+      [height]="2048"
+      [priority]="true"
+      [duotone]="true"
+    />
+    <figcaption class="home-hero__caption">Virginia · Pozo Dulce, 1</figcaption>
+  </figure>
+
+  <div class="home-hero__type">
+    <p class="pz-eyebrow">Peluquería de autor · Ciudad Real</p>
+    <h1 class="home-hero__title">
+      <span>Sin amoniaco.</span>
+      <span>Sin prisa.</span>
+      <span>Sin <em>nadie más</em> en el salón.</span>
+    </h1>
+    <p class="home-hero__lede">
+      Soy Virginia. Pureza es mi manera de entender la peluquería: coloración vegetal Aveda, el
+      tiempo que haga falta y una sola clienta cada vez.
+    </p>
+    <pz-cta href="/contacto">Pedir cita</pz-cta>
+  </div>
+</section>
+
+<section class="home-manifest">
+  <div class="home-manifest__item">
+    <p class="pz-eyebrow">96 % botánico</p>
+    <h2 class="home-manifest__title">Color que no quema</h2>
+    <p class="home-manifest__body">
+      Coloración Aveda con hasta un 96 % de ingredientes de origen natural. Sin amoniaco, sin olor
+      químico, sin picor en el cuero cabelludo.
+    </p>
+  </div>
+  <div class="home-manifest__item">
+    <p class="pz-eyebrow">Una cada vez</p>
+    <h2 class="home-manifest__title">El salón entero para ti</h2>
+    <p class="home-manifest__body">
+      No hay dos sillones ocupados a la vez. Ni turnos solapados, ni esperas con el tinte puesto
+      mientras atienden a otra.
+    </p>
+  </div>
+  <div class="home-manifest__item">
+    <p class="pz-eyebrow">Centro histórico</p>
+    <h2 class="home-manifest__title">A un paso de la Plaza Mayor</h2>
+    <p class="home-manifest__body">
+      Calle Pozo Dulce, 1. Cinco minutos andando desde la estación de autobuses y desde el
+      aparcamiento de la plaza.
+    </p>
+  </div>
+</section>
+
+<section class="home-carta" aria-labelledby="home-carta-heading">
+  <div class="home-carta__head">
+    <p class="pz-eyebrow">La carta</p>
+    <h2 id="home-carta-heading">Cinco oficios, cinco plantas</h2>
+    <p>
+      Cada servicio lleva la planta que lo define, de las que crecen aquí — no del trópico.
+      Romero, espliego, esparto, vid y olivo: el herbario de La Mancha aplicado a la peluquería.
+    </p>
+  </div>
+
+  <!-- Non-interactive by design (home-page spec "no dead links to future
+       routes"): these five service routes don't exist yet in `foundation`. -->
+  <pz-plate
+    data-planta="romero"
+    [specimen]="romeroSpecimen"
+    [photo]="romeroPhoto"
+    title="Coloración vegetal"
+    latin="Rosmarinus officinalis"
+  />
+  <ng-template #romeroSpecimen>
+    <svg viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
+      <path d="M50 146 C50 108 50 62 50 16" />
+      <path d="M50 128 L29 116" /><path d="M50 120 L71 108" />
+      <path d="M50 112 L29 100" /><path d="M50 104 L71 92" />
+      <path d="M50 96 L30 85" /><path d="M50 88 L70 77" />
+      <path d="M50 80 L31 70" /><path d="M50 72 L69 62" />
+      <path d="M50 64 L33 55" /><path d="M50 56 L67 47" />
+      <path d="M50 48 L36 40" /><path d="M50 40 L64 32" />
+      <path d="M50 32 L39 26" /><path d="M50 25 L61 19" />
+    </svg>
+  </ng-template>
+  <ng-template #romeroPhoto>
+    <pz-picture base="atmosfera-romero" alt="Ramas de romero, atmósfera del servicio de coloración vegetal" [width]="560" [height]="560" />
+  </ng-template>
+
+  <pz-plate
+    data-planta="espliego"
+    [specimen]="espliegoSpecimen"
+    [photo]="espliegoPhoto"
+    title="Mechas de autor"
+    latin="Lavandula latifolia"
+  />
+  <ng-template #espliegoSpecimen>
+    <svg viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
+      <path d="M50 146 C50 116 50 88 50 62" />
+      <path d="M50 118 C38 114 32 106 31 96" />
+      <path d="M50 106 C62 102 68 94 69 84" />
+      <ellipse cx="50" cy="16" rx="4.6" ry="6.6" />
+      <ellipse cx="43" cy="28" rx="4.8" ry="6.8" />
+      <ellipse cx="57" cy="28" rx="4.8" ry="6.8" />
+      <ellipse cx="43" cy="41" rx="5" ry="7" />
+      <ellipse cx="57" cy="41" rx="5" ry="7" />
+      <ellipse cx="44" cy="54" rx="5" ry="7" />
+      <ellipse cx="56" cy="54" rx="5" ry="7" />
+    </svg>
+  </ng-template>
+  <ng-template #espliegoPhoto>
+    <pz-picture base="atmosfera-espliego" alt="Flores de espliego, atmósfera del servicio de mechas de autor" [width]="560" [height]="560" />
+  </ng-template>
+
+  <pz-plate
+    data-planta="esparto"
+    [specimen]="espartoSpecimen"
+    [photo]="espartoPhoto"
+    title="Rastas"
+    latin="Stipa tenacissima"
+  />
+  <ng-template #espartoSpecimen>
+    <svg viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
+      <path d="M50 146 C44 110 36 78 22 34" />
+      <path d="M50 146 C48 108 44 74 36 40" />
+      <path d="M50 146 C54 110 62 80 74 40" />
+      <path d="M50 146 C53 112 58 86 66 58" />
+      <path d="M50 140 C58 128 42 116 50 104 C58 92 42 80 50 68 C57 57 45 46 50 34" />
+    </svg>
+  </ng-template>
+  <ng-template #espartoPhoto>
+    <pz-picture base="atmosfera-esparto" alt="Fibra de esparto, atmósfera del servicio de rastas" [width]="560" [height]="560" />
+  </ng-template>
+
+  <pz-plate
+    data-planta="vid"
+    [specimen]="vidSpecimen"
+    [photo]="vidPhoto"
+    title="Extensiones naturales"
+    latin="Vitis vinifera"
+  />
+  <ng-template #vidSpecimen>
+    <svg viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M50 146 C50 118 48 92 46 66 C45 48 47 32 50 18" />
+      <polygon points="28,74 32,60 21,55 33,52 30,39 40,47 46,36 49,49 60,47 53,57 63,64 50,64 50,78 41,68" />
+      <polygon points="62,110 65,99 56,95 66,93 64,83 72,89 77,80 79,90 88,89 82,97 90,102 79,102 79,113 71,105" />
+      <path d="M52 88 C66 84 72 92 67 98 C62 104 55 100 58 95 C60 91 65 92 65 96" />
+    </svg>
+  </ng-template>
+  <ng-template #vidPhoto>
+    <pz-picture base="atmosfera-vid" alt="Hojas de vid, atmósfera del servicio de extensiones naturales" [width]="560" [height]="560" />
+  </ng-template>
+
+  <pz-plate
+    data-planta="olivo"
+    [specimen]="olivoSpecimen"
+    [photo]="olivoPhoto"
+    title="Rituales capilares"
+    latin="Olea europaea"
+  />
+  <ng-template #olivoSpecimen>
+    <svg viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
+      <path d="M50 146 C50 112 50 68 50 18" />
+      <ellipse cx="34" cy="118" rx="14" ry="4.6" transform="rotate(-24 34 118)" />
+      <ellipse cx="66" cy="106" rx="14" ry="4.6" transform="rotate(24 66 106)" />
+      <ellipse cx="34" cy="92" rx="13" ry="4.4" transform="rotate(-24 34 92)" />
+      <ellipse cx="66" cy="80" rx="13" ry="4.4" transform="rotate(24 66 80)" />
+      <ellipse cx="36" cy="66" rx="11" ry="4" transform="rotate(-24 36 66)" />
+      <ellipse cx="64" cy="54" rx="11" ry="4" transform="rotate(24 64 54)" />
+      <ellipse cx="40" cy="42" rx="9" ry="3.6" transform="rotate(-24 40 42)" />
+      <ellipse cx="60" cy="98" rx="5.4" ry="6.6" />
+      <ellipse cx="41" cy="76" rx="5.4" ry="6.6" />
+    </svg>
+  </ng-template>
+  <ng-template #olivoPhoto>
+    <pz-picture base="atmosfera-olivo" alt="Ramas de olivo, atmósfera del servicio de rituales capilares" [width]="560" [height]="560" />
+  </ng-template>
+</section>
+
+<section class="home-salon-strip">
+  <pz-picture base="textura-lino" alt="" [width]="1400" [height]="340" />
+  <p class="home-salon-strip__caption pz-eyebrow">El salón · Calle Pozo Dulce, 1 · Ciudad Real</p>
+</section>
+
+<section class="home-quote">
+  <pz-picture base="manos-pigmento" alt="Manos preparando pigmento botánico" [width]="1200" [height]="800" />
+  <figure class="home-quote__figure">
+    <blockquote class="home-quote__text">
+      Aquí no eres una clienta más. Solo estamos tú, tu cabello y yo.
+    </blockquote>
+    <figcaption class="home-quote__caption">— Virginia · Pureza</figcaption>
+  </figure>
+</section>
+
+<section class="home-cta-band">
+  <h2 class="home-cta-band__title">¿Hablamos?</h2>
+  <p class="home-cta-band__lede">Cuéntame qué necesitas y buscamos hueco.</p>
+  <pz-cta href="/contacto">Ir a contacto</pz-cta>
+</section>

@@ -31,8 +31,11 @@ ng generate --help
 To build the project run:
 
 ```bash
-ng build
+npm run build
 ```
+
+**Always use `npm run build`, not `ng build` / `npx ng build`** — see "Build & CI" below for why: a
+bare `ng build` silently skips the SEO keyword-uniqueness gate and the sitemap generator.
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
@@ -46,13 +49,59 @@ ng test
 
 ## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+See the dedicated "End-to-end tests" section below — this project uses Playwright, run against the
+real build output, not `ng e2e` (Angular CLI ships no e2e framework by default).
+
+## End-to-end tests
+
+This project uses [Playwright](https://playwright.dev/) for e2e/visual/accessibility testing, run
+against the **real prerendered build** (not `ng serve`):
 
 ```bash
-ng e2e
+npm run build   # required first — see "Build & CI" below
+npx playwright install --with-deps chromium   # first time only
+npm run e2e
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+`playwright.config.ts`'s `webServer` starts `scripts/serve-dist.mjs`, a minimal static file server
+for `dist/pureza/browser/` — it does **not** rebuild the app. The suite covers: axe-core WCAG 2.2 AA
+scans, zero eager requests to font CDNs/Maps domains, desktop + mobile visual snapshots (baselines
+committed under `e2e/*-snapshots/`), the click-to-load static map fallback, and the canonical-URL ↔
+sitemap.xml cross-check (design.md risk E).
+
+## Build & CI
+
+**CI must always run `npm run build`, never a bare `ng build` / `npx ng build`.** `npm run build`
+chains three steps via npm's `pre`/`postbuild` lifecycle hooks:
+
+1. `prebuild` — `scripts/validate-keyword-uniqueness.mjs` (fails the build on a duplicate SEO
+   keyword/path/planta or an out-of-budget title/description — design.md risk D), then
+   `scripts/generate-image-variants.mjs` (derives every `{base}-{width}.{format}` image).
+2. `build` — the actual `ng build` (SSR + prerender).
+3. `postbuild` — `scripts/generate-sitemap.mjs`, which fails loudly if a `status: 'live'` route in
+   the registry didn't actually get prerendered.
+
+Invoking `ng build` (or `npx ng build`) directly skips **all three** of the above — the
+keyword-uniqueness gate can't stop a bad deploy, and no `sitemap.xml` is written. There is no
+current CI workflow file in this repo (`foundation` ships the app, not its pipeline) — when one is
+added, its build step must invoke `npm run build`, and this note should move to a comment in that
+file alongside the command.
+
+## Design-system notes
+
+- **`angular.json`'s `optimization.fonts` must stay `false`.** Angular's `fonts.inline: true` only
+  inlines the Google/Adobe Fonts **CSS** — the `@font-face src` inside that CSS still points at
+  `fonts.gstatic.com`, an external runtime request this project forbids (design.md §2). Fonts are
+  self-hosted from `public/fonts/` (`src/styles/_typography.scss`'s hand-written `@font-face` rules)
+  specifically so no such CSS ever exists to inline in the first place. Do not remove the `fonts:
+  { inline: false }` line or its guard comment in `angular.json`.
+- **`src/styles/_tokens.scss` is the sole hex-color source of truth** (design.md §1 — 4 neutral
+  roles + 5 plant accents, each with a `-live`/`-text` pair). Components read the generic
+  `--pz-accent-live`/`--pz-accent-text` pair, never a plant-specific token or a literal hex value; a
+  `[data-planta="…"]` scope on an ancestor rebinds those two properties to one plant.
+- **`info/direccion-diseno.build.SUPERSEDED-v2.html` is historical only** — an earlier mockup
+  iteration with a different (rejected) token set. `openspec/changes/foundation/design.md` is the
+  canonical design reference; do not copy values from the superseded file.
 
 ## Additional Resources
 

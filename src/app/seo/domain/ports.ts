@@ -34,7 +34,16 @@ export abstract class MetadataPort {
  * `[data-pz-schema="id"]`, never blind-append — prerendered HTML already
  * contains the node, so client-side hydration must replace it, not duplicate
  * it (design.md risk C).
+ *
+ * `remove` (added PR5): needed now that real routes exist and are linked
+ * from `site-header`'s nav. A route-scoped schema (e.g. `/`'s `HairSalon`
+ * block, home-page spec vs. contact-page spec) must not survive a
+ * client-side `routerLink` navigation to a route that doesn't emit it —
+ * each prerendered page is independently correct on its own, but a live SPA
+ * transition never reloads the document, so the previous page's schema node
+ * would otherwise linger in `<head>`.
  */
 export abstract class JsonLdPort {
   abstract upsert(id: string, schema: Record<string, unknown>): void;
+  abstract remove(id: string): void;
 }

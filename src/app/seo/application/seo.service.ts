@@ -50,4 +50,9 @@ export class SeoService {
   setJsonLd(id: string, schema: Record<string, unknown>): void {
     this.jsonLd.upsert(id, schema);
   }
+
+  /** Removes one `<script data-pz-schema="id">` if present — see `JsonLdPort.remove`. */
+  removeJsonLd(id: string): void {
+    this.jsonLd.remove(id);
+  }
 }

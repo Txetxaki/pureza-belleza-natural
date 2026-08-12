@@ -47,6 +47,13 @@ testem.log
 /typings
 __screenshots__/
 
+# Playwright — e2e/*-snapshots/ baselines ARE committed (task 8.4); only the
+# run artifacts below are regenerated per-run and gitignored.
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
 # System files
 .DS_Store
 Thumbs.db

@@ -93,28 +93,39 @@ if either exceeds 800 lines once real code lands.
 
 ## Phase 6: Home route `/` — PR5
 
-- [ ] 6.1 Create `salon/home/home-page.ts`: `hero-portrait` (pz-picture priority, LCP), `manifest` (3 columns), `carta-teaser` (5 non-linking `pz-plate` rows, one per plant), `salon-strip` (`textura-lino` band), `quote` (`manos-pigmento` + italic blockquote), CTA → `/contacto`. (home-page: route composition)
-- [ ] 6.2 Verify no `<a href>` targets any of the 5 service routes, `/virginia`, `/el-salon`, `/precios`, `/reservar`, `/diario`. (home-page: no dead links to future routes)
-- [ ] 6.3 Wire `/` to `home-page.ts`; confirm shell present; `SeoService` applies title/description/canonical + `HairSalon`+`BreadcrumbList` JSON-LD from registry. (home-page: SEO contract satisfied)
-- [ ] 6.4 Confirm no eager Maps `<iframe>` in `/`'s initial HTML. (home-page: no eager map iframe)
+- [x] 6.1 Create `salon/home/home-page.ts`: `hero-portrait` (pz-picture priority, LCP), `manifest` (3 columns), `carta-teaser` (5 non-linking `pz-plate` rows, one per plant), `salon-strip` (`textura-lino` band), `quote` (`manos-pigmento` + italic blockquote), CTA → `/contacto`. (home-page: route composition)
+- [x] 6.2 Verify no `<a href>` targets any of the 5 service routes, `/virginia`, `/el-salon`, `/precios`, `/reservar`, `/diario`. (home-page: no dead links to future routes)
+- [x] 6.3 Wire `/` to `home-page.ts`; confirm shell present; `SeoService` applies title/description/canonical + `HairSalon`+`BreadcrumbList` JSON-LD from registry. (home-page: SEO contract satisfied)
+- [x] 6.4 Confirm no eager Maps `<iframe>` in `/`'s initial HTML. (home-page: no eager map iframe)
 
 ## Phase 7: Contact route `/contacto` — PR5
 
-- [ ] 7.1 Create `shared/utils/contact-links.ts` — pure `buildWhatsAppUrl(phone, message)` / `buildTelUrl(phone)`. (contact-page: WhatsApp-first primary CTA)
-- [ ] 7.2 Vitest: both link-builder functions, encoding + format.
-- [ ] 7.3 Create `contact/contact-page.ts`: `nap-block`, WhatsApp CTA first via `pz-cta` primary, `tel:` CTA second via `pz-cta` secondary, `hours` block, `pz-static-map` click-to-load, no form (no backend in this change). (contact-page: WhatsApp-first + click-to-load map)
-- [ ] 7.4 Wire `/contacto`; confirm shell present, `RenderMode.Prerender`, `SeoService` applies null-keyword entry + `BreadcrumbList` only (no `HairSalon` block). (contact-page: navigational SEO entry)
-- [ ] 7.5 Confirm no Maps `<iframe>` before click; confirm it loads after clicking the static map image. (contact-page: click-to-load static map)
+- [x] 7.1 Create `shared/utils/contact-links.ts` — pure `buildWhatsAppUrl(phone, message)` / `buildTelUrl(phone)`. (contact-page: WhatsApp-first primary CTA)
+- [x] 7.2 Vitest: both link-builder functions, encoding + format.
+- [x] 7.3 Create `contact/contact-page.ts`: `nap-block`, WhatsApp CTA first via `pz-cta` primary, `tel:` CTA second via `pz-cta` secondary, `hours` block, `pz-static-map` click-to-load, no form (no backend in this change). (contact-page: WhatsApp-first + click-to-load map)
+- [x] 7.4 Wire `/contacto`; confirm shell present, `RenderMode.Prerender`, `SeoService` applies null-keyword entry + `BreadcrumbList` only (no `HairSalon` block). (contact-page: navigational SEO entry)
+- [x] 7.5 Confirm no Maps `<iframe>` before click; confirm it loads after clicking the static map image. (contact-page: click-to-load static map)
 
 ## Phase 8: Build gates & E2E — PR5
 
-- [ ] 8.1 Run `npm run build`; verify prebuild validator exits 0, `dist/pureza/browser/index.html` + `contacto/index.html` exist, postbuild sitemap contains both URLs. (app-shell: static build output; seo-infrastructure: sitemap scenarios)
-- [ ] 8.2 Fixture test: deliberately duplicate a keyword in a registry copy, run the validator directly, assert non-zero exit — never committed to the real registry. (seo-infrastructure: duplicate keyword fails build)
-- [ ] 8.3 Playwright: axe-core AA scan on `/` and `/contacto`; assert zero external network requests (no `fonts.googleapis.com`/`fonts.gstatic.com`/eager Maps).
-- [ ] 8.4 Playwright: one desktop + one mobile visual snapshot per route.
-- [ ] 8.5 Playwright: assert each prerendered page's `<link rel="canonical">` equals its `sitemap.xml` entry. (design risk E; config.yaml verify gate)
+- [x] 8.1 Run `npm run build`; verify prebuild validator exits 0, `dist/pureza/browser/index.html` + `contacto/index.html` exist, postbuild sitemap contains both URLs. (app-shell: static build output; seo-infrastructure: sitemap scenarios)
+- [x] 8.2 Fixture test: deliberately duplicate a keyword in a registry copy, run the validator directly, assert non-zero exit — never committed to the real registry. (seo-infrastructure: duplicate keyword fails build)
+- [x] 8.3 Playwright: axe-core AA scan on `/` and `/contacto`; assert zero external network requests (no `fonts.googleapis.com`/`fonts.gstatic.com`/eager Maps).
+- [x] 8.4 Playwright: one desktop + one mobile visual snapshot per route.
+- [x] 8.5 Playwright: assert each prerendered page's `<link rel="canonical">` equals its `sitemap.xml` entry. (design risk E; config.yaml verify gate)
 
 ## Phase 9: Cleanup — PR5
 
-- [ ] 9.1 Add README.md section: `optimization.fonts` must stay `false`; note `_tokens.scss` as the sole hex source; note `info/direccion-diseno.build.SUPERSEDED-v2.html` is historical only.
-- [ ] 9.2 Document that CI must run `npm run build` (never bare `ng build`) so the prebuild gate cannot be bypassed. (design risk D)
+- [x] 9.1 Add README.md section: `optimization.fonts` must stay `false`; note `_tokens.scss` as the sole hex source; note `info/direccion-diseno.build.SUPERSEDED-v2.html` is historical only.
+- [x] 9.2 Document that CI must run `npm run build` (never bare `ng build`) so the prebuild gate cannot be bypassed. (design risk D)
+
+---
+
+**PR5 status: DONE.** 53/54 tasks across all 5 PRs are now `[x]`. The sole remaining item is task
+4.8 (committed static-map PNG), still **BLOCKED** on a human-supplied `GOOGLE_MAPS_API_KEY` — not a
+code gap; `pz-static-map` degrades to a verified "Cómo llegar" fallback everywhere it's used. `/` and
+`/contacto` are a genuinely working, buildable, tested site: `npm run build` prerenders both routes
+and writes a correct `sitemap.xml`; `npm test -- --watch=false` is 83/83; `npx playwright test` is
+10/10 (axe-core AA, zero eager font/Maps requests, 4 visual snapshots, canonical↔sitemap parity,
+click-to-load map fallback). See `sdd/foundation/apply-progress` (Engram, project "virginia") for the
+full PR1–PR5 history, including a real `pz-cta` content-projection bug found and fixed in this batch.

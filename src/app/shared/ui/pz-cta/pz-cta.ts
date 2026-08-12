@@ -1,3 +1,4 @@
+import { NgTemplateOutlet } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
@@ -11,7 +12,7 @@ import { RouterLink } from '@angular/router';
  */
 @Component({
   selector: 'pz-cta',
-  imports: [RouterLink],
+  imports: [RouterLink, NgTemplateOutlet],
   templateUrl: './pz-cta.html',
   styleUrl: './pz-cta.scss',
 })

@@ -1,21 +1,27 @@
+<!-- Content is captured ONCE here and rendered via ngTemplateOutlet in
+     whichever branch below actually activates. A second (or third) physical
+     <ng-content> element — even one in a branch that never renders — was
+     found to silently break projection in EVERY branch, in this Angular
+     version (reproduced + documented in pz-cta.spec.ts, PR5, after the
+     original 3-branch/3-<ng-content> template shipped empty CTAs in the real
+     prerendered build). Combining [attr.href] and [routerLink] on the SAME
+     <a> conditionally was ALSO found to silently drop the attr.href binding
+     (RouterLink's own host binding wins), so external vs. internal stay two
+     separate <a> branches instead of one branch with ternary attributes. -->
+<ng-template #ctaContent><ng-content /></ng-template>
+
 @if (href(); as link) {
   @if (external()) {
-    <a
-      class="pz-cta"
-      [class.pz-cta--secondary]="variant() === 'secondary'"
-      [href]="link"
-      target="_blank"
-      rel="noopener"
-    >
-      <ng-content />
+    <a class="pz-cta" [class.pz-cta--secondary]="variant() === 'secondary'" [href]="link" target="_blank" rel="noopener">
+      <ng-container [ngTemplateOutlet]="ctaContent" />
     </a>
   } @else {
     <a class="pz-cta" [class.pz-cta--secondary]="variant() === 'secondary'" [routerLink]="link">
-      <ng-content />
+      <ng-container [ngTemplateOutlet]="ctaContent" />
     </a>
   }
 } @else {
   <button type="button" class="pz-cta" [class.pz-cta--secondary]="variant() === 'secondary'">
-    <ng-content />
+    <ng-container [ngTemplateOutlet]="ctaContent" />
   </button>
 }

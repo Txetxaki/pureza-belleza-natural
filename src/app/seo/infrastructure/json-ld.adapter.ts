@@ -23,4 +23,10 @@ export class JsonLdAdapter implements JsonLdPort {
     }
     script.textContent = JSON.stringify(schema);
   }
+
+  /** No-op if the node doesn't exist — safe to call defensively on every route. */
+  remove(id: string): void {
+    const script = this.document.head.querySelector(`script[data-pz-schema="${id}"]`);
+    script?.remove();
+  }
 }

@@ -1,0 +1,224 @@
+:host {
+  display: block;
+}
+
+// Every top-level section shares the same max-width/gutter rhythm — no
+// shared ".wrap" component exists yet (design.md doesn't specify one), so
+// each section declares it directly rather than introducing a second layout
+// primitive for a single route.
+.home-hero,
+.home-manifest,
+.home-carta,
+.home-quote,
+.home-cta-band {
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+}
+
+// ── Hero ─────────────────────────────────────────────────────────────────
+.home-hero {
+  display: grid;
+  gap: var(--pz-space-l);
+  align-items: center;
+  padding-block: var(--pz-space-l) var(--pz-space-xl);
+
+  @media (min-width: 920px) {
+    grid-template-columns: 0.78fr 1fr;
+  }
+}
+
+.home-hero__portrait {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: var(--pz-radius);
+
+  ::ng-deep .pz-picture,
+  ::ng-deep .pz-picture__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.home-hero__caption {
+  position: absolute;
+  left: var(--pz-space-xs);
+  bottom: var(--pz-space-xs);
+  padding: var(--pz-space-3xs) var(--pz-space-xs);
+  background: var(--pz-surface);
+  color: var(--pz-ink-soft);
+  font-size: var(--pz-text-label);
+  letter-spacing: var(--pz-track-label);
+  text-transform: uppercase;
+  border-radius: var(--pz-radius);
+}
+
+.home-hero__type {
+  max-width: var(--pz-measure);
+}
+
+.home-hero__title {
+  font-family: var(--pz-display);
+  font-size: var(--pz-text-h1);
+  line-height: 1.1;
+  letter-spacing: var(--pz-track-tight);
+  margin: var(--pz-space-s) 0 0;
+  color: var(--pz-ink);
+
+  span {
+    display: block;
+  }
+
+  em {
+    font-style: italic;
+    color: var(--pz-accent-live);
+  }
+}
+
+.home-hero__lede {
+  margin: var(--pz-space-m) 0 0;
+  font-size: var(--pz-text-lead);
+  line-height: 1.7;
+  color: var(--pz-ink-soft);
+  max-width: 27rem;
+}
+
+.home-hero__type pz-cta {
+  display: inline-block;
+  margin-top: var(--pz-space-m);
+}
+
+// ── Manifest ─────────────────────────────────────────────────────────────
+.home-manifest {
+  display: grid;
+  gap: var(--pz-space-l);
+  padding-block: var(--pz-space-l);
+
+  @media (min-width: 720px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.home-manifest__title {
+  font-family: var(--pz-display);
+  font-size: var(--pz-text-h3);
+  margin: var(--pz-space-3xs) 0 0;
+  color: var(--pz-ink);
+}
+
+.home-manifest__body {
+  margin: var(--pz-space-xs) 0 0;
+  color: var(--pz-ink-soft);
+  line-height: 1.6;
+}
+
+// ── Carta (herbarium plates) ─────────────────────────────────────────────
+.home-carta {
+  padding-block: var(--pz-space-l);
+}
+
+.home-carta__head {
+  max-width: var(--pz-measure);
+  margin-bottom: var(--pz-space-l);
+
+  h2 {
+    font-family: var(--pz-display);
+    font-size: var(--pz-text-h2);
+    margin: var(--pz-space-3xs) 0 0;
+    color: var(--pz-ink);
+  }
+
+  p {
+    margin: var(--pz-space-s) 0 0;
+    color: var(--pz-ink-soft);
+    line-height: 1.6;
+  }
+}
+
+// pz-plate is a real block-level custom element rendered directly as a
+// sibling here (each carries its own [data-planta] host attribute, sibling
+// scoping only — design.md §1).
+app-home-page pz-plate {
+  display: block;
+}
+
+// ── Salon strip ──────────────────────────────────────────────────────────
+.home-salon-strip {
+  position: relative;
+  width: 100%;
+
+  ::ng-deep .pz-picture,
+  ::ng-deep .pz-picture__img {
+    width: 100%;
+    height: clamp(120px, 22vw, 220px);
+    object-fit: cover;
+  }
+}
+
+.home-salon-strip__caption {
+  position: absolute;
+  left: var(--pz-space-m);
+  bottom: var(--pz-space-s);
+  color: var(--pz-surface);
+  background: color-mix(in srgb, var(--pz-ink) 60%, transparent);
+  padding: var(--pz-space-3xs) var(--pz-space-xs);
+  border-radius: var(--pz-radius);
+}
+
+// ── Quote ────────────────────────────────────────────────────────────────
+.home-quote {
+  display: grid;
+  gap: var(--pz-space-l);
+  align-items: center;
+  padding-block: var(--pz-space-xl);
+
+  @media (min-width: 720px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  ::ng-deep .pz-picture {
+    border-radius: var(--pz-radius);
+    overflow: hidden;
+  }
+}
+
+.home-quote__figure {
+  margin: 0;
+}
+
+.home-quote__text {
+  margin: 0;
+  font-family: var(--pz-display);
+  font-style: italic;
+  font-size: var(--pz-text-h3);
+  line-height: 1.5;
+  color: var(--pz-ink);
+}
+
+.home-quote__caption {
+  margin-top: var(--pz-space-s);
+  color: var(--pz-ink-soft);
+  font-size: var(--pz-text-small);
+}
+
+// ── CTA band ─────────────────────────────────────────────────────────────
+.home-cta-band {
+  text-align: center;
+  padding-block: var(--pz-space-xl);
+  border-top: 1px solid var(--pz-hairline);
+}
+
+.home-cta-band__title {
+  font-family: var(--pz-display);
+  font-size: var(--pz-text-h2);
+  margin: 0;
+  color: var(--pz-ink);
+}
+
+.home-cta-band__lede {
+  margin: var(--pz-space-xs) 0 var(--pz-space-m);
+  color: var(--pz-ink-soft);
+}

@@ -1,0 +1,54 @@
+<section class="contact-page">
+  <header class="contact-page__head">
+    <p class="pz-eyebrow">Contacto</p>
+    <h1 class="contact-page__title">Hablemos de tu cabello</h1>
+    <p class="contact-page__lede">
+      Escríbeme por WhatsApp o llama — te contesto yo, no un contestador.
+    </p>
+  </header>
+
+  <!-- WhatsApp CTA FIRST (contact-page spec "WhatsApp-first primary CTA"):
+       primary variant, first in DOM/visual order among the contact CTAs. -->
+  <div class="contact-page__ctas">
+    <pz-cta variant="primary" [href]="whatsappUrl" [external]="true">
+      Escribir por WhatsApp
+    </pz-cta>
+    <pz-cta variant="secondary" [href]="telUrl" [external]="true">
+      Llamar · {{ site.telephoneDisplay }}
+    </pz-cta>
+  </div>
+
+  <div class="contact-page__grid">
+    <div class="contact-page__nap">
+      <p class="pz-eyebrow">Dónde estamos</p>
+      <address class="contact-page__address">
+        {{ site.name }}<br />
+        {{ site.streetAddress }}<br />
+        {{ site.postalCode }} {{ site.addressLocality }}
+      </address>
+
+      <!-- Click-to-load only: no eager Maps <iframe>, degrades to a plain
+           "Cómo llegar" link while the static map asset (task 4.8) stays
+           blocked (STATIC_MAP_ASSET_AVAILABLE = false). -->
+      <pz-static-map [address]="mapAddress" />
+    </div>
+
+    <div class="contact-page__hours">
+      <p class="pz-eyebrow">Horario</p>
+      <table class="contact-page__hours-table">
+        <tbody>
+          @for (row of hours; track row.day) {
+            <tr>
+              <th scope="row">{{ row.day }}</th>
+              @if (row.hours) {
+                <td>{{ row.hours }}</td>
+              } @else {
+                <td class="contact-page__closed">Cerrado</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
