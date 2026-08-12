@@ -78,18 +78,18 @@ if either exceeds 800 lines once real code lands.
 
 ## Phase 5: SEO infrastructure — PR4
 
-- [ ] 5.1 Create `seo/route-seo.registry.json`, all 12 routes (2 `status:'live'` — `/`, `/contacto`; 10 `planned`); `/` primaryKeyword = `"peluquería sin químicos Ciudad Real"`, `/contacto` primaryKeyword = `null`. (seo-infrastructure: registry single source, both proof-route scenarios)
-- [ ] 5.2 Create `seo/domain/{route-seo.ts,site.ts,ports.ts}` — `RouteSeo` interface + `SITE` NAP constant + port interfaces.
-- [ ] 5.3 Create `seo/application/seo.service.ts` — `apply()` sets title/description/canonical/OG/Twitter; `setJsonLd()` upserts by `data-pz-schema`; subscribed once from `app.config.ts` router events. (seo-infrastructure: SeoService applies registry data)
-- [ ] 5.4 Create `seo/infrastructure/{angular-metadata.adapter.ts,json-ld.adapter.ts}` — DOCUMENT-based upsert, not append (design risk C: hydration must replace, not duplicate).
-- [ ] 5.5 Create `seo/generators/hair-salon.schema.ts` (`@type: "HairSalon"` — confirmed real schema.org subtype, Engram #2291 — name/address/telephone/URL) and `breadcrumb-list.schema.ts`. (seo-infrastructure: JSON-LD contract)
-- [ ] 5.6 Wire `route.data.seo = seoData('contacto')` (etc.) in `app.routes.ts` for both routes.
-- [ ] 5.7 Write `scripts/validate-keyword-uniqueness.mjs` — exported pure functions + self-executing main; checks duplicate normalized keyword, duplicate path, duplicate `planta`, `title>60`/`description>155`/priority-range; wire as `prebuild`. (seo-infrastructure: build-breaking validator, unique-pass + duplicate-fail + navigational-exempt scenarios)
-- [ ] 5.8 Vitest: `findDuplicateKeywords` + the other 3 validator checks, pure functions.
-- [ ] 5.9 Write `scripts/generate-sitemap.mjs` — `postbuild`; walks `dist/pureza/browser/**/index.html`, joins registry for changefreq/priority, no `lastmod`, fails on missing registry entry or a dropped `live` route. (seo-infrastructure: postbuild generation, both scenarios)
-- [ ] 5.10 Vitest: sitemap `pathToUrl` mapping function, pure.
-- [ ] 5.11 Vitest: both JSON-LD generator functions produce valid, parseable schema.org objects.
-- [ ] 5.12 Vitest+TestBed (jsdom): `SeoService.apply` sets title/description/canonical exactly once per navigation; JSON-LD adapter replaces the existing node on re-navigation instead of duplicating. (design risk C)
+- [x] 5.1 Create `seo/route-seo.registry.json`, all 12 routes (2 `status:'live'` — `/`, `/contacto`; 10 `planned`); `/` primaryKeyword = `"peluquería sin químicos Ciudad Real"`, `/contacto` primaryKeyword = `null`. (seo-infrastructure: registry single source, both proof-route scenarios)
+- [x] 5.2 Create `seo/domain/{route-seo.ts,site.ts,ports.ts}` — `RouteSeo` interface + `SITE` NAP constant + port interfaces.
+- [x] 5.3 Create `seo/application/seo.service.ts` — `apply()` sets title/description/canonical/OG/Twitter; `setJsonLd()` upserts by `data-pz-schema`; subscribed once from `app.config.ts` router events. (seo-infrastructure: SeoService applies registry data)
+- [x] 5.4 Create `seo/infrastructure/{angular-metadata.adapter.ts,json-ld.adapter.ts}` — DOCUMENT-based upsert, not append (design risk C: hydration must replace, not duplicate).
+- [x] 5.5 Create `seo/generators/hair-salon.schema.ts` (`@type: "HairSalon"` — confirmed real schema.org subtype, Engram #2291 — name/address/telephone/URL) and `breadcrumb-list.schema.ts`. (seo-infrastructure: JSON-LD contract)
+- [x] 5.6 Wire `route.data.seo = seoData('contacto')` (etc.) in `app.routes.ts` for both routes. **Partial by design**: added the `seoRouteData(path)` helper (`seo/domain/route-seo.ts`) and documented the exact wiring pattern as a comment in `app.routes.ts`; `routes: Routes = []` stays empty because the home/contact route *components* are Phase 6/7 (PR5) — adding route entries pointing at nonexistent components would break `npm run build`. PR5's 6.3/7.4 add the real `{ path, component, data: seoRouteData(path) }` entries using this helper.
+- [x] 5.7 Write `scripts/validate-keyword-uniqueness.mjs` — exported pure functions + self-executing main; checks duplicate normalized keyword, duplicate path, duplicate `planta`, `title>60`/`description>155`/priority-range; wire as `prebuild`. (seo-infrastructure: build-breaking validator, unique-pass + duplicate-fail + navigational-exempt scenarios)
+- [x] 5.8 Vitest: `findDuplicateKeywords` + the other 3 validator checks, pure functions.
+- [x] 5.9 Write `scripts/generate-sitemap.mjs` — `postbuild`; walks `dist/pureza/browser/**/index.html`, joins registry for changefreq/priority, no `lastmod`, fails on missing registry entry or a dropped `live` route. (seo-infrastructure: postbuild generation, both scenarios)
+- [x] 5.10 Vitest: sitemap `pathToUrl` mapping function, pure.
+- [x] 5.11 Vitest: both JSON-LD generator functions produce valid, parseable schema.org objects.
+- [x] 5.12 Vitest+TestBed (jsdom): `SeoService.apply` sets title/description/canonical exactly once per navigation; JSON-LD adapter replaces the existing node on re-navigation instead of duplicating. (design risk C)
 
 ## Phase 6: Home route `/` — PR5
 
