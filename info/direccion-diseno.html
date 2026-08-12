@@ -1,0 +1,749 @@
+<title>Herbario Pureza</title>
+<!--
+  ⚠️ SUPERSEDIDO — no usar como fuente de tokens.
+  Esta es la v2 de la dirección de diseño (fondo crema, 4 acentos, sin olivo).
+  La versión v5 vigente (blanco puro #FFFFFF, 5 colores con dueño, incluido
+  olivo) vive en:
+    - openspec/changes/foundation/design.md (fuente de verdad canónica)
+    - Engram project "virginia", topic_key "sdd/foundation/design" (#2292)
+  Se conserva este archivo solo como historial de la iteración v2. El HTML
+  compilado hermano (direccion-diseno.build.html) fue renombrado a
+  direccion-diseno.build.SUPERSEDED-v2.html por el mismo motivo.
+-->
+<style>
+  /* ══════════════════════════════════════════════════════════════
+     PUREZA · Dirección de diseño — v2, luz
+     Concepto: herbario manchego. La botánica de aquí — romero,
+     espliego, esparto, vid, olivo — en vez del monstera tropical
+     que usa todo el sector wellness.
+     v2: fondo casi blanco, el verde profundo reducido a acento,
+     el doble de aire y tema oscuro atenuado en vez de negro.
+     ══════════════════════════════════════════════════════════════ */
+
+  @font-face { font-family: "EBG"; src: url(__FONT_EBG_400__) format("woff2");  font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: "EBG"; src: url(__FONT_EBG_400I__) format("woff2"); font-weight: 400; font-style: italic; font-display: swap; }
+  @font-face { font-family: "EBG"; src: url(__FONT_EBG_600__) format("woff2");  font-weight: 600; font-style: normal; font-display: swap; }
+  @font-face { font-family: "AlegSans"; src: url(__FONT_AS_400__) format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+  @font-face { font-family: "AlegSans"; src: url(__FONT_AS_500__) format("woff2"); font-weight: 500; font-style: normal; font-display: swap; }
+  @font-face { font-family: "AlegSans"; src: url(__FONT_AS_700__) format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
+
+  :root {
+    /* Fondos — casi blanco, cálido, sin llegar al clínico */
+    --ground:    #FCFBF7;
+    --raise:     #FFFFFF;
+    --ground-alt:#F5F3EB;
+
+    /* Texto — contrastes verificados sobre #FCFBF7 */
+    --ink:       #2A322A;   /* 12,7:1 · titulares */
+    --ink-soft:  #5F6A5C;   /*  5,5:1 · cuerpo secundario */
+    --label:     #66795D;   /*  4,5:1 · versalitas */
+    --hairline-ink: #8C9587;/* solo decorativo, nunca texto */
+
+    /* Acentos botánicos */
+    --vid:       #3D5C44;   /* 7,5:1 · primario, dosificado */
+    --romero:    #A9B79F;   /* verde plata · trazo de lámina */
+    --esparto:   #8A6B45;   /* 4,8:1 · madera, binomios */
+    --espliego:  #7A719B;   /* flores y foco · <2% de superficie */
+
+    --linea:     #E7E4D8;
+    --linea-fina:#F1EFE6;
+
+    --display: "EBG", "Iowan Old Style", Palatino, Georgia, serif;
+    --body:    "AlegSans", "Segoe UI", system-ui, sans-serif;
+
+    --gap: clamp(22px, 6vw, 76px);
+    --measure: 33rem;
+
+    /* Tratamiento del retrato: lavado y luminoso */
+    --duo-a: #6F8A70;
+    --duo-b: #C8CEBC;
+    --duo-c: #FBFAF4;
+    --duo-op: .55;
+    --duo-bright: 1.16;
+  }
+
+  /* Tema oscuro: salón en penumbra, NO negro */
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:    #252A22;
+      --raise:     #2C3229;
+      --ground-alt:#2A3027;
+      --ink:       #EDEBE0;
+      --ink-soft:  #BAC1B2;
+      --label:     #A2B593;
+      --hairline-ink: #7C866F;
+      --vid:       #AECBA0;
+      --romero:    #8E9C84;
+      --esparto:   #CBA87B;
+      --espliego:  #ADA3CA;
+      --linea:     #39412F;
+      --linea-fina:#313827;
+      --duo-a: #55704F;
+      --duo-b: #93A184;
+      --duo-c: #D9DCCB;
+      --duo-op: .48;
+      --duo-bright: 1.02;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:    #252A22;
+    --raise:     #2C3229;
+    --ground-alt:#2A3027;
+    --ink:       #EDEBE0;
+    --ink-soft:  #BAC1B2;
+    --label:     #A2B593;
+    --hairline-ink: #7C866F;
+    --vid:       #AECBA0;
+    --romero:    #8E9C84;
+    --esparto:   #CBA87B;
+    --espliego:  #ADA3CA;
+    --linea:     #39412F;
+    --linea-fina:#313827;
+    --duo-a: #55704F;
+    --duo-b: #93A184;
+    --duo-c: #D9DCCB;
+    --duo-op: .48;
+    --duo-bright: 1.02;
+  }
+
+  /* ── Base ─────────────────────────────────────────────────── */
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 17px;
+    line-height: 1.72;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .disp { font-family: var(--display); font-weight: 400; text-wrap: balance; }
+
+  a { color: inherit; }
+
+  :focus-visible { outline: 2px solid var(--espliego); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: 1120px; margin: 0 auto; padding: 0 var(--gap); }
+
+  .eyebrow {
+    font-size: 10.5px;
+    letter-spacing: .24em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--label);
+    margin: 0;
+  }
+
+  /* ── Cabecera ─────────────────────────────────────────────── */
+  .top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 30px 0 26px;
+  }
+
+  .brand {
+    font-family: var(--display);
+    font-size: 21px;
+    letter-spacing: .38em;
+    text-transform: uppercase;
+    color: var(--vid);
+    text-decoration: none;
+  }
+
+  .top nav { display: flex; gap: 30px; font-size: 13.5px; }
+  .top nav a { color: var(--ink-soft); text-decoration: none; }
+  .top nav a:hover { color: var(--vid); }
+  .top nav .book { color: var(--vid); font-weight: 700; }
+  @media (max-width: 620px) { .top nav .hide-s { display: none; } }
+
+  /* ── Héroe ────────────────────────────────────────────────── */
+  .hero {
+    display: grid;
+    gap: clamp(34px, 6vw, 76px);
+    align-items: center;
+    padding: clamp(30px, 6vw, 76px) 0 clamp(64px, 10vw, 132px);
+  }
+
+  @media (min-width: 920px) { .hero { grid-template-columns: 0.78fr 1fr; } }
+
+  .portrait {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    background: var(--ground-alt);
+    border-radius: 2px;
+    margin: 0;
+  }
+
+  .portrait img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: 62% 20%;
+    display: block;
+    filter: grayscale(1) brightness(var(--duo-bright)) contrast(.92);
+  }
+
+  /* Duotono lavado: sombras a verde suave, luces a hueso claro */
+  .portrait::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(165deg, var(--duo-a), var(--duo-b) 48%, var(--duo-c));
+    mix-blend-mode: color;
+    opacity: var(--duo-op);
+    pointer-events: none;
+  }
+
+  .portrait figcaption {
+    position: absolute;
+    left: 14px; bottom: 14px;
+    padding: 7px 12px;
+    background: var(--raise);
+    color: var(--ink-soft);
+    font-size: 10px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    border-radius: 2px;
+  }
+
+  .hero-type { max-width: 31rem; }
+
+  .sin {
+    font-family: var(--display);
+    font-size: clamp(2.5rem, 7vw, 4.35rem);
+    line-height: 1.1;
+    letter-spacing: -.014em;
+    margin: 18px 0 0;
+    color: var(--ink);
+  }
+
+  .sin span { display: block; }
+  .sin em { font-style: italic; color: var(--vid); }
+
+  .hero-lede {
+    margin: 30px 0 0;
+    font-size: 17.5px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    max-width: 27rem;
+  }
+
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 26px; margin-top: 38px; }
+
+  .btn {
+    display: inline-block;
+    background: var(--vid);
+    color: #FCFBF7;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 16px 34px;
+    min-height: 44px;
+    border-radius: 2px;
+    transition: opacity .2s;
+  }
+
+  .btn:hover { opacity: .84; }
+  :root[data-theme="dark"] .btn { color: #252A22; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .btn { color: #252A22; } }
+
+  .tel {
+    font-family: var(--display);
+    font-size: 21px;
+    color: var(--ink);
+    text-decoration: none;
+    border-bottom: 1px solid var(--linea);
+    padding-bottom: 3px;
+  }
+
+  .tel:hover { border-bottom-color: var(--vid); }
+
+  /* ── Franja manifiesto ────────────────────────────────────── */
+  .manifest {
+    border-top: 1px solid var(--linea-fina);
+    padding: clamp(48px, 7vw, 80px) 0;
+    display: grid;
+    gap: 40px;
+  }
+
+  @media (min-width: 780px) { .manifest { grid-template-columns: repeat(3, 1fr); gap: 56px; } }
+
+  .manifest h3 {
+    font-size: 1.42rem;
+    margin: 14px 0 8px;
+    color: var(--ink);
+    letter-spacing: -.008em;
+    line-height: 1.24;
+  }
+
+  .manifest p { margin: 0; font-size: 14.5px; color: var(--ink-soft); line-height: 1.68; }
+
+  /* ── Carta / láminas de herbario ──────────────────────────── */
+  .carta { padding: clamp(72px, 11vw, 148px) 0 clamp(40px, 6vw, 76px); }
+
+  .carta-head { max-width: var(--measure); margin-bottom: clamp(40px, 6vw, 76px); }
+
+  .carta-head h2 {
+    font-size: clamp(2rem, 4.6vw, 3.1rem);
+    line-height: 1.14;
+    margin: 16px 0 18px;
+    letter-spacing: -.014em;
+    color: var(--ink);
+  }
+
+  .carta-head p { margin: 0; color: var(--ink-soft); font-size: 16px; }
+
+  .plate {
+    display: grid;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: clamp(20px, 4vw, 44px);
+    align-items: start;
+    padding: clamp(34px, 5vw, 52px) 0;
+    border-top: 1px solid var(--linea-fina);
+  }
+
+  @media (min-width: 800px) { .plate { grid-template-columns: 118px minmax(0, 1fr) auto; align-items: center; } }
+
+  .plate:last-of-type { border-bottom: 1px solid var(--linea-fina); }
+
+  .specimen { width: 100%; height: auto; color: var(--romero); display: block; }
+  .specimen .bloom { color: var(--espliego); }
+
+  .plate-body h3 {
+    font-size: clamp(1.42rem, 3vw, 1.82rem);
+    margin: 0 0 4px;
+    letter-spacing: -.01em;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+
+  .binomial {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--esparto);
+    letter-spacing: .04em;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .plate-body p { margin: 0; font-size: 15px; color: var(--ink-soft); max-width: 33rem; line-height: 1.68; }
+
+  .price {
+    font-family: var(--display);
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    white-space: nowrap;
+    letter-spacing: .05em;
+  }
+
+  .price b { font-size: 1.45em; color: var(--ink); font-weight: 400; font-variant-numeric: tabular-nums; }
+
+  .note { margin: 26px 0 0; font-size: 12.5px; color: var(--ink-soft); font-style: italic; }
+
+  /* ── El salón ─────────────────────────────────────────────── */
+  .salon {
+    display: grid;
+    gap: clamp(34px, 6vw, 68px);
+    padding: clamp(72px, 11vw, 148px) 0;
+  }
+
+  @media (min-width: 880px) { .salon { grid-template-columns: 1fr 1fr; align-items: start; } }
+
+  .salon h2 { font-size: clamp(1.9rem, 4.2vw, 2.6rem); margin: 16px 0 24px; letter-spacing: -.014em; color: var(--ink); }
+
+  .hours { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  .hours th { text-align: left; font-weight: 400; color: var(--ink); padding: 12px 0; border-bottom: 1px solid var(--linea-fina); width: 40%; }
+  .hours td { text-align: right; color: var(--ink-soft); padding: 12px 0; border-bottom: 1px solid var(--linea-fina); font-variant-numeric: tabular-nums; }
+  .hours tr:last-child th, .hours tr:last-child td { border-bottom: none; }
+  .hours .closed { font-style: italic; }
+
+  .mapcard {
+    position: relative;
+    border: 1px solid var(--linea);
+    border-radius: 2px;
+    overflow: hidden;
+    background: var(--raise);
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 26px;
+  }
+
+  .mapgrid { position: absolute; inset: 0; }
+  .mapgrid line { stroke: var(--linea); stroke-width: 1; }
+  .mapgrid .road { stroke: var(--romero); stroke-width: 3; opacity: .5; }
+
+  .mappin { position: relative; }
+  .mappin .dot { width: 12px; height: 12px; border-radius: 50%; background: var(--vid); margin: 0 auto 14px; box-shadow: 0 0 0 7px color-mix(in srgb, var(--vid) 14%, transparent); }
+  .mappin address { font-style: normal; font-family: var(--display); font-size: 19px; line-height: 1.45; color: var(--ink); }
+  .mappin small { display: block; margin-top: 11px; font-family: var(--body); font-size: 10px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-soft); }
+
+  /* ── Cita ─────────────────────────────────────────────────── */
+  .quote { padding: clamp(64px, 9vw, 124px) 0; border-top: 1px solid var(--linea-fina); text-align: center; margin: 0; }
+
+  .quote blockquote {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    line-height: 1.34;
+    margin: 0 auto;
+    max-width: 23ch;
+    color: var(--vid);
+    letter-spacing: -.01em;
+  }
+
+  .quote figcaption { margin-top: 26px; font-size: 10.5px; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-soft); }
+
+  /* ── Pie ──────────────────────────────────────────────────── */
+  footer { border-top: 1px solid var(--linea-fina); padding: clamp(44px, 6vw, 68px) 0 72px; }
+
+  .foot-grid { display: grid; gap: 32px; font-size: 14px; color: var(--ink-soft); }
+  @media (min-width: 780px) { .foot-grid { grid-template-columns: 1.3fr 1fr 1fr; gap: 48px; } }
+  .foot-grid h4 { font-family: var(--body); font-size: 10.5px; letter-spacing: .2em; text-transform: uppercase; color: var(--label); margin: 0 0 14px; font-weight: 700; }
+  .foot-grid p { margin: 0 0 7px; }
+  .foot-grid a { color: var(--ink-soft); text-decoration: none; display: block; margin-bottom: 7px; }
+  .foot-grid a:hover { color: var(--vid); }
+
+  /* ── Anexo: sistema ───────────────────────────────────────── */
+  .system { border-top: 1px solid var(--linea-fina); padding: clamp(64px, 9vw, 116px) 0 48px; }
+  .system h2 { font-size: clamp(1.6rem, 3.6vw, 2.1rem); margin: 16px 0 12px; color: var(--ink); }
+  .system > .wrap > p { color: var(--ink-soft); font-size: 15px; max-width: var(--measure); margin: 0 0 40px; }
+
+  .sw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 16px; margin-bottom: 48px; }
+  .sw .chip { height: 76px; border-radius: 2px; border: 1px solid var(--linea); }
+  .sw .nm { display: block; font-size: 12.5px; font-weight: 700; margin-top: 10px; color: var(--ink); }
+  .sw .hx { display: block; font-size: 11px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .sw .role { display: block; font-size: 11.5px; color: var(--ink-soft); margin-top: 4px; line-height: 1.4; }
+
+  .scale { display: grid; gap: 18px; }
+  .scale-row { display: grid; grid-template-columns: 104px minmax(0,1fr); gap: 20px; align-items: baseline; border-top: 1px solid var(--linea-fina); padding-top: 16px; }
+  .scale-row span:first-child { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+
+  /* ── Movimiento ───────────────────────────────────────────── */
+  .rise { opacity: 0; transform: translateY(14px); }
+  .rise.in { animation: rise .66s cubic-bezier(.22,.7,.3,1) forwards; }
+
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  .sin span { opacity: 0; transform: translateY(18px); animation: rise .76s cubic-bezier(.22,.7,.3,1) forwards; }
+  .sin span:nth-child(1) { animation-delay: .12s; }
+  .sin span:nth-child(2) { animation-delay: .30s; }
+  .sin span:nth-child(3) { animation-delay: .48s; }
+
+  .specimen path, .specimen line, .specimen ellipse, .specimen polygon {
+    stroke-dasharray: var(--len, 260);
+    stroke-dashoffset: var(--len, 260);
+  }
+
+  .plate.in .specimen path,
+  .plate.in .specimen line,
+  .plate.in .specimen ellipse,
+  .plate.in .specimen polygon {
+    animation: draw 1.2s cubic-bezier(.35,.6,.3,1) forwards;
+  }
+
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rise, .sin span { opacity: 1 !important; transform: none !important; animation: none !important; }
+    .specimen path, .specimen line, .specimen ellipse, .specimen polygon { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; animation: none !important; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#">Pureza</a>
+    <nav>
+      <a class="hide-s" href="#carta">Carta</a>
+      <a class="hide-s" href="#salon">El salón</a>
+      <a class="book" href="#">Reservar</a>
+    </nav>
+  </header>
+</div>
+
+<div class="wrap">
+  <section class="hero">
+    <figure class="portrait">
+      <img src="__PHOTO_VIRGINIA__" alt="Virginia, peluquera y propietaria de Pureza, en su salón de Ciudad Real" width="1504" height="2048">
+      <figcaption>Virginia · Pozo Dulce, 1</figcaption>
+    </figure>
+
+    <div class="hero-type">
+      <p class="eyebrow">Peluquería de autor · Ciudad Real</p>
+      <h1 class="sin">
+        <span>Sin amoniaco.</span>
+        <span>Sin prisa.</span>
+        <span>Sin <em>nadie más</em> en el salón.</span>
+      </h1>
+      <p class="hero-lede">
+        Soy Virginia. Pureza es mi manera de entender la peluquería: coloración
+        vegetal Aveda, el tiempo que haga falta y una sola clienta cada vez.
+      </p>
+      <div class="actions">
+        <a class="btn" href="#">Reservar cita</a>
+        <a class="tel" href="tel:+34633101155">633 101 155</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="manifest">
+    <div class="rise">
+      <p class="eyebrow">96 % botánico</p>
+      <h3>Color que no quema</h3>
+      <p>Coloración Aveda con hasta un 96 % de ingredientes de origen natural. Sin amoniaco, sin olor químico, sin picor en el cuero cabelludo.</p>
+    </div>
+    <div class="rise">
+      <p class="eyebrow">Una cada vez</p>
+      <h3>El salón entero para ti</h3>
+      <p>No hay dos sillones ocupados a la vez. Ni turnos solapados, ni esperas con el tinte puesto mientras atienden a otra.</p>
+    </div>
+    <div class="rise">
+      <p class="eyebrow">Centro histórico</p>
+      <h3>A un paso de la Plaza Mayor</h3>
+      <p>Calle Pozo Dulce, 1. Cinco minutos andando desde la estación de autobuses y desde el aparcamiento de la plaza.</p>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="carta" id="carta">
+    <div class="carta-head">
+      <p class="eyebrow">La carta</p>
+      <h2>Cinco oficios, cinco plantas</h2>
+      <p>
+        Cada servicio lleva la planta que lo define, de las que crecen aquí —
+        no del trópico. Romero, espliego, esparto, vid y olivo: el herbario de
+        La Mancha aplicado a la peluquería.
+      </p>
+    </div>
+
+    <!-- ── Romero · Coloración ───────────────────────────────── -->
+    <article class="plate">
+      <svg class="specimen" viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
+        <path d="M50 146 C50 108 50 62 50 16" style="--len:135"/>
+        <path d="M50 128 L29 116" style="--len:25"/><path d="M50 120 L71 108" style="--len:25"/>
+        <path d="M50 112 L29 100" style="--len:25"/><path d="M50 104 L71 92"  style="--len:25"/>
+        <path d="M50 96  L30 85"  style="--len:24"/><path d="M50 88  L70 77"  style="--len:24"/>
+        <path d="M50 80  L31 70"  style="--len:22"/><path d="M50 72  L69 62"  style="--len:22"/>
+        <path d="M50 64  L33 55"  style="--len:20"/><path d="M50 56  L67 47"  style="--len:20"/>
+        <path d="M50 48  L36 40"  style="--len:17"/><path d="M50 40  L64 32"  style="--len:17"/>
+        <path d="M50 32  L39 26"  style="--len:13"/><path d="M50 25  L61 19"  style="--len:13"/>
+      </svg>
+      <div class="plate-body">
+        <h3>Coloración vegetal</h3>
+        <em class="binomial">Rosmarinus officinalis</em>
+        <p>Color Aveda con hasta un 96 % de ingredientes de origen natural. Cubre las canas igual que un tinte convencional, pero deja el pelo con cuerpo en vez de con la fibra abierta.</p>
+      </div>
+      <p class="price">desde <b>00</b> €</p>
+    </article>
+
+    <!-- ── Espliego · Mechas ─────────────────────────────────── -->
+    <article class="plate">
+      <svg class="specimen" viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
+        <path d="M50 146 C50 116 50 88 50 62" style="--len:86"/>
+        <path d="M50 118 C38 114 32 106 31 96" style="--len:36"/>
+        <path d="M50 106 C62 102 68 94 69 84"  style="--len:36"/>
+        <ellipse class="bloom" cx="50" cy="16" rx="4.6" ry="6.6" style="--len:36"/>
+        <ellipse class="bloom" cx="43" cy="28" rx="4.8" ry="6.8" style="--len:37"/>
+        <ellipse class="bloom" cx="57" cy="28" rx="4.8" ry="6.8" style="--len:37"/>
+        <ellipse class="bloom" cx="43" cy="41" rx="5"   ry="7"   style="--len:38"/>
+        <ellipse class="bloom" cx="57" cy="41" rx="5"   ry="7"   style="--len:38"/>
+        <ellipse class="bloom" cx="44" cy="54" rx="5"   ry="7"   style="--len:38"/>
+        <ellipse class="bloom" cx="56" cy="54" rx="5"   ry="7"   style="--len:38"/>
+      </svg>
+      <div class="plate-body">
+        <h3>Mechas de autor</h3>
+        <em class="binomial">Lavandula latifolia</em>
+        <p>Babylights y balayage. Técnicas de luz para un rubio que crece sin raíz marcada, así que vuelves cuando te apetece y no cuando te obliga el pelo.</p>
+      </div>
+      <p class="price">desde <b>00</b> €</p>
+    </article>
+
+    <!-- ── Esparto · Rastas ──────────────────────────────────── -->
+    <article class="plate">
+      <svg class="specimen" viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
+        <path d="M50 146 C44 110 36 78 22 34" style="--len:125"/>
+        <path d="M50 146 C48 108 44 74 36 40" style="--len:118"/>
+        <path d="M50 146 C54 110 62 80 74 40" style="--len:122"/>
+        <path d="M50 146 C53 112 58 86 66 58" style="--len:96"/>
+        <path d="M50 140 C58 128 42 116 50 104 C58 92 42 80 50 68 C57 57 45 46 50 34" style="--len:132"/>
+      </svg>
+      <div class="plate-body">
+        <h3>Rastas</h3>
+        <em class="binomial">Stipa tenacissima</em>
+        <p>Creación y mantenimiento artesanal, mecha a mecha. El esparto manchego se trenza igual: fibra retorcida que aguanta años si se hace bien desde el principio.</p>
+      </div>
+      <p class="price">a <b>consultar</b></p>
+    </article>
+
+    <!-- ── Vid · Extensiones ─────────────────────────────────── -->
+    <article class="plate">
+      <svg class="specimen" viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M50 146 C50 118 48 92 46 66 C45 48 47 32 50 18" style="--len:132"/>
+        <polygon points="28,74 32,60 21,55 33,52 30,39 40,47 46,36 49,49 60,47 53,57 63,64 50,64 50,78 41,68" style="--len:150"/>
+        <polygon points="62,110 65,99 56,95 66,93 64,83 72,89 77,80 79,90 88,89 82,97 90,102 79,102 79,113 71,105" style="--len:120"/>
+        <path d="M52 88 C66 84 72 92 67 98 C62 104 55 100 58 95 C60 91 65 92 65 96" style="--len:56"/>
+      </svg>
+      <div class="plate-body">
+        <h3>Extensiones naturales</h3>
+        <em class="binomial">Vitis vinifera</em>
+        <p>Cabello 100 % natural de calidad premium, colocado para que no se vea ni se note. Longitud y volumen que se peinan como los tuyos porque se comportan como los tuyos.</p>
+      </div>
+      <p class="price">desde <b>00</b> €</p>
+    </article>
+
+    <!-- ── Olivo · Tratamientos ──────────────────────────────── -->
+    <article class="plate">
+      <svg class="specimen" viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
+        <path d="M50 146 C50 112 50 68 50 18" style="--len:130"/>
+        <ellipse cx="34" cy="118" rx="14" ry="4.6" transform="rotate(-24 34 118)" style="--len:62"/>
+        <ellipse cx="66" cy="106" rx="14" ry="4.6" transform="rotate(24 66 106)"  style="--len:62"/>
+        <ellipse cx="34" cy="92"  rx="13" ry="4.4" transform="rotate(-24 34 92)"  style="--len:58"/>
+        <ellipse cx="66" cy="80"  rx="13" ry="4.4" transform="rotate(24 66 80)"   style="--len:58"/>
+        <ellipse cx="36" cy="66"  rx="11" ry="4"   transform="rotate(-24 36 66)"  style="--len:50"/>
+        <ellipse cx="64" cy="54"  rx="11" ry="4"   transform="rotate(24 64 54)"   style="--len:50"/>
+        <ellipse cx="40" cy="42"  rx="9"  ry="3.6" transform="rotate(-24 40 42)"  style="--len:42"/>
+        <ellipse class="bloom" cx="60" cy="98" rx="5.4" ry="6.6" style="--len:38"/>
+        <ellipse class="bloom" cx="41" cy="76" rx="5.4" ry="6.6" style="--len:38"/>
+      </svg>
+      <div class="plate-body">
+        <h3>Rituales capilares</h3>
+        <em class="binomial">Olea europaea</em>
+        <p>Tratamientos botánicos que hidratan y reparan en profundidad. Se hacen con masaje de cuero cabelludo, así que duran lo que tienen que durar y no diez minutos.</p>
+      </div>
+      <p class="price">desde <b>00</b> €</p>
+    </article>
+
+    <p class="note">Los importes son marcadores de maqueta. Faltan las tarifas reales de Virginia.</p>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="salon" id="salon">
+    <div>
+      <p class="eyebrow">El salón</p>
+      <h2>Pozo Dulce, 1</h2>
+      <table class="hours">
+        <tbody>
+          <tr><th>Lunes</th><td>10:30–13:30 · 17:00–19:30</td></tr>
+          <tr><th>Martes</th><td>10:30–13:30 · 17:00–19:30</td></tr>
+          <tr><th>Miércoles</th><td>10:30–13:30</td></tr>
+          <tr><th>Jueves</th><td>10:30–13:30 · 17:00–19:30</td></tr>
+          <tr><th>Viernes</th><td>10:30–19:30</td></tr>
+          <tr><th>Sábado</th><td>10:00–14:00</td></tr>
+          <tr><th>Domingo</th><td class="closed">Cerrado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mapcard">
+      <svg class="mapgrid" viewBox="0 0 300 225" preserveAspectRatio="none" aria-hidden="true">
+        <line x1="0" y1="58" x2="300" y2="50"/><line x1="0" y1="150" x2="300" y2="164"/>
+        <line x1="78" y1="0" x2="66" y2="225"/><line x1="212" y1="0" x2="226" y2="225"/>
+        <line class="road" x1="0" y1="108" x2="300" y2="100"/>
+        <line class="road" x1="150" y1="0" x2="142" y2="225"/>
+      </svg>
+      <div class="mappin">
+        <div class="dot"></div>
+        <address>Calle Pozo Dulce, 1<br>13001 Ciudad Real</address>
+        <small>Toca para abrir el mapa</small>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <figure class="quote">
+    <blockquote>Aquí no eres una clienta más. Solo estamos tú, tu cabello y yo.</blockquote>
+    <figcaption>Virginia · Pureza</figcaption>
+  </figure>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h4>Pureza</h4>
+        <p>Calle Pozo Dulce, 1<br>13001 Ciudad Real</p>
+        <p>633 101 155</p>
+      </div>
+      <div>
+        <h4>Carta</h4>
+        <a href="#">Coloración vegetal</a>
+        <a href="#">Mechas de autor</a>
+        <a href="#">Rastas</a>
+        <a href="#">Extensiones naturales</a>
+        <a href="#">Rituales capilares</a>
+      </div>
+      <div>
+        <h4>Salón</h4>
+        <a href="#">Sobre Virginia</a>
+        <a href="#">El salón</a>
+        <a href="#">Precios</a>
+        <a href="#">Reservar cita</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ══ Anexo: el sistema, para la implementación ══════════════ -->
+<section class="system">
+  <div class="wrap">
+    <p class="eyebrow">Anexo</p>
+    <h2>El sistema</h2>
+    <p>
+      Los tokens que la implementación en Angular debe reproducir. El fondo casi
+      blanco manda; el verde profundo baja a acento dosificado. Contraste
+      verificado sobre el fondo claro para cumplir WCAG 2.2 AA.
+    </p>
+
+    <div class="sw-grid">
+      <div class="sw"><div class="chip" style="background:#FCFBF7"></div><b class="nm">Hueso claro</b><span class="hx">#FCFBF7</span><span class="role">Fondo. Manda en toda la página.</span></div>
+      <div class="sw"><div class="chip" style="background:#3D5C44"></div><b class="nm">Vid</b><span class="hx">#3D5C44</span><span class="role">Acento. Marca, botón, cursivas. 7,5:1.</span></div>
+      <div class="sw"><div class="chip" style="background:#A9B79F"></div><b class="nm">Romero</b><span class="hx">#A9B79F</span><span class="role">Trazo de las láminas. Decorativo.</span></div>
+      <div class="sw"><div class="chip" style="background:#8A6B45"></div><b class="nm">Esparto</b><span class="hx">#8A6B45</span><span class="role">Madera. Binomios latinos. 4,8:1.</span></div>
+      <div class="sw"><div class="chip" style="background:#7A719B"></div><b class="nm">Espliego</b><span class="hx">#7A719B</span><span class="role">Flores y anillo de foco. Bajo el 2 %.</span></div>
+      <div class="sw"><div class="chip" style="background:#2A322A"></div><b class="nm">Tinta</b><span class="hx">#2A322A</span><span class="role">Titulares y texto. 12,7:1.</span></div>
+    </div>
+
+    <div class="scale">
+      <div class="scale-row"><span>Display</span><span class="disp" style="font-size:2.5rem;line-height:1.06">EB Garamond 400</span></div>
+      <div class="scale-row"><span>Display cursiva</span><span class="disp" style="font-size:2rem;font-style:italic;color:var(--vid)">Rosmarinus officinalis</span></div>
+      <div class="scale-row"><span>Texto</span><span style="font-size:1.05rem;color:var(--ink-soft)">Alegreya Sans 400 — humanista, cálida, legible a cuerpo pequeño en móvil.</span></div>
+      <div class="scale-row"><span>Etiqueta</span><span class="eyebrow" style="font-size:11px">Versalitas · 0,24 em de tracking</span></div>
+    </div>
+
+    <p class="note" style="margin-top:38px">
+      Tipografías autoalojadas, subset latino, 181 KB en total. Ya descargadas en
+      <code>public/fonts/</code>. Sin CDN externo.
+    </p>
+  </div>
+</section>
+
+<script>
+  (function () {
+    if (!('IntersectionObserver' in window)) {
+      document.querySelectorAll('.rise, .plate').forEach(function (n) { n.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      });
+    }, { rootMargin: '0px 0px -12% 0px', threshold: 0.15 });
+
+    document.querySelectorAll('.rise, .plate').forEach(function (n) { io.observe(n); });
+  })();
+</script>

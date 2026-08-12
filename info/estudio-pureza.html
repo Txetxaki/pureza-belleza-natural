@@ -1,0 +1,1249 @@
+<title>Raíz Botánica</title>
+<style>
+  /* ─── Tokens: light (bare :root = complete palette) ─────────────── */
+  :root {
+    --ground:      #EEF0E8;
+    --surface:     #F8F9F3;
+    --surface-alt: #E4E8DA;
+    --ink:         #1A2119;
+    --ink-soft:    #4C5A4B;
+    --ink-faint:   #7B8878;
+    --laurel:      #2E4A33;
+    --moss:        #5F7F45;
+    --wood:        #8A6742;
+    --rule:        #D2D8C6;
+    --rule-strong: #B4BCA5;
+    --oxide:       #9A3E1F;
+    --amber:       #856512;
+    --shadow:      0 1px 2px rgba(26,33,25,.05), 0 8px 24px -12px rgba(26,33,25,.18);
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+    --sans:  "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --mono:  "Cascadia Mono", "JetBrains Mono", "SF Mono", Consolas, ui-monospace, monospace;
+
+    --measure: 68ch;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #131711;
+      --surface:     #1B211A;
+      --surface-alt: #232A21;
+      --ink:         #E4E8DC;
+      --ink-soft:    #A5B0A0;
+      --ink-faint:   #77836F;
+      --laurel:      #93B87F;
+      --moss:        #A8C68B;
+      --wood:        #C29A70;
+      --rule:        #2E362C;
+      --rule-strong: #414B3E;
+      --oxide:       #E08055;
+      --amber:       #D9B155;
+      --shadow:      0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #131711;
+    --surface:     #1B211A;
+    --surface-alt: #232A21;
+    --ink:         #E4E8DC;
+    --ink-soft:    #A5B0A0;
+    --ink-faint:   #77836F;
+    --laurel:      #93B87F;
+    --moss:        #A8C68B;
+    --wood:        #C29A70;
+    --rule:        #2E362C;
+    --rule-strong: #414B3E;
+    --oxide:       #E08055;
+    --amber:       #D9B155;
+    --shadow:      0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+
+  /* ─── Base ──────────────────────────────────────────────────────── */
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16.5px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
+  }
+
+  h1, h2, h3, h4 { font-family: var(--serif); text-wrap: balance; font-weight: 600; }
+
+  a { color: var(--laurel); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--moss);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  code, .mono { font-family: var(--mono); font-size: .88em; }
+
+  /* ─── Shell ─────────────────────────────────────────────────────── */
+  .shell {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 0 clamp(20px, 5vw, 56px) 120px;
+  }
+
+  @media (min-width: 1080px) {
+    .shell { grid-template-columns: 218px minmax(0, 1fr); gap: 64px; }
+  }
+
+  /* ─── Table of contents ─────────────────────────────────────────── */
+  .toc { display: none; }
+
+  @media (min-width: 1080px) {
+    .toc {
+      display: block;
+      position: sticky;
+      top: 0;
+      align-self: start;
+      max-height: 100vh;
+      overflow-y: auto;
+      padding: 56px 0 40px;
+      font-size: 13px;
+    }
+  }
+
+  .toc-label {
+    font-family: var(--sans);
+    font-size: 10.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 14px;
+    font-weight: 600;
+  }
+
+  .toc ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+
+  .toc a {
+    display: block;
+    padding: 5px 0 5px 13px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-left: 2px solid var(--rule);
+    line-height: 1.35;
+    transition: color .18s, border-color .18s;
+  }
+
+  .toc a:hover { color: var(--ink); border-left-color: var(--rule-strong); }
+  .toc a[aria-current="true"] { color: var(--laurel); border-left-color: var(--laurel); font-weight: 600; }
+
+  /* ─── Masthead ──────────────────────────────────────────────────── */
+  .masthead { padding: clamp(56px, 9vw, 104px) 0 0; max-width: var(--measure); }
+
+  .sprig {
+    display: block;
+    width: 42px;
+    height: auto;
+    margin-bottom: 26px;
+    color: var(--laurel);
+  }
+
+  .masthead .eyebrow {
+    font-size: 11px;
+    letter-spacing: .17em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 20px;
+    font-weight: 600;
+  }
+
+  .masthead h1 {
+    font-size: clamp(2.3rem, 5.6vw, 3.5rem);
+    line-height: 1.06;
+    letter-spacing: -.017em;
+    margin: 0 0 24px;
+  }
+
+  .masthead h1 em { font-style: italic; color: var(--laurel); }
+
+  .standfirst {
+    font-family: var(--serif);
+    font-size: clamp(1.06rem, 2.1vw, 1.24rem);
+    line-height: 1.56;
+    color: var(--ink-soft);
+    margin: 0 0 34px;
+  }
+
+  .meta-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 26px;
+    padding: 18px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    font-size: 12.5px;
+    color: var(--ink-faint);
+  }
+
+  .meta-strip b { color: var(--ink-soft); font-weight: 600; }
+
+  /* ─── Sections ──────────────────────────────────────────────────── */
+  section { max-width: var(--measure); padding-top: clamp(60px, 8vw, 92px); scroll-margin-top: 24px; }
+  section.wide { max-width: none; }
+
+  .sec-head { margin-bottom: 30px; }
+
+  .sec-head .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    font-size: 10.5px;
+    letter-spacing: .17em;
+    text-transform: uppercase;
+    color: var(--laurel);
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+
+  .sec-head .eyebrow::after {
+    content: "";
+    flex: 1;
+    height: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    height: 3px;
+  }
+
+  .sec-head h2 {
+    font-size: clamp(1.6rem, 3.3vw, 2.05rem);
+    line-height: 1.16;
+    letter-spacing: -.012em;
+    margin: 0;
+  }
+
+  .sec-head p {
+    color: var(--ink-soft);
+    margin: 12px 0 0;
+    font-size: 15.5px;
+  }
+
+  h3 {
+    font-size: 1.2rem;
+    line-height: 1.3;
+    margin: 42px 0 12px;
+    letter-spacing: -.005em;
+  }
+
+  h4 {
+    font-family: var(--sans);
+    font-size: 11px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    margin: 30px 0 10px;
+  }
+
+  p { margin: 0 0 15px; }
+  section > p, section > ul, section > ol { max-width: var(--measure); }
+
+  ul, ol { padding-left: 20px; margin: 0 0 15px; }
+  li { margin-bottom: 7px; }
+  li::marker { color: var(--ink-faint); }
+
+  strong { font-weight: 650; color: var(--ink); }
+
+  .lede { font-size: 17px; color: var(--ink-soft); }
+
+  /* ─── Verdict callouts ──────────────────────────────────────────── */
+  .verdict {
+    display: grid;
+    gap: 6px;
+    padding: 20px 22px;
+    margin: 26px 0;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--tone, var(--laurel));
+    border-radius: 3px;
+  }
+
+  .verdict .tag {
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    font-weight: 700;
+    color: var(--tone, var(--laurel));
+  }
+
+  .verdict p { margin: 0; font-size: 15px; color: var(--ink-soft); }
+  .verdict p + p { margin-top: 10px; }
+  .verdict strong { color: var(--ink); }
+
+  .verdict.critical { --tone: var(--oxide); }
+  .verdict.warn     { --tone: var(--amber); }
+  .verdict.win      { --tone: var(--moss); }
+
+  /* ─── Metrics ───────────────────────────────────────────────────── */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 28px 0;
+  }
+
+  .metric { background: var(--surface); padding: 18px 18px 16px; }
+
+  .metric .n {
+    font-family: var(--serif);
+    font-size: 2rem;
+    line-height: 1;
+    letter-spacing: -.02em;
+    font-variant-numeric: tabular-nums;
+    display: block;
+    margin-bottom: 7px;
+  }
+
+  .metric .k {
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    line-height: 1.4;
+    display: block;
+  }
+
+  .metric.bad  .n { color: var(--oxide); }
+  .metric.good .n { color: var(--moss); }
+
+  /* ─── Tables ────────────────────────────────────────────────────── */
+  .scroller {
+    overflow-x: auto;
+    margin: 24px 0;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    background: var(--surface);
+  }
+
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 560px; }
+
+  th {
+    text-align: left;
+    font-family: var(--sans);
+    font-size: 10.5px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    font-weight: 700;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--rule-strong);
+    white-space: nowrap;
+    background: var(--surface-alt);
+  }
+
+  td { padding: 11px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.45; }
+  tr:last-child td { border-bottom: none; }
+  td.num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+  td.url { font-family: var(--mono); font-size: 12px; color: var(--laurel); white-space: nowrap; }
+  td.kw  { font-weight: 600; }
+
+  tr.us td { background: color-mix(in srgb, var(--moss) 11%, transparent); }
+  tr.us td:first-child { box-shadow: inset 3px 0 0 var(--moss); }
+
+  .pill {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  .pill.open  { color: var(--moss);  background: color-mix(in srgb, var(--moss) 15%, transparent); }
+  .pill.tough { color: var(--oxide); background: color-mix(in srgb, var(--oxide) 14%, transparent); }
+  .pill.mid   { color: var(--amber); background: color-mix(in srgb, var(--amber) 16%, transparent); }
+
+  /* ─── Code ──────────────────────────────────────────────────────── */
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.62;
+    margin: 20px 0;
+    color: var(--ink-soft);
+  }
+
+  pre b { color: var(--laurel); font-weight: 600; }
+  pre i { color: var(--ink-faint); font-style: normal; }
+
+  p code, li code, td code {
+    background: var(--surface-alt);
+    padding: 1px 5px;
+    border-radius: 2px;
+    color: var(--laurel);
+  }
+
+  /* ─── Roadmap ───────────────────────────────────────────────────── */
+  .phases { display: flex; flex-direction: column; gap: 0; margin: 30px 0 0; }
+
+  .phase {
+    display: grid;
+    grid-template-columns: 46px minmax(0, 1fr);
+    gap: 20px;
+    padding: 26px 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .phase:last-child { border-bottom: 1px solid var(--rule); }
+
+  .phase .idx {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--laurel);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .phase h3 { margin: 0 0 4px; font-size: 1.1rem; }
+  .phase .when { font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin: 0 0 12px; }
+  .phase ul { margin: 0; font-size: 14.5px; color: var(--ink-soft); }
+
+  /* ─── Palette swatches ──────────────────────────────────────────── */
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .sw { display: flex; flex-direction: column; gap: 8px; }
+  .sw .chip { height: 62px; border-radius: 3px; border: 1px solid var(--rule-strong); }
+  .sw .nm { font-size: 12px; font-weight: 600; line-height: 1.25; }
+  .sw .hx { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+
+  /* ─── Two-column notes ──────────────────────────────────────────── */
+  .split { display: grid; gap: 22px; margin: 24px 0; }
+  @media (min-width: 720px) { .split { grid-template-columns: 1fr 1fr; } }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 20px;
+  }
+
+  .card h4 { margin-top: 0; }
+  .card p:last-child, .card ul:last-child { margin-bottom: 0; }
+  .card ul { font-size: 14.5px; color: var(--ink-soft); }
+
+  footer {
+    max-width: var(--measure);
+    margin-top: 88px;
+    padding-top: 24px;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--ink-faint);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+  }
+
+  html { scroll-behavior: smooth; }
+</style>
+
+<div class="shell">
+
+  <nav class="toc" aria-label="Secciones del estudio">
+    <p class="toc-label">Estudio</p>
+    <ol>
+      <li><a href="#diagnostico">1 · Diagnóstico</a></li>
+      <li><a href="#nombre">2 · El nombre en Google</a></li>
+      <li><a href="#nap">3 · NAP y citaciones</a></li>
+      <li><a href="#keywords">4 · Mapa de keywords</a></li>
+      <li><a href="#arquitectura">5 · Arquitectura y canibalización</a></li>
+      <li><a href="#tecnico">6 · Angular y SEO técnico</a></li>
+      <li><a href="#gbp">7 · Plan Google Business</a></li>
+      <li><a href="#diseno">8 · Dirección de diseño</a></li>
+      <li><a href="#reservas">9 · Sistema de reservas</a></li>
+      <li><a href="#roadmap">10 · Roadmap</a></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <header class="masthead">
+      <svg class="sprig" viewBox="0 0 40 64" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+        <path d="M20 63V13" stroke-linecap="round"/>
+        <path d="M20 46c-9 0-14-5-14-13 8 0 14 5 14 13Z" fill="currentColor" fill-opacity=".14"/>
+        <path d="M20 46c9 0 14-5 14-13-8 0-14 5-14 13Z" fill="currentColor" fill-opacity=".14"/>
+        <path d="M20 30c-8 0-12-5-12-12 7 0 12 5 12 12Z" fill="currentColor" fill-opacity=".14"/>
+        <path d="M20 30c8 0 12-5 12-12-7 0-12 5-12 12Z" fill="currentColor" fill-opacity=".14"/>
+        <path d="M20 15c-5 0-8-4-8-9 5 0 8 4 8 9Z" fill="currentColor" fill-opacity=".14"/>
+        <path d="M20 15c5 0 8-4 8-9-5 0-8 4-8 9Z" fill="currentColor" fill-opacity=".14"/>
+      </svg>
+
+      <p class="eyebrow">Pureza · Belleza Natural · Ciudad Real</p>
+      <h1>Nadie busca <em>peluquería</em>.<br>Buscan lo que tú ya eres.</h1>
+      <p class="standfirst">
+        Estudio de posicionamiento, arquitectura y diseño para la web de Virginia.
+        La conclusión de fondo: Pureza no puede ganar la batalla genérica de «peluquería
+        en Ciudad Real» — y tampoco le hace falta. Tiene cinco nichos donde
+        prácticamente no hay competencia local, y un problema de reputación digital
+        que se arregla antes de escribir una sola línea de código.
+      </p>
+      <div class="meta-strip">
+        <span><b>Fecha</b> 12 agosto 2026</span>
+        <span><b>Ámbito</b> Web pública + reservas (fase 2)</span>
+        <span><b>Stack</b> Angular 22 · SSR híbrido</span>
+      </div>
+    </header>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <section id="diagnostico">
+      <div class="sec-head">
+        <p class="eyebrow">Diagnóstico</p>
+        <h2>Reputación excelente, visibilidad casi nula</h2>
+        <p>El problema de Pureza hoy no es el producto. Es que Google no tiene pruebas suficientes de que existe.</p>
+      </div>
+
+      <p class="lede">
+        Pureza tiene un <strong>5,0 sobre 5</strong> en Google. Es la nota más alta de
+        Ciudad Real. Y aun así <strong>no aparece en el ranking de los 143 salones</strong>
+        de la ciudad que analiza PeluqueriaMaster a partir de reseñas reales de Google Maps.
+      </p>
+
+      <p>
+        La razón es puramente aritmética. El Map Pack (esas tres fichas que salen en el
+        mapa cuando alguien busca «peluquería Ciudad Real») pondera nota <em>y</em> volumen.
+        Con ~13 reseñas, la nota perfecta no pesa: Google no tiene señal estadística
+        suficiente para arriesgar una de sus tres posiciones.
+      </p>
+
+      <div class="metrics">
+        <div class="metric good"><span class="n">5,0</span><span class="k">Nota en Google</span></div>
+        <div class="metric bad"><span class="n">~13</span><span class="k">Reseñas en Google</span></div>
+        <div class="metric"><span class="n">58</span><span class="k">Reseñas en Treatwell</span></div>
+        <div class="metric bad"><span class="n">477</span><span class="k">Reseñas del líder local</span></div>
+      </div>
+
+      <div class="verdict critical">
+        <span class="tag">Hallazgo principal</span>
+        <p>
+          Virginia ya tiene <strong>58 reseñas de 5 estrellas en Treatwell</strong> y solo 13 en Google.
+          Su reputación real es cuatro veces mayor de lo que Google puede ver. Está regalando
+          su mejor activo a una plataforma que le cobra comisión y que, además, le compite
+          por su propia marca en los resultados de búsqueda.
+        </p>
+        <p>
+          <strong>Consecuencia práctica:</strong> la acción con más retorno de todo este proyecto
+          no es la web. Es trasladar el flujo de reseñas a Google. Y eso se puede empezar
+          esta semana, sin desarrollo.
+        </p>
+      </div>
+
+      <h3>Quién ocupa hoy el terreno</h3>
+
+      <div class="scroller">
+        <table>
+          <thead>
+            <tr><th>Salón</th><th class="num">Nota</th><th class="num">Reseñas</th><th>Perfil</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Peluquería Hécate</td><td class="num">4,9</td><td class="num">477</td><td>Líder absoluto. Mechas y balayage.</td></tr>
+            <tr><td>Bonhomía</td><td class="num">4,9</td><td class="num">229</td><td>Peluquería + barbería + estética.</td></tr>
+            <tr><td>Kerala's</td><td class="num">4,9</td><td class="num">219</td><td>Centro de belleza y bienestar.</td></tr>
+            <tr><td>El Gabinete de Laura</td><td class="num">4,8</td><td class="num">209</td><td>C/ Alarcos, zona centro.</td></tr>
+            <tr><td>Viceversa Peluqueros</td><td class="num">—</td><td class="num">—</td><td><strong>El rival de SEO real.</strong> Tiene landing propia para «mechas Ciudad Real».</td></tr>
+            <tr class="us"><td>Pureza · Belleza Natural</td><td class="num">5,0</td><td class="num">~13</td><td>Sin web. Sin presencia orgánica.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Viceversa es el único competidor que hace SEO de verdad: tiene una página
+        dedicada en <code>/peluqueria-mechas-ciudad-real</code>, con H1 local, 600–700 palabras
+        y CTAs de llamada. Es exactamente el modelo que vamos a aplicar aquí — pero
+        multiplicado por cinco servicios y mejor ejecutado.
+      </p>
+
+      <div class="verdict">
+        <span class="tag">Sobre Aura Lab</span>
+        <p>
+          Aura Lab, la referencia que menciona Virginia, <strong>no es competencia</strong>:
+          es estética y bienestar (láser, manicura, LPG), no peluquería. Como referencia de
+          producto es buena — usan la plataforma Reservy con app propia. Como referencia
+          competitiva, no aplica. Bien elegida por lo que hace, no por con quién compite.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <section id="nombre">
+      <div class="sec-head">
+        <p class="eyebrow">Riesgo abierto</p>
+        <h2>El nombre en Google Maps es una infracción</h2>
+        <p>Está funcionando a favor hoy. Puede desaparecer de un día para otro.</p>
+      </div>
+
+      <p>El nombre actual de la ficha es:</p>
+
+      <pre>Pureza "belleza natural". Peluquería sin químicos en el centro de Ciudad Real</pre>
+
+      <p>
+        Las directrices de representación de empresas de Google son explícitas: el nombre
+        debe ser <strong>el nombre real del negocio</strong>, el que aparece en el rótulo,
+        la fachada y la documentación. No se permiten eslóganes, descripciones de servicio
+        ni ubicaciones añadidas.
+      </p>
+
+      <div class="verdict warn">
+        <span class="tag">Por qué importa ahora</span>
+        <p>
+          Cualquier competidor puede reportar la ficha con dos clics. Google la edita
+          automáticamente — y en casos reincidentes, <strong>suspende el perfil</strong>.
+          Perder la ficha significa perder el Map Pack, las reseñas acumuladas y el
+          teléfono de contacto principal, todo a la vez.
+        </p>
+        <p>
+          El riesgo crece justo cuando la ficha empieza a posicionar, porque es entonces
+          cuando la competencia la mira.
+        </p>
+      </div>
+
+      <p>
+        <strong>La solución no pierde nada.</strong> Todo lo que hoy está mal metido en el nombre
+        tiene su sitio legítimo dentro de la ficha, donde Google sí lo indexa:
+      </p>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Elemento</th><th>Dónde va</th></tr></thead>
+          <tbody>
+            <tr><td class="kw">Pureza · Belleza Natural</td><td>Nombre del negocio</td></tr>
+            <tr><td class="kw">Peluquería sin químicos</td><td>Descripción (750 car.) + nombre de los servicios</td></tr>
+            <tr><td class="kw">En el centro de Ciudad Real</td><td>Dirección + descripción + web</td></tr>
+            <tr><td class="kw">Coloración Aveda, rastas, extensiones…</td><td>Módulo «Servicios» de la ficha</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Y sobre todo: <strong>ese es el trabajo de la web</strong>. La página
+        <code>/peluqueria-sin-quimicos</code> puede posicionar por esa frase sin ningún riesgo,
+        con todo el contenido que haga falta. La ficha no tiene por qué cargar con eso.
+      </p>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <section id="nap">
+      <div class="sec-head">
+        <p class="eyebrow">Higiene local</p>
+        <h2>La dirección no coincide en ningún sitio</h2>
+        <p>Google cruza los datos entre directorios. Cuando no cuadran, baja la confianza en la ficha.</p>
+      </div>
+
+      <p>
+        NAP significa <em>Name, Address, Phone</em>. Es la señal de coherencia más básica del
+        SEO local: Google comprueba si el mismo negocio aparece con los mismos datos
+        en Treatwell, Fresha, Páginas Amarillas, agregadores… Cada discrepancia resta.
+        Esto es lo que hay ahora mismo:
+      </p>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Fuente</th><th>Dirección publicada</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>Brief de Virginia</td><td>C/ Pozo Dulce, 1 — 13001</td><td><span class="pill open">Correcto</span></td></tr>
+            <tr><td>Fresha</td><td>C/ Pozo Dulce, 1 — 13001</td><td><span class="pill open">Correcto</span></td></tr>
+            <tr><td>Volumus</td><td>C/ Pozo Dulce, 1 — 13001</td><td><span class="pill open">Correcto</span></td></tr>
+            <tr><td>Treatwell</td><td>C/ Pozo Dulce, 1 — <strong>13002</strong></td><td><span class="pill mid">CP erróneo</span></td></tr>
+            <tr><td>PeluqueriaMaster</td><td><strong>C/ Obispo Estenaga, 5</strong></td><td><span class="pill tough">Obsoleto</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>
+        Los horarios están igual de desalineados. El brief dice miércoles solo de mañana;
+        Treatwell publica miércoles 10:00–14:00 pero lunes y martes hasta las 20:00, cuando
+        en realidad hay pausa de 13:30 a 17:00. Un cliente que llega a las 15:00 un martes
+        porque lo leyó en Treatwell se encuentra la puerta cerrada — y esa frustración
+        acaba en reseña.
+      </p>
+
+      <div class="verdict win">
+        <span class="tag">Tarea de fase 0</span>
+        <p>
+          Fijar el NAP canónico exacto, propagarlo a Google, Treatwell, Fresha, Páginas
+          Amarillas, Apple Maps y Bing Places, y usar <strong>esa misma cadena literal</strong>
+          en el schema <code>HairSalon</code> del sitio y en el pie de página. Una sola fuente
+          de verdad, escrita igual en todas partes, hasta la abreviatura de la calle.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <section id="keywords">
+      <div class="sec-head">
+        <p class="eyebrow">Estrategia</p>
+        <h2>Cinco nichos vacíos y una batalla que no hay que dar</h2>
+        <p>Competir por «peluquería Ciudad Real» contra un salón con 477 reseñas es tirar el presupuesto.</p>
+      </div>
+
+      <p class="lede">
+        La ventaja de Pureza es que su especialización es real y es rara. No es
+        «también hacemos color natural»: es un salón entero construido sobre eso. Ese
+        posicionamiento se traduce directamente en búsquedas donde no hay nadie.
+      </p>
+
+      <h4>Terreno abierto — atacar primero</h4>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Búsqueda</th><th>Competencia local</th><th>Por qué gana Pureza</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="kw">rastas Ciudad Real</td>
+              <td><span class="pill open">Ninguna</span></td>
+              <td>No se localizó un solo salón en Ciudad Real que lo ofrezca. Nicho entero libre.</td>
+            </tr>
+            <tr>
+              <td class="kw">peluquería sin químicos Ciudad Real</td>
+              <td><span class="pill open">Ninguna</span></td>
+              <td>Es literalmente su propuesta de valor. Cero disputa.</td>
+            </tr>
+            <tr>
+              <td class="kw">coloración sin amoniaco Ciudad Real</td>
+              <td><span class="pill open">Marginal</span></td>
+              <td>Viceversa lo menciona de pasada; nadie tiene página propia.</td>
+            </tr>
+            <tr>
+              <td class="kw">peluquería Aveda Ciudad Real</td>
+              <td><span class="pill open">Ninguna</span></td>
+              <td>Aveda no tiene salón en Castilla-La Mancha. Marca con búsqueda propia.</td>
+            </tr>
+            <tr>
+              <td class="kw">extensiones pelo natural Ciudad Real</td>
+              <td><span class="pill mid">Baja</span></td>
+              <td>Se ofrece, pero sin contenido específico en ningún sitio.</td>
+            </tr>
+            <tr>
+              <td class="kw">peluquería vegana Ciudad Real</td>
+              <td><span class="pill open">Ninguna</span></td>
+              <td>Aveda es 100 % vegana. Búsqueda en crecimiento, coste cero.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h4>Terreno disputado — entrar por el lado, no de frente</h4>
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Búsqueda</th><th>Competencia</th><th>Cómo se entra</th></tr></thead>
+          <tbody>
+            <tr>
+              <td class="kw">mechas Ciudad Real</td>
+              <td><span class="pill tough">Alta</span></td>
+              <td>Viceversa tiene landing; Hécate tiene autoridad. <strong>No atacar de frente.</strong></td>
+            </tr>
+            <tr>
+              <td class="kw">babylights Ciudad Real</td>
+              <td><span class="pill open">Ninguna</span></td>
+              <td>Cola larga sin dueño. Es la puerta de entrada al cluster de mechas.</td>
+            </tr>
+            <tr>
+              <td class="kw">balayage sin decolorar Ciudad Real</td>
+              <td><span class="pill open">Ninguna</span></td>
+              <td>Intersección perfecta con el posicionamiento «sin químicos».</td>
+            </tr>
+            <tr>
+              <td class="kw">peluquería Ciudad Real</td>
+              <td><span class="pill tough">Máxima</span></td>
+              <td>Solo vía Map Pack, y solo cuando haya 60+ reseñas. Nunca vía contenido.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="verdict">
+        <span class="tag">La regla</span>
+        <p>
+          Cada página de servicio ataca <strong>una</strong> keyword primaria específica y de
+          cola larga, no la genérica del sector. La genérica llegará como consecuencia de
+          la autoridad acumulada, no como objetivo directo. Es más rápido ser el número 1
+          de seis búsquedas pequeñas que el número 9 de una grande.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <section id="arquitectura">
+      <div class="sec-head">
+        <p class="eyebrow">Arquitectura</p>
+        <h2>Una intención, una URL</h2>
+        <p>La canibalización no se arregla después. Se previene con el mapa de URLs.</p>
+      </div>
+
+      <p>
+        Canibalizar es tener dos páginas peleando por la misma búsqueda: Google no sabe
+        cuál mostrar, reparte las señales entre ambas y acaba posicionando peor las dos.
+        En un sitio de doce páginas es fácil de evitar — si el mapa se decide antes de
+        maquetar nada.
+      </p>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th>URL</th><th>Keyword primaria</th><th>Intención</th></tr></thead>
+          <tbody>
+            <tr><td class="url">/</td><td class="kw">peluquería sin químicos Ciudad Real</td><td>Marca + categoría</td></tr>
+            <tr><td class="url">/coloracion-vegetal-aveda</td><td class="kw">coloración sin amoniaco Ciudad Real</td><td>Transaccional</td></tr>
+            <tr><td class="url">/mechas-babylights-balayage</td><td class="kw">babylights Ciudad Real</td><td>Transaccional</td></tr>
+            <tr><td class="url">/rastas</td><td class="kw">rastas Ciudad Real</td><td>Transaccional</td></tr>
+            <tr><td class="url">/extensiones-cabello-natural</td><td class="kw">extensiones pelo natural Ciudad Real</td><td>Transaccional</td></tr>
+            <tr><td class="url">/tratamientos-capilares</td><td class="kw">tratamiento capilar Ciudad Real</td><td>Transaccional</td></tr>
+            <tr><td class="url">/virginia</td><td class="kw">Virginia peluquera Ciudad Real</td><td>Marca · E-E-A-T</td></tr>
+            <tr><td class="url">/el-salon</td><td>— sin keyword objetivo</td><td>Confianza · fotos</td></tr>
+            <tr><td class="url">/precios</td><td class="kw">precios peluquería Ciudad Real</td><td>Comercial</td></tr>
+            <tr><td class="url">/reservar</td><td class="kw">pedir cita peluquería Ciudad Real</td><td>Conversión</td></tr>
+            <tr><td class="url">/contacto</td><td>— sin keyword objetivo</td><td>Navegacional</td></tr>
+            <tr><td class="url">/diario/*</td><td>informacional, sin «Ciudad Real»</td><td>Captación fría</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Las cuatro reglas que impiden la canibalización</h3>
+
+      <div class="split">
+        <div class="card">
+          <h4>1 · No hay página /servicios</h4>
+          <p>
+            Una página índice de servicios compite inevitablemente con la home por
+            «peluquería Ciudad Real», y diluye el enlazado interno hacia las páginas que
+            venden. En su lugar: menú desplegable en la cabecera que enlaza directo a las
+            cinco páginas, y bloque de servicios en la home. Menos páginas, más fuerza en
+            cada una.
+          </p>
+        </div>
+        <div class="card">
+          <h4>2 · El blog nunca dice «Ciudad Real»</h4>
+          <p>
+            Ni en el H1 ni en el title. El diario responde dudas
+            («¿cuánto dura una coloración sin amoniaco?», «cómo se mantienen unas rastas»)
+            y enlaza a la página de servicio con el texto ancla exacto de su keyword.
+            Captura búsquedas informativas nacionales y transfiere autoridad a lo local.
+          </p>
+        </div>
+        <div class="card">
+          <h4>3 · Un H1 por página, único en el sitio</h4>
+          <p>
+            Ningún H1 se repite ni se solapa parcialmente con otro. El title tampoco.
+            Si dos páginas empiezan a parecerse, se fusionan y una redirige 301 a la otra
+            — antes que dejarlas competir.
+          </p>
+        </div>
+        <div class="card">
+          <h4>4 · El mapa vive en el repositorio</h4>
+          <p>
+            El par <em>URL → keyword primaria</em> se declara en el
+            <code>data</code> de cada ruta de Angular y se valida en el build.
+            Añadir una página con una keyword ya asignada rompe la compilación. La regla
+            deja de depender de que alguien se acuerde.
+          </p>
+        </div>
+      </div>
+
+      <h3>Anatomía de una página de servicio</h3>
+      <p>Las cinco comparten estructura, porque es la que responde a la intención de búsqueda:</p>
+      <ol>
+        <li><strong>H1 con la keyword primaria</strong> y una línea de propuesta de valor.</li>
+        <li><strong>Foto real del resultado</strong> — trabajo de Virginia, nunca banco de imágenes.</li>
+        <li><strong>Qué es y para quién</strong>, 150–200 palabras en lenguaje de clienta, no de peluquera.</li>
+        <li><strong>Cómo lo hace Virginia</strong>: el proceso paso a paso. Aquí vive el E-E-A-T.</li>
+        <li><strong>Precio orientativo y duración</strong>. Ocultarlo aumenta el rebote.</li>
+        <li><strong>Antes / después</strong>, mínimo tres casos.</li>
+        <li><strong>FAQ</strong> con 4–6 preguntas reales → marcado <code>FAQPage</code>.</li>
+        <li><strong>CTA doble</strong>: reservar online + WhatsApp directo.</li>
+        <li><strong>Enlaces internos</strong> a los dos servicios que mejor combinan con este.</li>
+      </ol>
+      <p>Objetivo: 700–900 palabras útiles. Suficiente para superar a Viceversa sin caer en relleno.</p>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <section id="tecnico">
+      <div class="sec-head">
+        <p class="eyebrow">Ingeniería</p>
+        <h2>Angular 22 con render por ruta</h2>
+        <p>Todo lo que no cambia se prerenderiza. El servidor solo trabaja donde hay estado real.</p>
+      </div>
+
+      <p>
+        Angular 22 (estable desde junio de 2026) permite decidir el modo de render
+        <strong>ruta por ruta</strong>. Para un sitio como este el reparto es evidente: once
+        páginas que cambian una vez al mes y una que necesita disponibilidad en vivo.
+      </p>
+
+      <pre><i>// app.routes.server.ts</i>
+<b>export const</b> serverRoutes: ServerRoute[] = [
+  <i>// 11 páginas → HTML estático en CDN, TTFB ~0</i>
+  { path: <b>''</b>,                          renderMode: RenderMode.Prerender },
+  { path: <b>'coloracion-vegetal-aveda'</b>,   renderMode: RenderMode.Prerender },
+  { path: <b>'mechas-babylights-balayage'</b>, renderMode: RenderMode.Prerender },
+  { path: <b>'rastas'</b>,                    renderMode: RenderMode.Prerender },
+  { path: <b>'extensiones-cabello-natural'</b>,renderMode: RenderMode.Prerender },
+  { path: <b>'tratamientos-capilares'</b>,     renderMode: RenderMode.Prerender },
+  { path: <b>'virginia'</b>,                  renderMode: RenderMode.Prerender },
+  { path: <b>'el-salon'</b>,                  renderMode: RenderMode.Prerender },
+  { path: <b>'precios'</b>,                   renderMode: RenderMode.Prerender },
+  { path: <b>'contacto'</b>,                  renderMode: RenderMode.Prerender },
+
+  <i>// Blog: una ruta, N ficheros generados en build</i>
+  { path: <b>'diario/:slug'</b>, renderMode: RenderMode.Prerender,
+    getPrerenderParams: () =&gt; loadPostSlugs() },
+
+  <i>// Único punto dinámico: huecos reales del calendario</i>
+  { path: <b>'reservar/**'</b>, renderMode: RenderMode.Server },
+];</pre>
+
+      <p>
+        Resultado: once HTML servidos desde CDN sin cómputo, y una sola ruta que necesita
+        Node. El coste de hosting tiende a cero y el TTFB para el rastreador de Google es
+        el de un fichero estático.
+      </p>
+
+      <h3>Datos estructurados</h3>
+      <p>
+        Es la parte con mejor relación esfuerzo/resultado del SEO local, y donde casi
+        ningún competidor llega:
+      </p>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Schema</th><th>Dónde</th><th>Para qué</th></tr></thead>
+          <tbody>
+            <tr><td class="kw">HairSalon</td><td>Home + footer global</td><td>NAP, geo, horarios, <code>sameAs</code>, rango de precio. Refuerza la ficha de Maps.</td></tr>
+            <tr><td class="kw">Service</td><td>Cada página de servicio</td><td><code>provider</code> → HairSalon, <code>areaServed</code> → Ciudad Real.</td></tr>
+            <tr><td class="kw">Person</td><td>/virginia</td><td>Autoría y experiencia. Señal E-E-A-T directa.</td></tr>
+            <tr><td class="kw">FAQPage</td><td>Páginas de servicio</td><td>Opta a resultado enriquecido con desplegables.</td></tr>
+            <tr><td class="kw">BreadcrumbList</td><td>Todas</td><td>Ruta legible en el resultado, en lugar de la URL cruda.</td></tr>
+            <tr><td class="kw">ImageObject</td><td>Galería antes/después</td><td>Tracción en Google Imágenes, muy usada en el sector.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="verdict warn">
+        <span class="tag">Cuidado con AggregateRating</span>
+        <p>
+          Solo se marca si las reseñas se recogen y muestran <strong>en el propio sitio</strong>.
+          Copiar la nota de Google al schema es una infracción de las directrices de spam
+          estructurado y puede costar todos los resultados enriquecidos del dominio.
+          Recomendación: no marcarlo en la fase 1.
+        </p>
+      </div>
+
+      <h3>Core Web Vitals</h3>
+      <ul>
+        <li><strong>LCP</strong> — la foto de Virginia es el elemento mayor. <code>NgOptimizedImage</code> con <code>priority</code>, AVIF con respaldo WebP y <code>srcset</code> real. Objetivo &lt; 1,8 s en 4G.</li>
+        <li><strong>El mapa de Google es el mayor lastre</strong> del sector: un iframe de Maps mete ~900 KB y decenas de peticiones. Se sustituye por imagen estática que carga el iframe al hacer clic.</li>
+        <li><strong>Hidratación incremental</strong> con <code>@defer (on viewport)</code> en galería, testimonios y mapa. Estable en Angular 22.</li>
+        <li><strong>Tipografías autoalojadas</strong>, subconjunto latino, <code>font-display: swap</code> y <code>preload</code> de la display. Nada de CDN externo: penaliza y añade un dominio de riesgo.</li>
+        <li><strong>CLS</strong> — <code>width</code>/<code>height</code> explícitos en toda imagen y altura reservada para el widget de reservas.</li>
+      </ul>
+
+      <h3>Fundamentos que no se negocian</h3>
+      <ul>
+        <li><code>&lt;html lang="es-ES"&gt;</code>. Sitio monolingüe: sin hreflang, sin subcarpetas de idioma.</li>
+        <li><code>sitemap.xml</code> generado en build a partir de las rutas — nunca escrito a mano.</li>
+        <li>Canonical absoluta y autorreferenciada en todas las páginas.</li>
+        <li>Un <code>SeoService</code> que lee <code>route.data</code> y escribe title, meta y JSON-LD. Cero duplicación.</li>
+        <li>Barra sin barra final: una sola forma válida, la otra redirige 301.</li>
+        <li>Google Search Console y Bing Webmaster desde el día del despliegue, no después.</li>
+      </ul>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <section id="gbp">
+      <div class="sec-head">
+        <p class="eyebrow">Google Business</p>
+        <h2>La ficha pesa más que la web</h2>
+        <p>Para «peluquería cerca de mí», el Map Pack se lleva la mayoría de los clics. Ahí es donde está el dinero.</p>
+      </div>
+
+      <div class="scroller">
+        <table>
+          <thead><tr><th>Acción</th><th>Detalle</th><th>Prioridad</th></tr></thead>
+          <tbody>
+            <tr><td class="kw">Corregir el nombre</td><td>Dejarlo en «Pureza · Belleza Natural». Mover el resto a descripción y servicios.</td><td><span class="pill tough">Urgente</span></td></tr>
+            <tr><td class="kw">Unificar el NAP</td><td>Misma cadena literal en los seis directorios y en el schema del sitio.</td><td><span class="pill tough">Urgente</span></td></tr>
+            <tr><td class="kw">Campaña de reseñas</td><td>Enlace corto + QR en el salón + petición al cobrar. Objetivo: 60–80 en seis meses.</td><td><span class="pill tough">Urgente</span></td></tr>
+            <tr><td class="kw">Categoría principal</td><td>Peluquería. Secundarias: salón de belleza y peluquería de señoras.</td><td><span class="pill mid">Alta</span></td></tr>
+            <tr><td class="kw">Módulo de servicios</td><td>Los cinco, con descripción propia. Es contenido indexable dentro de la ficha.</td><td><span class="pill mid">Alta</span></td></tr>
+            <tr><td class="kw">Horarios reales</td><td>Incluida la pausa de mediodía. Evita reseñas negativas por puerta cerrada.</td><td><span class="pill mid">Alta</span></td></tr>
+            <tr><td class="kw">Fotos semanales</td><td>Trabajos reales, salón e interior. La frecuencia es señal de actividad.</td><td><span class="pill open">Continua</span></td></tr>
+            <tr><td class="kw">Publicaciones</td><td>Una por semana, enlazando a la página de servicio correspondiente.</td><td><span class="pill open">Continua</span></td></tr>
+            <tr><td class="kw">Preguntas y respuestas</td><td>Sembrar las propias: «¿lleva amoniaco?», «¿hacéis rastas?».</td><td><span class="pill open">Continua</span></td></tr>
+            <tr><td class="kw">Atributos</td><td>Empresa dirigida por mujeres, cita previa, accesibilidad, wifi.</td><td><span class="pill open">Continua</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="verdict win">
+        <span class="tag">El multiplicador</span>
+        <p>
+          Las reseñas de Google son, con diferencia, la palanca de mayor retorno de todo
+          el proyecto — y funcionan igual de bien con web o sin ella. Pasar de 13 a 60
+          reseñas manteniendo el 5,0 mete a Pureza en el Map Pack de sus búsquedas de
+          nicho <strong>antes de que la web esté terminada</strong>.
+        </p>
+        <p>
+          Con ~15 clientas semanales y una tasa de conversión conservadora del 25 %,
+          son cuatro meses. Cuesta un QR impreso y la costumbre de pedirlo.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <section id="diseno">
+      <div class="sec-head">
+        <p class="eyebrow">Dirección de arte</p>
+        <h2>Herbario, no spa genérico</h2>
+        <p>Verde botánico, blanco hueso y madera — evitando el «wellness de plantilla» en el que cae todo el sector.</p>
+      </div>
+
+      <p>
+        La referencia estética que da Virginia es Aveda: naturaleza, calma, materia
+        vegetal. El riesgo es acabar en el mismo sitio que las mil webs de peluquería
+        con foto de stock de una mujer riéndose bajo una toalla. La salida es tratar
+        lo botánico como un <strong>herbario</strong> — precisión, etiqueta, muestra
+        catalogada — en lugar de como decoración.
+      </p>
+
+      <div class="swatches">
+        <div class="sw"><div class="chip" style="background:#2E4A33"></div><span class="nm">Laurel</span><span class="hx">#2E4A33</span></div>
+        <div class="sw"><div class="chip" style="background:#5F7F45"></div><span class="nm">Savia</span><span class="hx">#5F7F45</span></div>
+        <div class="sw"><div class="chip" style="background:#EEF0E8"></div><span class="nm">Hueso</span><span class="hx">#EEF0E8</span></div>
+        <div class="sw"><div class="chip" style="background:#8A6742"></div><span class="nm">Nogal</span><span class="hx">#8A6742</span></div>
+        <div class="sw"><div class="chip" style="background:#1A2119"></div><span class="nm">Tinta</span><span class="hx">#1A2119</span></div>
+      </div>
+
+      <p>
+        El blanco hueso lleva un sesgo verde en lugar de tirar a crema: se lee como papel
+        sin blanquear, no como beige de balneario. El nogal aparece <strong>solo</strong> en
+        detalles — filetes, iconos, subrayados — nunca en superficies grandes. Un único
+        acento fuerte, todo lo demás en silencio.
+      </p>
+
+      <div class="split">
+        <div class="card">
+          <h4>Tipografía</h4>
+          <ul>
+            <li><strong>Display:</strong> serif de estilo antiguo, con cursiva de verdad para los acentos. Transmite oficio, no tecnología.</li>
+            <li><strong>Texto:</strong> sans humanista, cuerpo generoso, línea de 65–70 caracteres.</li>
+            <li><strong>Etiquetas:</strong> versalitas con <code>letter-spacing</code> amplio para servicios y precios. Es el gesto de herbario.</li>
+            <li>Ambas autoalojadas y con subconjunto latino.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Portada</h4>
+          <ul>
+            <li>Foto de Virginia a sangre, tal como pide: la atención uno a uno es el producto.</li>
+            <li>Titular en primera persona, no corporativo. «Solo estamos tú, tu cabello y yo» ya está en su brief y es mejor que cualquier eslogan escrito de cero.</li>
+            <li>Sin carrusel. Sin vídeo de fondo. Sin superposición oscura sobre la foto.</li>
+            <li>Una sola llamada a la acción por encima del pliegue: reservar.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Movimiento</h4>
+          <ul>
+            <li>Aparición suave al entrar en viewport, 200 ms, solo una vez por elemento.</li>
+            <li>Nada de parallax ni contadores animados.</li>
+            <li><code>prefers-reduced-motion</code> respetado en todo.</li>
+            <li>La calma se transmite con espacio en blanco y ritmo tipográfico, no con animación.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h4>Fotografía</h4>
+          <ul>
+            <li>Cero banco de imágenes. Es la decisión de diseño con más impacto de la lista.</li>
+            <li>Antes/después reales, luz natural, encuadre consistente.</li>
+            <li>Detalle de producto Aveda y de las manos trabajando: prueba de oficio.</li>
+            <li>Sesión de un día que alimenta web, ficha de Google e Instagram a la vez.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <span class="tag">Accesibilidad</span>
+        <p>
+          Objetivo WCAG 2.2 AA. Importa por sí mismo y además el público es
+          mayoritariamente femenino de 30 a 60 años, con lectura en móvil y a menudo con
+          brillo alto en exteriores. Contraste mínimo 4,5:1 en texto, foco visible en todo
+          elemento interactivo y área táctil de 44 px en los botones de reserva.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <section id="reservas">
+      <div class="sec-head">
+        <p class="eyebrow">Fase 2</p>
+        <h2>Reservas: el punto donde se decide el proyecto</h2>
+        <p>Es la funcionalidad con más valor y también la que más puede desviar el presupuesto.</p>
+      </div>
+
+      <p>
+        Virginia quiere «algo como Aura Lab, muy fácil de usar». Aura Lab no lo ha
+        construido: usa Reservy, una plataforma de terceros con app de marca blanca.
+        Conviene saberlo antes de decidir.
+      </p>
+
+      <p>Con independencia del camino elegido, el flujo de reserva debe cumplir esto:</p>
+      <ul>
+        <li><strong>Tres pasos como máximo</strong>: servicio → hueco → datos. Sin registro obligatorio.</li>
+        <li><strong>Servicio primero</strong>, porque la duración determina qué huecos existen. Un balayage no cabe donde cabe un corte.</li>
+        <li><strong>Recordatorio por WhatsApp</strong>, no por email. En este sector reduce las ausencias mucho más.</li>
+        <li><strong>Sincronización con el calendario de Virginia</strong> — sin doble reserva, nunca.</li>
+        <li><strong>Ficha de clienta</strong>: fórmula de color, alergias, historial. Es lo que sostiene la promesa de atención personal.</li>
+        <li><strong>Señal opcional</strong> en servicios largos, para cubrir la ausencia de dos horas de agenda.</li>
+      </ul>
+
+      <div class="verdict warn">
+        <span class="tag">Decisión pendiente</span>
+        <p>
+          Integrar una plataforma existente cuesta días y una cuota mensual, pero la
+          agenda vive fuera y la marca se comparte. Construirlo a medida sobre Angular da
+          control total y ficha de clienta propia, pero son semanas de desarrollo más
+          calendario, notificaciones, pagos y mantenimiento.
+        </p>
+        <p>
+          <strong>No hace falta resolverlo hoy.</strong> La fase 1 se despliega con
+          <code>/reservar</code> apuntando a WhatsApp y teléfono, que es como ya trabaja.
+          La ruta queda reservada en la arquitectura desde el principio, así que cambiar
+          de opinión más adelante no cuesta nada.
+        </p>
+      </div>
+    </section>
+
+    <!-- ─────────────────────────────────────────────────────────── -->
+    <section id="roadmap" class="wide">
+      <div class="sec-head" style="max-width:68ch">
+        <p class="eyebrow">Roadmap</p>
+        <h2>Lo que da resultados antes que el código</h2>
+        <p>La fase 0 no lleva desarrollo y probablemente sea la que más facturación traiga.</p>
+      </div>
+
+      <div class="phases" style="max-width:68ch">
+
+        <div class="phase">
+          <span class="idx">0</span>
+          <div>
+            <h3>Higiene local</h3>
+            <p class="when">Esta semana · sin desarrollo</p>
+            <ul>
+              <li>Corregir el nombre de la ficha de Google antes de que lo reporte alguien.</li>
+              <li>Fijar el NAP canónico y propagarlo a los seis directorios.</li>
+              <li>Corregir horarios en todas las plataformas, con la pausa de mediodía.</li>
+              <li>Arrancar la campaña de reseñas: enlace corto, QR en el mostrador, rutina de petición.</li>
+              <li>Completar servicios, atributos y descripción de la ficha.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase">
+          <span class="idx">1</span>
+          <div>
+            <h3>Web pública</h3>
+            <p class="when">Fase principal de desarrollo</p>
+            <ul>
+              <li>Angular 22 con SSR híbrido y render por ruta.</li>
+              <li>Sistema de diseño: tokens, tipografía, componentes base.</li>
+              <li>Once páginas según el mapa de URLs, contenido definitivo.</li>
+              <li>Schema completo, sitemap generado, Search Console conectado.</li>
+              <li>Sesión de fotos propia — bloquea el lanzamiento, conviene agendarla ya.</li>
+              <li><code>/reservar</code> vía WhatsApp y teléfono.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase">
+          <span class="idx">2</span>
+          <div>
+            <h3>Contenido y autoridad</h3>
+            <p class="when">Continuo desde el lanzamiento</p>
+            <ul>
+              <li>Dos entradas de diario al mes, informacionales, enlazando a servicio.</li>
+              <li>Ampliar la galería antes/después en cada página.</li>
+              <li>Citaciones locales de calidad y prensa de Ciudad Real.</li>
+              <li>Publicaciones semanales en la ficha de Google.</li>
+              <li>Revisión trimestral de canibalización contra el mapa de keywords.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="phase">
+          <span class="idx">3</span>
+          <div>
+            <h3>Reservas online</h3>
+            <p class="when">Cuando la fase 1 esté estable</p>
+            <ul>
+              <li>Decidir plataforma frente a desarrollo propio con datos reales de uso.</li>
+              <li>Flujo de tres pasos, recordatorios por WhatsApp.</li>
+              <li>Ficha de clienta con fórmulas e historial.</li>
+              <li>Migrar el volumen de Treatwell a canal propio y ahorrar comisión.</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        Estudio elaborado el 12 de agosto de 2026 a partir del brief de Virginia y de
+        investigación pública sobre la competencia en Ciudad Real (Google Maps,
+        PeluqueriaMaster, Treatwell, Fresha, Volumus). Las cifras de reseñas son las
+        publicadas en esa fecha y conviene reverificarlas antes de tomar decisiones de
+        presupuesto.
+      </p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  (function () {
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc a'));
+    if (!links.length || !('IntersectionObserver' in window)) return;
+
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+
+    var visible = new Set();
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) visible.add(e.target.id);
+        else visible.delete(e.target.id);
+      });
+
+      var order = Object.keys(byId);
+      var active = order.filter(function (id) { return visible.has(id); })[0];
+
+      links.forEach(function (a) {
+        a.setAttribute('aria-current', a.getAttribute('href') === '#' + active ? 'true' : 'false');
+      });
+    }, { rootMargin: '-10% 0px -70% 0px', threshold: 0 });
+
+    Object.keys(byId).forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) io.observe(el);
+    });
+  })();
+</script>

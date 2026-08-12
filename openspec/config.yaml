@@ -1,0 +1,39 @@
+project: pureza
+engram_project: virginia
+context: |
+  Product: Pureza · Belleza Natural — chemical-free hair salon marketing site (Ciudad Real, Spain).
+  Owner: Virginia. Domain: purezabellezanatural.es. Repo root recommended: this directory (Pureza/).
+  Stack: Angular 22 standalone + signals + @angular/ssr, hybrid rendering (11 routes Prerender,
+  /reservar/** Server), TypeScript strict, SCSS design tokens, self-hosted fonts, incremental hydration.
+  Architecture: Screaming/Hexagonal by domain (salon, services, booking), atomic design,
+  container-presentational pattern — not layered-by-technical-type.
+  SEO: 12-route URL map, 4 anti-cannibalization rules, long-tail strategy. Full detail in Engram
+  project "virginia": decision #2259 (SEO/design), research #2257 (competitive diagnosis),
+  decision #2261 (domain).
+  Phase 1 ships now (marketing site, /reservar → WhatsApp/tel link). Phase 2 (later, separate SDD
+  change) adds the real online booking app.
+
+persistence_mode: hybrid
+
+strict_tdd: false # recommendation pending user/orchestrator confirmation — see testing-capabilities
+
+testing:
+  status: not-yet-scaffolded
+  planned_unit: vitest
+  planned_e2e_visual: playwright
+  detail_ref: "sdd/virginia/testing-capabilities (Engram) — also mirrored below"
+
+phase_rules:
+  proposal: One proposal per SEO route group or cross-cutting concern (e.g. "design-system-tokens",
+    "route-coloracion-aveda"), not one giant "build the whole site" proposal.
+  spec: Each service/content route spec must declare its primary keyword in route.data and must not
+    duplicate a primary keyword already assigned to another route (anti-cannibalization rule 4).
+  design: Reflect Screaming/Hexagonal architecture — folders name domain concepts (salon, services,
+    booking, content) not technical layers (components, services, models) at the top level.
+  tasks: Apply the 400-line review budget guard; forecast chaining for full-page builds (routes +
+    styles + tests commonly exceed budget in one slice).
+  apply: No stock photography (design decision #2259) — placeholder/defer image work until the
+    photoshoot asset is available; do not block unrelated tasks on it.
+  verify: WCAG 2.2 AA check, Core Web Vitals check (map iframe must stay click-to-load), Lighthouse
+    SEO/perf pass, and route.data primary-keyword uniqueness build assertion.
+  archive: Standard — move to openspec/changes/archive/ after verify passes and receipt is validated.
