@@ -49,14 +49,14 @@ if either exceeds 800 lines once real code lands.
 
 ## Phase 2: Design tokens & typography — PR2
 
-- [ ] 2.1 Create `src/styles/_tokens.scss` with the exact token set from design.md §1 (4 neutral roles + 5 plant accents ×2 variants + `--pz-accent-live/text` fallback pair + spacing/type scale). (design-system: neutral base + five plant-accent tokens)
-- [ ] 2.2 Add `[data-planta='...']` scope rules for all 5 plants, sibling-only, no nesting. (design-system: one accent per route, never mixed)
-- [ ] 2.3 Wire `src/styles.scss` → `@use 'styles/tokens'` before any component style.
-- [ ] 2.4 Place 4 latin-subset `.woff2` files under `public/fonts/` (EB Garamond 400/400-italic, Alegreya Sans 400/700).
-- [ ] 2.5 Write `src/styles/_typography.scss`: hand-written `@font-face` + `font-display: swap` + latin `unicode-range`; label/eyebrow utility class. (design-system: self-hosted typography only)
-- [ ] 2.6 Add `<link rel="preload" as="font" type="font/woff2" crossorigin>` in `index.html` for EB Garamond 400 only.
-- [ ] 2.7 Vitest: contrast assertions for all 5 `-text` tokens vs `#FFFFFF` ≥4.5:1, pure function. (design-system: text variant meets AA contrast)
-- [ ] 2.8 Verify no `prefers-color-scheme: dark` rule anywhere in compiled styles. (design-system: no dark theme)
+- [x] 2.1 Create `src/styles/_tokens.scss` with the exact token set from design.md §1 (4 neutral roles + 5 plant accents ×2 variants + `--pz-accent-live/text` fallback pair + spacing/type scale). (design-system: neutral base + five plant-accent tokens)
+- [x] 2.2 Add `[data-planta='...']` scope rules for all 5 plants, sibling-only, no nesting. (design-system: one accent per route, never mixed)
+- [x] 2.3 Wire `src/styles.scss` → `@use 'styles/tokens'` before any component style.
+- [x] 2.4 Place 4 latin-subset `.woff2` files under `public/fonts/` (EB Garamond 400/400-italic, Alegreya Sans 400/700).
+- [x] 2.5 Write `src/styles/_typography.scss`: hand-written `@font-face` + `font-display: swap` + latin `unicode-range`; label/eyebrow utility class. (design-system: self-hosted typography only)
+- [x] 2.6 Add `<link rel="preload" as="font" type="font/woff2" crossorigin>` in `index.html` for EB Garamond 400 only.
+- [x] 2.7 Vitest: contrast assertions for all 5 `-text` tokens vs `#FFFFFF` ≥4.5:1, pure function. (design-system: text variant meets AA contrast)
+- [x] 2.8 Verify no `prefers-color-scheme: dark` rule anywhere in compiled styles. (design-system: no dark theme)
 
 ## Phase 3: Layout shell — PR3
 

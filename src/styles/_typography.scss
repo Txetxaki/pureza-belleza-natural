@@ -1,0 +1,76 @@
+// Self-hosted typography — hand-written @font-face rules.
+//
+// `angular.json`'s `optimization.fonts` stays `false` (see the guard comment
+// next to it) so this file is the ONLY place fonts are declared; nothing may
+// point at fonts.googleapis.com / fonts.gstatic.com. See
+// openspec/changes/foundation/design.md §2.
+
+// Standard "latin" Unicode subset (matches the Google Fonts latin range).
+$pz-unicode-range-latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC,
+  U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ebgaramond-400.woff2') format('woff2');
+  unicode-range: $pz-unicode-range-latin;
+}
+
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/ebgaramond-400-italic.woff2') format('woff2');
+  unicode-range: $pz-unicode-range-latin;
+}
+
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/ebgaramond-600.woff2') format('woff2');
+  unicode-range: $pz-unicode-range-latin;
+}
+
+@font-face {
+  font-family: 'Alegreya Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/alegreyasans-400.woff2') format('woff2');
+  unicode-range: $pz-unicode-range-latin;
+}
+
+@font-face {
+  font-family: 'Alegreya Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('/fonts/alegreyasans-500.woff2') format('woff2');
+  unicode-range: $pz-unicode-range-latin;
+}
+
+@font-face {
+  font-family: 'Alegreya Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/alegreyasans-700.woff2') format('woff2');
+  unicode-range: $pz-unicode-range-latin;
+}
+
+// Label / eyebrow utility — small-caps-style uppercase tag used for
+// section kickers and micro-labels. Never carries an accent color itself;
+// it always reads as secondary/neutral text.
+.pz-eyebrow {
+  font-family: var(--pz-body);
+  font-size: var(--pz-text-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--pz-track-label);
+  color: var(--pz-ink-soft);
+}

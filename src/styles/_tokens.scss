@@ -1,0 +1,78 @@
+// Design tokens — the single authoritative palette for `pureza`.
+//
+// Components never reference a plant-specific token directly. They read the
+// generic `--pz-accent-live` / `--pz-accent-text` pair; a `[data-planta]`
+// scope on an ancestor rebinds those two properties to one plant's pair.
+// Mixing two accents in one context is therefore impossible by construction,
+// not by review discipline. See openspec/changes/foundation/design.md §1.
+
+:root {
+  /* ── Ground & ink — light only. No dark branch, by decision. ─────────── */
+  --pz-surface: #FFFFFF; /* literal white, every page, every section */
+  --pz-ink: #1C221C; /* ~16:1 — headings and body */
+  --pz-ink-soft: #4F574F; /* ~7:1  — captions, secondary copy, labels */
+  --pz-hairline: #EBEBE7; /* 1px borders ONLY — never box-shadow, never elevation */
+  --pz-radius: 2px; /* the only radius in the system */
+
+  /* ── Five plant accents. Each owns exactly one service route. ─────────── */
+  --pz-romero-live: #3D8B6B;
+  --pz-romero-text: #2C6A4F; /* Coloración Vegetal */
+  --pz-espliego-live: #7C6BC4;
+  --pz-espliego-text: #5B4B9E; /* Mechas de Autor    */
+  --pz-esparto-live: #C1912B;
+  --pz-esparto-text: #7D5A10; /* Rastas             */
+  --pz-vid-live: #B44A63;
+  --pz-vid-text: #8E2F44; /* Extensiones Nat.   */
+  --pz-olivo-live: #7A8B2F;
+  --pz-olivo-text: #4E5A17; /* Rituales Capilares */
+
+  /* ── The ONLY accent handles a component may reference. ───────────────── */
+  --pz-accent-live: var(--pz-ink); /* unowned context degrades to ink */
+  --pz-accent-text: var(--pz-ink-soft); /* → no loose colour anywhere      */
+
+  /* ── Type ─────────────────────────────────────────────────────────────── */
+  --pz-display: 'EB Garamond', 'Iowan Old Style', Palatino, 'Times New Roman', serif;
+  --pz-body: 'Alegreya Sans', 'Segoe UI', system-ui, sans-serif;
+  --pz-text-label: 0.6875rem; /* 11px */
+  --pz-track-label: 0.2em;
+  --pz-text-small: 0.8125rem; /* 13px */
+  --pz-track-tight: -0.014em;
+  --pz-text-body: 1.0625rem; /* 17px */
+  --pz-text-lead: 1.1875rem; /* 19px */
+  --pz-text-h3: clamp(1.25rem, 2.2vw, 1.5rem);
+  --pz-text-h2: clamp(1.9rem, 4.2vw, 2.6rem);
+  --pz-text-h1: clamp(2.6rem, 7vw, 4.4rem);
+
+  /* ── Space & measure ──────────────────────────────────────────────────── */
+  --pz-space-3xs: 4px;
+  --pz-space-2xs: 8px;
+  --pz-space-xs: 12px;
+  --pz-space-s: 20px;
+  --pz-space-m: 32px;
+  --pz-space-l: 56px;
+  --pz-space-xl: 96px;
+  --pz-measure: 33rem;
+  --pz-wrap: 1120px;
+}
+
+/* One scope rule binds a plant to a subtree. Never nested — siblings only. */
+[data-planta='romero'] {
+  --pz-accent-live: var(--pz-romero-live);
+  --pz-accent-text: var(--pz-romero-text);
+}
+[data-planta='espliego'] {
+  --pz-accent-live: var(--pz-espliego-live);
+  --pz-accent-text: var(--pz-espliego-text);
+}
+[data-planta='esparto'] {
+  --pz-accent-live: var(--pz-esparto-live);
+  --pz-accent-text: var(--pz-esparto-text);
+}
+[data-planta='vid'] {
+  --pz-accent-live: var(--pz-vid-live);
+  --pz-accent-text: var(--pz-vid-text);
+}
+[data-planta='olivo'] {
+  --pz-accent-live: var(--pz-olivo-live);
+  --pz-accent-text: var(--pz-olivo-text);
+}
