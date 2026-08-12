@@ -1,0 +1,14 @@
+<picture class="pz-picture" [class.pz-picture--duotone]="duotone()">
+  <source type="image/avif" [srcset]="avifSrcset()" />
+  <source type="image/webp" [srcset]="webpSrcset()" />
+  <img
+    class="pz-picture__img"
+    [src]="fallbackSrc()"
+    [attr.alt]="alt()"
+    [attr.width]="width()"
+    [attr.height]="height()"
+    [attr.loading]="loading()"
+    [attr.fetchpriority]="fetchPriority()"
+    decoding="async"
+  />
+</picture>

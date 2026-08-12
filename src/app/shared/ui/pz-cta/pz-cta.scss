@@ -1,0 +1,35 @@
+.pz-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--pz-space-2xs);
+  padding-block: var(--pz-space-xs);
+  padding-inline: var(--pz-space-s);
+  border: 1px solid var(--pz-ink);
+  border-radius: var(--pz-radius);
+  background: var(--pz-ink);
+  color: var(--pz-surface);
+  font-family: var(--pz-body);
+  font-size: var(--pz-text-body);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: none; // no elevation, ever — design.md §1
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+
+  &:hover {
+    background: color-mix(in srgb, var(--pz-ink) 85%, var(--pz-surface));
+  }
+}
+
+.pz-cta--secondary {
+  background: transparent;
+  color: var(--pz-ink);
+
+  &:hover {
+    background: var(--pz-ink);
+    color: var(--pz-surface);
+  }
+}

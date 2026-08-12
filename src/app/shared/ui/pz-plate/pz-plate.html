@@ -1,0 +1,18 @@
+<article class="pz-plate">
+  <div class="pz-plate__specimen">
+    <ng-container [ngTemplateOutlet]="specimen()" />
+  </div>
+
+  <div class="pz-plate__body">
+    @if (title()) {
+      <h3 class="pz-plate__title">{{ title() }}</h3>
+    }
+    @if (latin()) {
+      <p class="pz-plate__latin">{{ latin() }}</p>
+    }
+  </div>
+
+  <div class="pz-plate__photo">
+    <ng-container [ngTemplateOutlet]="photo()" />
+  </div>
+</article>

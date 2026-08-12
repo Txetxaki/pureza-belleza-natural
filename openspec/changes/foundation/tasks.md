@@ -60,21 +60,21 @@ if either exceeds 800 lines once real code lands.
 
 ## Phase 3: Layout shell — PR3
 
-- [ ] 3.1 Create `shared/layout/site-header/` — nav filtered from registry `status==='live' && inNav` (yields brand link + `/contacto` only, zero edits needed when `content` flips more routes live).
-- [ ] 3.2 Create `shared/layout/site-footer/` rendering NAP from one shared `SITE` constant. (app-shell: NAP consistency)
-- [ ] 3.3 Create `shared/layout/shell/` = header + `<router-outlet>` + footer; wire as `app.ts` root template. (app-shell: shared layout shell, every route renders through it)
+- [x] 3.1 Create `shared/layout/site-header/` — nav filtered from registry `status==='live' && inNav` (yields brand link + `/contacto` only, zero edits needed when `content` flips more routes live).
+- [x] 3.2 Create `shared/layout/site-footer/` rendering NAP from one shared `SITE` constant. (app-shell: NAP consistency)
+- [x] 3.3 Create `shared/layout/shell/` = header + `<router-outlet>` + footer; wire as `app.ts` root template. (app-shell: shared layout shell, every route renders through it)
 
 ## Phase 4: Shared UI primitives & image pipeline — PR3
 
-- [ ] 4.1 Create `shared/ui/pz-picture/` — required `base` input, derives `{base}-{w}.{avif|webp|jpg}` URLs, `fetchpriority`, `loading`/`decoding`, explicit `width`/`height`.
-- [ ] 4.2 Create `shared/ui/pz-plate/` — required `specimen` (SVG, `aria-hidden`, `stroke=currentColor`) + `photo` inputs, non-interactive in this change.
-- [ ] 4.3 Create `shared/ui/pz-static-map/` — static image in a `<button>`, click swaps to Maps iframe, plain "Cómo llegar" link fallback.
-- [ ] 4.4 Create `shared/ui/pz-cta/` — primary/secondary button variants.
-- [ ] 4.5 Copy `info/images/{atmosfera-romero,atmosfera-espliego,atmosfera-esparto,atmosfera-vid,atmosfera-olivo,manos-pigmento,textura-lino}.jpg` into `public/images/`; skip `bodegon-botanico.jpg` (out of scope, `/precios`/`/diario`). Source: AI placeholders, `info/fotos-ia-brief.md`.
-- [ ] 4.6 Write `scripts/generate-image-variants.mjs` (sharp, prebuild) — emits `{base}-{w}.{avif|webp|jpg}` for every file in `public/images/` at 2–3 widths.
-- [ ] 4.7 Vitest: extract and test the pure filename/URL-derivation logic from 4.6, not just script side effects.
-- [ ] 4.8 Generate one static map PNG (Google Static Maps API, salon address) once; commit to `public/images/mapa-estatico.png`; no runtime re-fetch. (design.md open question — asset task, not code)
-- [ ] 4.9 Place `info/virginia.jpeg`-derived hero portrait as the sole explicit duotone exception (design.md §6 — every other photo ships untinted); comment inline where used.
+- [x] 4.1 Create `shared/ui/pz-picture/` — required `base` input, derives `{base}-{w}.{avif|webp|jpg}` URLs, `fetchpriority`, `loading`/`decoding`, explicit `width`/`height`.
+- [x] 4.2 Create `shared/ui/pz-plate/` — required `specimen` (SVG, `aria-hidden`, `stroke=currentColor`) + `photo` inputs, non-interactive in this change.
+- [x] 4.3 Create `shared/ui/pz-static-map/` — static image in a `<button>`, click swaps to Maps iframe, plain "Cómo llegar" link fallback.
+- [x] 4.4 Create `shared/ui/pz-cta/` — primary/secondary button variants.
+- [x] 4.5 Copy `info/images/{atmosfera-romero,atmosfera-espliego,atmosfera-esparto,atmosfera-vid,atmosfera-olivo,manos-pigmento,textura-lino}.jpg` into `public/images/`; skip `bodegon-botanico.jpg` (out of scope, `/precios`/`/diario`). Source: AI placeholders, `info/fotos-ia-brief.md`.
+- [x] 4.6 Write `scripts/generate-image-variants.mjs` (sharp, prebuild) — emits `{base}-{w}.{avif|webp|jpg}` for every file in `public/images/` at 2–3 widths.
+- [x] 4.7 Vitest: extract and test the pure filename/URL-derivation logic from 4.6, not just script side effects.
+- [ ] 4.8 **BLOCKED** — Generate one static map PNG (Google Static Maps API, salon address) once; commit to `public/images/mapa-estatico.png`; no runtime re-fetch. No `GOOGLE_MAPS_API_KEY` (or similar) was available in this environment/session — deliberately not fabricated. `pz-static-map` (4.3) already degrades to a verified "Cómo llegar" text-link fallback while this asset is absent (`STATIC_MAP_ASSET_AVAILABLE = false` in `pz-static-map.ts`); flip that flag the same commit this asset lands. Requires a human with Google Maps API access.
+- [x] 4.9 Place `info/virginia.jpeg`-derived hero portrait as the sole explicit duotone exception (design.md §6 — every other photo ships untinted); comment inline where used. (`pz-picture`'s `duotone` input + `pz-plate`'s doc comment — actual home-page hero wiring is PR5's job, not done here.)
 
 ## Phase 5: SEO infrastructure — PR4
 

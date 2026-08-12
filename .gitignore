@@ -29,6 +29,14 @@ yarn-error.log
 !.vscode/mcp.json
 .history/*
 
+# Generated image variants — scripts/generate-image-variants.mjs (prebuild)
+# regenerates these from the tracked public/images/*.jpg sources on every
+# build; see src/app/shared/utils/image-variants.ts for the naming
+# convention. Never commit the derived {base}-{width}.{format} files.
+public/images/*-[0-9]*.avif
+public/images/*-[0-9]*.webp
+public/images/*-[0-9]*.jpg
+
 # Miscellaneous
 /.angular/cache
 .sass-cache/

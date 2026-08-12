@@ -1,0 +1,22 @@
+<header class="site-header">
+  @if (brand(); as brandEntry) {
+    <a
+      class="site-header__brand"
+      routerLink="/"
+      routerLinkActive="is-active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      {{ brandEntry.label }}
+    </a>
+  }
+
+  @if (links().length > 0) {
+    <nav class="site-header__nav" aria-label="Principal">
+      @for (link of links(); track link.path) {
+        <a class="site-header__link" [routerLink]="'/' + link.path" routerLinkActive="is-active">
+          {{ link.label }}
+        </a>
+      }
+    </nav>
+  }
+</header>

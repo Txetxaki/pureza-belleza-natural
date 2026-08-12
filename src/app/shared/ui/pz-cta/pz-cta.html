@@ -1,0 +1,21 @@
+@if (href(); as link) {
+  @if (external()) {
+    <a
+      class="pz-cta"
+      [class.pz-cta--secondary]="variant() === 'secondary'"
+      [href]="link"
+      target="_blank"
+      rel="noopener"
+    >
+      <ng-content />
+    </a>
+  } @else {
+    <a class="pz-cta" [class.pz-cta--secondary]="variant() === 'secondary'" [routerLink]="link">
+      <ng-content />
+    </a>
+  }
+} @else {
+  <button type="button" class="pz-cta" [class.pz-cta--secondary]="variant() === 'secondary'">
+    <ng-content />
+  </button>
+}

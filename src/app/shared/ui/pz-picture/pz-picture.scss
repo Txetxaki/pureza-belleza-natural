@@ -1,0 +1,31 @@
+.pz-picture {
+  display: block;
+  position: relative;
+  line-height: 0;
+}
+
+.pz-picture__img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+// Duotone exception (design.md §6, task 4.9) — the sole known future user is
+// the home hero portrait (PR5). Every other `pz-picture` usage ships
+// untinted; this rule only activates when a caller explicitly sets
+// `[duotone]="true"`.
+.pz-picture--duotone {
+  .pz-picture__img {
+    filter: grayscale(1) contrast(1.05);
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--pz-picture-duotone-color, var(--pz-ink));
+    mix-blend-mode: multiply;
+    opacity: 0.82;
+    pointer-events: none;
+  }
+}

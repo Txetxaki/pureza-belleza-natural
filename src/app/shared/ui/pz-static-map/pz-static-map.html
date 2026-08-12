@@ -1,0 +1,23 @@
+@if (!hasStaticMap()) {
+  <a class="pz-static-map__fallback" [href]="searchUrl()" target="_blank" rel="noopener">
+    Cómo llegar
+  </a>
+} @else if (!loaded()) {
+  <button type="button" class="pz-static-map__button" (click)="load()">
+    <pz-picture
+      base="mapa-estatico"
+      alt="Mapa de ubicación del salón"
+      [width]="640"
+      [height]="360"
+    />
+    <span class="pz-static-map__label">Ver mapa interactivo</span>
+  </button>
+} @else {
+  <iframe
+    class="pz-static-map__iframe"
+    [src]="embedUrl()"
+    title="Mapa de ubicación del salón"
+    loading="lazy"
+    referrerpolicy="no-referrer-when-downgrade"
+  ></iframe>
+}

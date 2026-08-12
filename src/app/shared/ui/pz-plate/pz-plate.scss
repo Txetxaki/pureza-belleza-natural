@@ -1,0 +1,65 @@
+.pz-plate {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--pz-space-m);
+  padding-block: var(--pz-space-s);
+  border-bottom: 1px solid var(--pz-hairline);
+}
+
+.pz-plate__specimen {
+  color: var(--pz-accent-live);
+  display: flex;
+  align-items: center;
+
+  // The specimen SVG is authored by the caller inside an <ng-template> and
+  // rendered here via ngTemplateOutlet, so it carries the CALLER's view
+  // encapsulation attribute, not pz-plate's — a plain `svg { ... }` selector
+  // would be a silent no-op. `::ng-deep` is the one place in this component
+  // that intentionally crosses that boundary to size the caller-supplied
+  // markup; `stroke="currentColor"` on the SVG itself still resolves the
+  // accent colour through normal CSS inheritance, no ::ng-deep needed there.
+  // stylelint-disable-next-line
+  ::ng-deep svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+.pz-plate__body {
+  min-width: 0;
+}
+
+.pz-plate__title {
+  margin: 0;
+  font-family: var(--pz-display);
+  font-size: var(--pz-text-h3);
+  color: var(--pz-ink);
+}
+
+.pz-plate__latin {
+  margin: var(--pz-space-3xs) 0 0;
+  font-family: var(--pz-display);
+  font-style: italic;
+  font-size: var(--pz-text-small);
+  color: var(--pz-accent-text);
+}
+
+.pz-plate__photo {
+  width: 4.5rem;
+  height: 4.5rem;
+  overflow: hidden;
+  border-radius: var(--pz-radius);
+
+  // Same cross-boundary case as .pz-plate__specimen above: `photo` renders a
+  // caller-supplied <pz-picture> via ngTemplateOutlet.
+  // stylelint-disable-next-line
+  ::ng-deep {
+    .pz-picture,
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
