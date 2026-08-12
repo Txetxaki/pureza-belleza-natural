@@ -134,8 +134,10 @@ full PR1–PR5 history, including a real `pz-cta` content-projection bug found a
 requires a "Lighthouse SEO/perf pass" — no task above named it explicitly, and `sdd-verify` flagged
 it as a CRITICAL governance gap. Closed post-hoc, directly on this branch: real `npx lighthouse` runs
 against both routes served from a fresh `npm run build` via `scripts/serve-dist.mjs`. Accessibility,
-Best Practices, and SEO are 100/100 on both `/` and `/contacto`; Performance is 68/82 respectively,
-explained (not chased to 100 — real AI-placeholder photo weight under Lighthouse's default simulated
-mobile-4G throttling, not a code defect) in README.md's new "Lighthouse audit (verify-phase gate)"
-section, with durable numeric evidence at `lighthouse-reports/home.json` and
-`lighthouse-reports/contacto.json`.
+Best Practices, and SEO are 100/100 on both `/` and `/contacto`; Performance is 68/82 respectively —
+not chased to 100. See README.md's "Lighthouse audit (verify-phase gate)" section for the accurate
+explanation: the committed evidence attributes the gap to `unused-javascript` (~100 KiB, normal
+Angular framework overhead) plus slow FCP/LCP under Lighthouse's default simulated mobile-4G
+throttling; AI-placeholder photo weight plausibly contributes given the priority hero image, but the
+condensed report has no byte-weight/LCP-element audit proving that split — durable numeric evidence
+at `lighthouse-reports/home.json` and `lighthouse-reports/contacto.json`.
