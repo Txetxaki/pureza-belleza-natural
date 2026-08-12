@@ -88,22 +88,29 @@ screenshot and internal trace data) was not committed.
 - **Accessibility, Best Practices, SEO: 100/100 on both routes.** This confirms `config.yaml`'s
   WCAG 2.2 AA and SEO gates end-to-end (the same result the axe-core Playwright suite already
   asserts, now cross-confirmed by Lighthouse's independent audit engine).
-- **Performance is not 100 and that's expected, not a defect.** Lighthouse's default profile
-  simulates a mid-tier mobile device on a throttled ~1.6 Mbps connection (`cpuSlowdownMultiplier: 4`,
-  `rttMs: 150`) — real page weight is measured against that, not local network speed. The `/` score
-  (68) is lower than `/contacto` (82) because the home route ships the LCP hero portrait plus 5
-  below-the-fold "atmósfera" images; `pz-picture` (`src/app/shared/ui/pz-picture/pz-picture.ts`)
-  already does the correct thing — `loading="lazy"` + `decoding="async"` on every non-hero image,
-  `fetchpriority="high"` + eager only on the hero — and every image already ships as `avif`/`webp`
-  next-gen variants (`scripts/generate-image-variants.mjs`). The remaining weight is the AI
-  placeholder photography itself (real image bytes: 6 photos × ~35-53 KB avif each), which design
-  decision #2259 explicitly defers until the real photoshoot lands (`apply` rule in
-  `openspec/config.yaml`: "No stock photography ... placeholder/defer image work until the
-  photoshoot asset is available"). The one remaining generic finding (`unused-javascript`, ~100 KiB
-  estimated savings on both routes) is normal Angular framework overhead for a 2-route app, not a
-  `foundation`-scope defect. No code change was made for this reason — chasing a perfect performance
-  score here would mean either optimizing images that are about to be replaced by real content (the
-  `content` change) or non-trivial framework-level bundle work outside this change's scope.
+- **Performance is not 100 and that's expected, not a defect — here's exactly what the committed
+  evidence shows, not a guess.** Lighthouse's default profile simulates a mid-tier mobile device on
+  a throttled ~1.6 Mbps connection (`cpuSlowdownMultiplier: 4`, `rttMs: 150`); real paint timing is
+  measured against that, not local network speed. The condensed reports record two concrete,
+  evidence-backed drivers of the sub-100 score, both present in `lighthouse-reports/*.json`:
+  - **Paint timing.** `/`'s largest-contentful-paint is 5.2s (score 0.23) and first-contentful-paint
+    is 4.0s (score 0.23); `/contacto`'s LCP is 3.6s (score 0.61), FCP 3.3s (score 0.4) — `/contacto`
+    scores higher across the board because it has no priority hero image competing for the critical
+    path. `pz-picture` (`src/app/shared/ui/pz-picture/pz-picture.ts`) already does the correct thing
+    — `loading="lazy"` + `decoding="async"` on every non-hero image, `fetchpriority="high"` + eager
+    only on the hero — and every image already ships as `avif`/`webp` next-gen variants
+    (`scripts/generate-image-variants.mjs`); the hero portrait (an AI placeholder per design decision
+    #2259, deferred until the real photoshoot lands per `openspec/config.yaml`'s `apply` rule) is
+    still the LCP element by construction, so its byte weight plausibly contributes, but the
+    condensed report does not carry a byte-weight or LCP-element audit entry to prove that split out
+    from framework/JS cost — that finer breakdown lives only in the uncommitted full raw JSON.
+  - **`unused-javascript`** (score 0, ~100 KiB estimated savings on both routes) is the one specific
+    audit both condensed reports flag by id — normal Angular framework bundle overhead for a
+    2-route app, not a `foundation`-scope defect.
+  No code change was made for this reason — chasing a perfect performance score here would mean
+  either optimizing images about to be replaced by real content (the `content` change) or
+  non-trivial framework-level bundle work outside this change's scope. Re-run with the full
+  (uncommitted) report if a precise LCP-element/byte-weight breakdown is needed later.
 
 ## Build & CI
 
