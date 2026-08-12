@@ -1,0 +1,56 @@
+{
+  "url": "http://localhost:4310/contacto",
+  "fetchTime": "2026-08-12T18:06:56.234Z",
+  "lighthouseVersion": "13.4.1",
+  "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/151.0.0.0 Safari/537.36",
+  "formFactor": "mobile",
+  "throttlingMethod": "simulate",
+  "throttling": {
+    "rttMs": 150,
+    "throughputKbps": 1638.4,
+    "requestLatencyMs": 562.5,
+    "downloadThroughputKbps": 1474.5600000000002,
+    "uploadThroughputKbps": 675,
+    "cpuSlowdownMultiplier": 4
+  },
+  "categories": {
+    "performance": 82,
+    "accessibility": 100,
+    "best-practices": 100,
+    "seo": 100
+  },
+  "metrics": {
+    "first-contentful-paint": {
+      "value": "3.3 s",
+      "score": 0.4
+    },
+    "largest-contentful-paint": {
+      "value": "3.6 s",
+      "score": 0.61
+    },
+    "total-blocking-time": {
+      "value": "140 ms",
+      "score": 0.95
+    },
+    "cumulative-layout-shift": {
+      "value": "0.007",
+      "score": 1
+    },
+    "speed-index": {
+      "value": "3.3 s",
+      "score": 0.91
+    },
+    "interactive": {
+      "value": "3.9 s",
+      "score": 0.88
+    }
+  },
+  "notableFindings": [
+    {
+      "id": "unused-javascript",
+      "score": 0,
+      "title": "Reduce unused JavaScript",
+      "displayValue": "Est savings of 101 KiB"
+    }
+  ]
+}

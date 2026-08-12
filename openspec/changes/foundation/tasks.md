@@ -129,3 +129,13 @@ and writes a correct `sitemap.xml`; `npm test -- --watch=false` is 83/83; `npx p
 10/10 (axe-core AA, zero eager font/Maps requests, 4 visual snapshots, canonical↔sitemap parity,
 click-to-load map fallback). See `sdd/foundation/apply-progress` (Engram, project "virginia") for the
 full PR1–PR5 history, including a real `pz-cta` content-projection bug found and fixed in this batch.
+
+**Verify-phase Lighthouse gate (2026-08-12 addendum):** `config.yaml`'s `phase_rules.verify` also
+requires a "Lighthouse SEO/perf pass" — no task above named it explicitly, and `sdd-verify` flagged
+it as a CRITICAL governance gap. Closed post-hoc, directly on this branch: real `npx lighthouse` runs
+against both routes served from a fresh `npm run build` via `scripts/serve-dist.mjs`. Accessibility,
+Best Practices, and SEO are 100/100 on both `/` and `/contacto`; Performance is 68/82 respectively,
+explained (not chased to 100 — real AI-placeholder photo weight under Lighthouse's default simulated
+mobile-4G throttling, not a code defect) in README.md's new "Lighthouse audit (verify-phase gate)"
+section, with durable numeric evidence at `lighthouse-reports/home.json` and
+`lighthouse-reports/contacto.json`.

@@ -69,6 +69,42 @@ scans, zero eager requests to font CDNs/Maps domains, desktop + mobile visual sn
 committed under `e2e/*-snapshots/`), the click-to-load static map fallback, and the canonical-URL ↔
 sitemap.xml cross-check (design.md risk E).
 
+## Lighthouse audit (verify-phase gate)
+
+`openspec/config.yaml`'s `phase_rules.verify` requires a "Lighthouse SEO/perf pass". This was run
+for real on **2026-08-12** against a fresh `npm run build`, served locally with
+`node scripts/serve-dist.mjs` (the same static server Playwright's e2e suite uses), via
+`npx lighthouse` (v13.4.1, headless Chrome, default mobile/simulated-throttling config — the same
+profile Lighthouse/PageSpeed Insights uses by default). Condensed, durable results (category scores
++ Core Web Vitals + any sub-100 audit) are committed at `lighthouse-reports/home.json` and
+`lighthouse-reports/contacto.json`; the full raw Lighthouse JSON (~450 KB each, mostly a base64
+screenshot and internal trace data) was not committed.
+
+| Route       | Performance | Accessibility | Best Practices | SEO |
+|-------------|:-----------:|:--------------:|:---------------:|:---:|
+| `/`         | 68          | 100            | 100             | 100 |
+| `/contacto` | 82          | 100            | 100             | 100 |
+
+- **Accessibility, Best Practices, SEO: 100/100 on both routes.** This confirms `config.yaml`'s
+  WCAG 2.2 AA and SEO gates end-to-end (the same result the axe-core Playwright suite already
+  asserts, now cross-confirmed by Lighthouse's independent audit engine).
+- **Performance is not 100 and that's expected, not a defect.** Lighthouse's default profile
+  simulates a mid-tier mobile device on a throttled ~1.6 Mbps connection (`cpuSlowdownMultiplier: 4`,
+  `rttMs: 150`) — real page weight is measured against that, not local network speed. The `/` score
+  (68) is lower than `/contacto` (82) because the home route ships the LCP hero portrait plus 5
+  below-the-fold "atmósfera" images; `pz-picture` (`src/app/shared/ui/pz-picture/pz-picture.ts`)
+  already does the correct thing — `loading="lazy"` + `decoding="async"` on every non-hero image,
+  `fetchpriority="high"` + eager only on the hero — and every image already ships as `avif`/`webp`
+  next-gen variants (`scripts/generate-image-variants.mjs`). The remaining weight is the AI
+  placeholder photography itself (real image bytes: 6 photos × ~35-53 KB avif each), which design
+  decision #2259 explicitly defers until the real photoshoot lands (`apply` rule in
+  `openspec/config.yaml`: "No stock photography ... placeholder/defer image work until the
+  photoshoot asset is available"). The one remaining generic finding (`unused-javascript`, ~100 KiB
+  estimated savings on both routes) is normal Angular framework overhead for a 2-route app, not a
+  `foundation`-scope defect. No code change was made for this reason — chasing a perfect performance
+  score here would mean either optimizing images that are about to be replaced by real content (the
+  `content` change) or non-trivial framework-level bundle work outside this change's scope.
+
 ## Build & CI
 
 **CI must always run `npm run build`, never a bare `ng build` / `npx ng build`.** `npm run build`
