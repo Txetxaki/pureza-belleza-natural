@@ -4,6 +4,9 @@ import { HomePage } from './salon/home/home-page';
 import { ContactPage } from './contact/contact-page';
 import { ColoracionVegetalAvedaPage } from './services/coloracion-vegetal-aveda/coloracion-vegetal-aveda-page';
 import { MechasBabylightsBalayagePage } from './services/mechas-babylights-balayage/mechas-babylights-balayage-page';
+import { RastasPage } from './services/rastas/rastas-page';
+import { ExtensionesCabelloNaturalPage } from './services/extensiones-cabello-natural/extensiones-cabello-natural-page';
+import { TratamientosCapilaresPage } from './services/tratamientos-capilares/tratamientos-capilares-page';
 
 // SEO wiring (design.md §4/§7, PR4's documented pattern, landed here in PR5):
 // `seoRouteData(path)` spreads the matching `route-seo.registry.json` entry
@@ -21,5 +24,20 @@ export const routes: Routes = [
     path: 'mechas-babylights-balayage',
     component: MechasBabylightsBalayagePage,
     data: seoRouteData('mechas-babylights-balayage'),
+  },
+  {
+    path: 'rastas',
+    component: RastasPage,
+    data: seoRouteData('rastas'),
+  },
+  {
+    path: 'extensiones-cabello-natural',
+    component: ExtensionesCabelloNaturalPage,
+    data: seoRouteData('extensiones-cabello-natural'),
+  },
+  {
+    path: 'tratamientos-capilares',
+    component: TratamientosCapilaresPage,
+    data: seoRouteData('tratamientos-capilares'),
   },
 ];

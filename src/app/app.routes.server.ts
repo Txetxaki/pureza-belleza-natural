@@ -17,4 +17,16 @@ export const serverRoutes: ServerRoute[] = [
     path: 'mechas-babylights-balayage',
     renderMode: RenderMode.Prerender,
   },
+  {
+    path: 'rastas',
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: 'extensiones-cabello-natural',
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: 'tratamientos-capilares',
+    renderMode: RenderMode.Prerender,
+  },
 ];

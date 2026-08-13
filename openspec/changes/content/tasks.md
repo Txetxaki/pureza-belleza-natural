@@ -291,13 +291,13 @@ Pages: `/rastas` (esparto), `/extensiones-cabello-natural` (vid), `/tratamientos
 open-ground niche (`rastas Ciudad Real` has zero local competition) plus the two that complete every
 pairing-map cross-link started in Slice 4.
 
-### 5.1 `src/app/services/rastas/*` [P]
+### 5.1 `src/app/services/rastas/*` [P] — DONE
 Cross-links `['tratamientos-capilares', 'extensiones-cabello-natural']`. Same shape/spec references as 4.1.
 
-### 5.2 `src/app/services/extensiones-cabello-natural/*` [P]
+### 5.2 `src/app/services/extensiones-cabello-natural/*` [P] — DONE
 Cross-links `['mechas-babylights-balayage', 'tratamientos-capilares']`. Same shape/spec references.
 
-### 5.3 `src/app/services/tratamientos-capilares/*` [P]
+### 5.3 `src/app/services/tratamientos-capilares/*` [P] — DONE
 Cross-links `['coloracion-vegetal-aveda', 'rastas']`. Same shape/spec references. **After this task, all
 five service routes are mutually cross-link-resolvable and all five registry entries are `'live'`** — the
 pairing-map table in `service-pages` spec is now fully satisfiable end-to-end for the first time.

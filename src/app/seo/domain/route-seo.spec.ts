@@ -3,14 +3,17 @@ import { canonicalUrl, getRouteSeo, ROUTE_SEO_REGISTRY, seoData, seoRouteData } 
 import { SITE } from './site';
 
 describe('route-seo registry', () => {
-  it('has exactly twelve routes, with /, /contacto and the two Slice 4 service routes live and the rest planned', () => {
+  it('has exactly twelve routes, with /, /contacto and all five service routes (Slices 4+5 complete) live and the rest planned', () => {
     expect(ROUTE_SEO_REGISTRY).toHaveLength(12);
     const live = ROUTE_SEO_REGISTRY.filter((entry) => entry.status === 'live');
     expect(live.map((entry) => entry.path).sort()).toEqual([
       '',
       'coloracion-vegetal-aveda',
       'contacto',
+      'extensiones-cabello-natural',
       'mechas-babylights-balayage',
+      'rastas',
+      'tratamientos-capilares',
     ]);
   });
 

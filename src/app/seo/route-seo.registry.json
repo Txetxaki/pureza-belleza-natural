@@ -45,7 +45,7 @@
     "changefreq": "monthly",
     "priority": 0.8,
     "inNav": true,
-    "status": "planned"
+    "status": "live"
   },
   {
     "path": "extensiones-cabello-natural",
@@ -57,7 +57,7 @@
     "changefreq": "monthly",
     "priority": 0.8,
     "inNav": true,
-    "status": "planned"
+    "status": "live"
   },
   {
     "path": "tratamientos-capilares",
@@ -69,7 +69,7 @@
     "changefreq": "monthly",
     "priority": 0.8,
     "inNav": true,
-    "status": "planned"
+    "status": "live"
   },
   {
     "path": "virginia",

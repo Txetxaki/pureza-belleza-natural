@@ -31,11 +31,14 @@ describe('filterNavEntries', () => {
     expect(result.some((entry) => entry.path === 'coloracion-vegetal-aveda')).toBe(false);
   });
 
-  it("today's real NAV_ROUTES yields the brand link, the two live Slice 4 service routes, and /contacto (footer's flat projection grows automatically, zero further edits — D7)", () => {
+  it("today's real NAV_ROUTES yields the brand link, all five live service routes (Slices 4+5), and /contacto (footer's flat projection grows automatically, zero further edits — D7)", () => {
     expect(filterNavEntries(NAV_ROUTES).map((entry) => entry.path)).toEqual([
       '',
       'coloracion-vegetal-aveda',
       'mechas-babylights-balayage',
+      'rastas',
+      'extensiones-cabello-natural',
+      'tratamientos-capilares',
       'contacto',
     ]);
   });
@@ -132,11 +135,14 @@ describe('buildHeaderNav', () => {
     });
   });
 
-  it("today's real ROUTE_SEO_REGISTRY yields the two Slice 4 service routes in the dropdown and no reserveCta (/reservar not live yet)", () => {
+  it("today's real ROUTE_SEO_REGISTRY yields all five live service routes in the dropdown (Slices 4+5 complete) and no reserveCta (/reservar not live yet)", () => {
     const result = buildHeaderNav(ROUTE_SEO_REGISTRY);
     expect(result.dropdownServices.map((entry) => entry.path)).toEqual([
       'coloracion-vegetal-aveda',
       'mechas-babylights-balayage',
+      'rastas',
+      'extensiones-cabello-natural',
+      'tratamientos-capilares',
     ]);
     expect(result.reserveCta).toBeUndefined();
     expect(result.navLeft.map((entry) => entry.path)).toEqual(['contacto']);
