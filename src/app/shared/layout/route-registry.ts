@@ -96,12 +96,17 @@ export function buildHeaderNav(entries: readonly HeaderNavSourceEntry[]): Header
     .filter((entry) => entry.path !== '' && entry.path !== 'reservar' && !isServiceEntry(entry))
     .map(toNavEntry);
 
-  const dropdownServices = entries
-    .filter(isServiceEntry)
-    .filter((entry) => entry.status === 'live')
-    .map(toNavEntry);
+  // Both zones below check `inNav` as well as `status`, matching `navLeft`
+  // above, `filterNavEntries`, and the footer. Filtering on `status` alone
+  // looks harmless today because every live entry also has `inNav: true` — but
+  // `inNav: false` is a real, used state (the `virginia` entry ships that way),
+  // so a soft-launched service route would appear in this dropdown while the
+  // footer correctly omitted it. That would silently break the no-JS mitigation
+  // the dropdown depends on: the footer carrying the same links.
+  const dropdownServices = liveInNav.filter(isServiceEntry).map(toNavEntry);
 
-  const reserveCta = reservar && reservar.status === 'live' ? toNavEntry(reservar) : undefined;
+  const reserveCta =
+    reservar && reservar.status === 'live' && reservar.inNav ? toNavEntry(reservar) : undefined;
 
   return { wordmark, navLeft, dropdownServices, reserveCta };
 }

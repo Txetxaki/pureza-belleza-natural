@@ -136,7 +136,32 @@ export function findBlogTitleLocalityViolations(posts) {
   return violations;
 }
 
-/** Runs all five checks; each key holds that check's violations array (empty = pass). */
+/**
+ * Blog-post titles are budgeted like route titles, because they become
+ * `<title>` the same way — but with the site suffix appended at render time
+ * (`post-seo.resolver.ts`), so the budget must be checked against the RENDERED
+ * length, not the raw manifest string. Without this, a post title can sit
+ * comfortably under 60 in the manifest and still render at 63 and be truncated
+ * in search results; `findFieldViolations` never saw posts, so nothing caught it.
+ */
+export const BLOG_TITLE_SUFFIX = ' | Pureza';
+
+export function findBlogTitleLengthViolations(posts) {
+  const violations = [];
+  for (const post of posts) {
+    const rendered = `${post.title}${BLOG_TITLE_SUFFIX}`;
+    if (rendered.length > TITLE_MAX) {
+      violations.push({
+        slug: post.slug,
+        field: 'title',
+        reason: `rendered length ${rendered.length} ("${rendered}") exceeds ${TITLE_MAX}`,
+      });
+    }
+  }
+  return violations;
+}
+
+/** Runs all six checks; each key holds that check's violations array (empty = pass). */
 export function validateRegistry(routes, posts = []) {
   return {
     duplicateKeywords: findDuplicateKeywords(routes),
@@ -144,6 +169,7 @@ export function validateRegistry(routes, posts = []) {
     duplicatePlantas: findDuplicatePlantas(routes),
     fieldViolations: findFieldViolations(routes),
     blogTitleLocality: findBlogTitleLocalityViolations(posts),
+    blogTitleLength: findBlogTitleLengthViolations(posts),
   };
 }
 
@@ -153,7 +179,8 @@ export function hasViolations(result) {
     result.duplicatePaths.length > 0 ||
     result.duplicatePlantas.length > 0 ||
     result.fieldViolations.length > 0 ||
-    result.blogTitleLocality.length > 0
+    result.blogTitleLocality.length > 0 ||
+    result.blogTitleLength.length > 0
   );
 }
 

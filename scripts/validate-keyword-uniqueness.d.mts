@@ -53,6 +53,7 @@ export interface ValidationResult {
   readonly duplicatePlantas: readonly PlantaDuplicate[];
   readonly fieldViolations: readonly FieldViolation[];
   readonly blogTitleLocality: readonly BlogTitleLocalityViolation[];
+  readonly blogTitleLength: readonly BlogTitleLocalityViolation[];
 }
 
 export declare const TITLE_MAX: number;
@@ -63,6 +64,13 @@ export declare function findDuplicateKeywords(routes: readonly RegistryRouteLike
 export declare function findDuplicatePaths(routes: readonly RegistryRouteLike[]): PathDuplicate[];
 export declare function findDuplicatePlantas(routes: readonly RegistryRouteLike[]): PlantaDuplicate[];
 export declare function findFieldViolations(routes: readonly RegistryRouteLike[]): FieldViolation[];
+export declare const BLOG_TITLE_SUFFIX: string;
+
+/** Rendered `<title>` length budget for blog posts (manifest title + suffix). */
+export declare function findBlogTitleLengthViolations(
+  posts: readonly PostManifestLike[],
+): readonly BlogTitleLocalityViolation[];
+
 export declare function findBlogTitleLocalityViolations(
   posts: readonly PostManifestLike[],
 ): BlogTitleLocalityViolation[];

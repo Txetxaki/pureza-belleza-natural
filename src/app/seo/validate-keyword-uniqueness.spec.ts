@@ -11,6 +11,9 @@
 import { describe, expect, it } from 'vitest';
 import {
   findBlogTitleLocalityViolations,
+  findBlogTitleLengthViolations,
+  BLOG_TITLE_SUFFIX,
+  TITLE_MAX,
   findDuplicateKeywords,
   findDuplicatePaths,
   findDuplicatePlantas,
@@ -154,6 +157,26 @@ describe('findBlogTitleLocalityViolations (diario spec, "Blog locality-term vali
       post({ description: 'Consejos de peluquería en Ciudad Real.' }),
     ]);
     expect(violations).toEqual([]);
+  });
+});
+
+describe('findBlogTitleLengthViolations (rendered <title> budget, not the raw manifest string)', () => {
+  it('passes a title that still fits once the site suffix is appended', () => {
+    const title = 'A'.repeat(TITLE_MAX - BLOG_TITLE_SUFFIX.length);
+    expect(findBlogTitleLengthViolations([post({ title })])).toEqual([]);
+  });
+
+  it('flags a title that fits in the manifest but overflows once rendered', () => {
+    // This is the exact failure mode that shipped: a manifest title comfortably
+    // under TITLE_MAX whose rendered `<title>` (title + " | Pureza") exceeds it,
+    // so it gets truncated in search results. Checking the raw string would miss it.
+    const title = 'A'.repeat(TITLE_MAX - BLOG_TITLE_SUFFIX.length + 3);
+    expect(title.length).toBeLessThanOrEqual(TITLE_MAX);
+
+    const violations = findBlogTitleLengthViolations([post({ slug: 'largo', title })]);
+    expect(violations).toHaveLength(1);
+    expect(violations[0]).toMatchObject({ slug: 'largo', field: 'title' });
+    expect(violations[0].reason).toContain(String(title.length + BLOG_TITLE_SUFFIX.length));
   });
 });
 
