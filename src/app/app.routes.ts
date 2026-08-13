@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { seoRouteData } from './seo/domain/route-seo';
 import { HomePage } from './salon/home/home-page';
 import { ContactPage } from './contact/contact-page';
+import { ColoracionVegetalAvedaPage } from './services/coloracion-vegetal-aveda/coloracion-vegetal-aveda-page';
+import { MechasBabylightsBalayagePage } from './services/mechas-babylights-balayage/mechas-babylights-balayage-page';
 
 // SEO wiring (design.md §4/§7, PR4's documented pattern, landed here in PR5):
 // `seoRouteData(path)` spreads the matching `route-seo.registry.json` entry
@@ -10,4 +12,14 @@ import { ContactPage } from './contact/contact-page';
 export const routes: Routes = [
   { path: '', component: HomePage, data: seoRouteData('') },
   { path: 'contacto', component: ContactPage, data: seoRouteData('contacto') },
+  {
+    path: 'coloracion-vegetal-aveda',
+    component: ColoracionVegetalAvedaPage,
+    data: seoRouteData('coloracion-vegetal-aveda'),
+  },
+  {
+    path: 'mechas-babylights-balayage',
+    component: MechasBabylightsBalayagePage,
+    data: seoRouteData('mechas-babylights-balayage'),
+  },
 ];

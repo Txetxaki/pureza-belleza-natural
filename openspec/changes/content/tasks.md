@@ -261,7 +261,7 @@ target route exists in `app.routes.ts`, same "grows without further edits" prope
 transient state is the same one `design.md`'s own rollout note already accepts for the sitemap's
 half-flipped intermediate builds).
 
-### 4.1 `src/app/services/coloracion-vegetal-aveda/*` [P — independent file tree from 4.2]
+### 4.1 `src/app/services/coloracion-vegetal-aveda/*` [P — independent file tree from 4.2] — DONE
 Container passing a `ServiceContent` to `pz-service-page` (2.7): H1 = registry `primaryKeyword`
 ("coloración sin amoniaco Ciudad Real") + value-prop line; 150–200-word "qué es y para quién" (client
 language, not stylist jargon); "cómo lo hace Virginia" process narrative; FAQ 4–6 real Q&A; cross-links
@@ -274,7 +274,7 @@ Spec: `service-pages` (all requirements) — "Client-language... section" (150�
 "One plant accent, scoped", "Two cross-links per the study's pairing map" (this route's row), "Unique
 primary keyword, registry-driven, live status".
 
-### 4.2 `src/app/services/mechas-babylights-balayage/*` [P — independent file tree from 4.1]
+### 4.2 `src/app/services/mechas-babylights-balayage/*` [P — independent file tree from 4.1] — DONE
 Same shape as 4.1: H1 = "babylights Ciudad Real"; cross-links `['coloracion-vegetal-aveda',
 'tratamientos-capilares']`; registry flip + routes wiring, same as above.
 Spec: same scenarios as 4.1, this route's registry row.

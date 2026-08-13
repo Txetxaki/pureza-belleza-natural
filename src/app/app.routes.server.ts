@@ -9,4 +9,12 @@ export const serverRoutes: ServerRoute[] = [
     path: 'contacto',
     renderMode: RenderMode.Prerender,
   },
+  {
+    path: 'coloracion-vegetal-aveda',
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: 'mechas-babylights-balayage',
+    renderMode: RenderMode.Prerender,
+  },
 ];
