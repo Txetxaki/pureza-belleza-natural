@@ -1,15 +1,18 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="utf-8" />
     <title>Pureza</title>
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <!-- Self-hosted display font, preloaded — the only preload (design.md §2). -->
+    <!-- Self-hosted display font, preloaded — the only preload (design.md §2).
+         Relative href, like `favicon.ico` above: a leading slash would resolve
+         against the origin and skip <base href>, which on a sub-path deploy
+         preloads a 404 and warns in the console. -->
     <link
       rel="preload"
-      href="/fonts/ebgaramond-400.woff2"
+      href="fonts/ebgaramond-400.woff2"
       as="font"
       type="font/woff2"
       crossorigin

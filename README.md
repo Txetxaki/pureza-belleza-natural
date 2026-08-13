@@ -125,10 +125,24 @@ chains three steps via npm's `pre`/`postbuild` lifecycle hooks:
    the registry didn't actually get prerendered.
 
 Invoking `ng build` (or `npx ng build`) directly skips **all three** of the above — the
-keyword-uniqueness gate can't stop a bad deploy, and no `sitemap.xml` is written. There is no
-current CI workflow file in this repo (`foundation` ships the app, not its pipeline) — when one is
-added, its build step must invoke `npm run build`, and this note should move to a comment in that
-file alongside the command.
+keyword-uniqueness gate can't stop a bad deploy, and no `sitemap.xml` is written.
+
+Two workflows enforce this:
+
+- **`.github/workflows/ci.yml`** — unit tests, a full `npm run build`, and the Playwright suite, on
+  every push and pull request. The e2e job runs `npm run e2e -- --ignore-snapshots`: the visual
+  baselines under `e2e/visual.spec.ts-snapshots/` are `win32` renders, and font rasterisation
+  differs enough on the Linux runner to fail every pixel comparison. The specs themselves still run
+  there — only the image diff is skipped. Regenerate baselines locally with
+  `npx playwright test e2e/visual.spec.ts --update-snapshots`.
+- **`.github/workflows/deploy.yml`** — builds with `--base-href` set to the GitHub Pages project
+  path and publishes to Pages.
+
+**Anything that resolves against the deployment root must be relative, never `/`-prefixed.** The
+Pages preview serves the site from `/pureza-belleza-natural/`, and `<base href>` only applies to
+relative URLs — a root-relative one silently resolves against the origin. This bit every image and
+every font at once. See `image-variants.ts`'s `buildVariantPath`, `_typography.scss`'s header, and
+the `externalDependencies` note in `angular.json`.
 
 ## Design-system notes
 

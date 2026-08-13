@@ -1,6 +1,33 @@
 <header class="site-header">
-  <div class="site-header__zone site-header__zone--left">
-    <nav class="site-header__nav" aria-label="Principal">
+  <!-- The burger and the drawer share this wrapper so one `focusout` can shut
+       the drawer when focus leaves both of them together. -->
+  <div
+    class="site-header__zone site-header__zone--left"
+    [class.is-open]="menuOpen()"
+    (focusout)="onMenuFocusOut($event)"
+  >
+    <button
+      type="button"
+      class="site-header__burger"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="site-nav"
+      aria-label="Menú"
+      (click)="toggleMenu()"
+      (keydown.escape)="closeMenuAndReturnFocus(burger)"
+      #burger
+    >
+      <!-- Two bars that become an X. Decorative: the button is named by
+           aria-label, so the glyph itself must never be announced. -->
+      <span class="site-header__burger-bar" aria-hidden="true"></span>
+      <span class="site-header__burger-bar" aria-hidden="true"></span>
+    </button>
+
+    <nav
+      id="site-nav"
+      class="site-header__nav"
+      aria-label="Principal"
+      (keydown.escape)="closeMenuAndReturnFocus(burger)"
+    >
       <!-- Always rendered, even with zero entries (tasks.md Slice 3: "the
            dropdown renders zero entries until Slice 4 starts flipping routes
            live, then grows automatically with no further edits"). Keeping
@@ -31,7 +58,7 @@
                 class="header-disclosure__link"
                 [routerLink]="'/' + service.path"
                 routerLinkActive="is-active"
-                (click)="closePanel()"
+                (click)="onNavigate()"
                 (keydown.escape)="closeAndReturnFocus(cartaTrigger)"
               >
                 {{ service.label }}
@@ -73,7 +100,7 @@
                 [routerLink]="'/' + diario.path"
                 routerLinkActive="is-active"
                 [routerLinkActiveOptions]="{ exact: true }"
-                (click)="closePanel()"
+                (click)="onNavigate()"
                 (keydown.escape)="closeAndReturnFocus(diarioTrigger)"
               >
                 Todos los artículos
@@ -85,7 +112,7 @@
                   class="header-disclosure__link"
                   [routerLink]="'/' + post.path"
                   routerLinkActive="is-active"
-                  (click)="closePanel()"
+                  (click)="onNavigate()"
                   (keydown.escape)="closeAndReturnFocus(diarioTrigger)"
                 >
                   {{ post.label }}
@@ -97,7 +124,12 @@
       }
 
       @for (link of nav().navLeft; track link.path) {
-        <a class="site-header__link" [routerLink]="'/' + link.path" routerLinkActive="is-active">
+        <a
+          class="site-header__link"
+          [routerLink]="'/' + link.path"
+          routerLinkActive="is-active"
+          (click)="onNavigate()"
+        >
           {{ link.label }}
         </a>
       }

@@ -98,13 +98,18 @@
 // screens is fine; 4+1 on a wide one is not.
 .home-frieze {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--pz-space-s);
+  // Three, not two. There are five plates: at two columns the fifth is
+  // orphaned alone on its own row (2+2+1), the same lopsided break that made
+  // the desktop row read as 4+1 before it was pinned to five explicit
+  // columns. 3+2 is the only split of five that leaves no tile stranded, and
+  // five across is not an option on a phone — the glyphs would drop under
+  // 70px and the letterspaced labels would not fit at all.
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--pz-space-2xs);
   margin-top: var(--pz-space-l);
 
   @media (min-width: 560px) {
     grid-template-columns: repeat(5, 1fr);
-    gap: var(--pz-space-2xs);
   }
 }
 

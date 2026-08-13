@@ -56,6 +56,18 @@ export class SiteHeader {
   protected readonly openPanel = signal<PanelId | null>(null);
 
   /**
+   * The mobile drawer. Separate from `openPanel` because they are not
+   * alternatives: below 720px the drawer is the container and BOTH disclosure
+   * panels render expanded inside it. A nested accordion on a phone hides five
+   * service names behind an extra tap for no gain — the drawer already owns
+   * the full height it needs.
+   *
+   * Always `false` above 720px, where the drawer styles simply do not apply,
+   * so no resize listener (or media-query signal) is needed to keep it honest.
+   */
+  protected readonly menuOpen = signal(false);
+
+  /**
    * Current URL as a signal. `RouterLinkActive` cannot do this job: both
    * triggers are `<button>`s, and the state they render is "one of my CHILDREN
    * is the active route", which no directive on the parent can observe.
@@ -112,6 +124,37 @@ export class SiteHeader {
     const container = event.currentTarget as HTMLElement;
     if (!nextFocusTarget || !container.contains(nextFocusTarget)) {
       this.closePanel();
+    }
+  }
+
+  protected toggleMenu(): void {
+    this.menuOpen.update((open) => !open);
+  }
+
+  /**
+   * Every in-header link runs this, not `closePanel()`. On desktop only the
+   * disclosure needs shutting; on mobile the drawer does too, and the drawer
+   * covers the page it just navigated to. Routing here is a same-document
+   * navigation — nothing reloads and focus stays put — so if the header does
+   * not close itself, it never closes.
+   */
+  protected onNavigate(): void {
+    this.closePanel();
+    this.menuOpen.set(false);
+  }
+
+  protected closeMenuAndReturnFocus(burger: HTMLButtonElement): void {
+    this.onNavigate();
+    burger.focus();
+  }
+
+  /** Mirrors `onContainerFocusOut`, one level up: tabbing out of the whole
+   * left zone (burger + drawer) shuts the drawer behind you. */
+  protected onMenuFocusOut(event: FocusEvent): void {
+    const nextFocusTarget = event.relatedTarget as Node | null;
+    const container = event.currentTarget as HTMLElement;
+    if (!nextFocusTarget || !container.contains(nextFocusTarget)) {
+      this.menuOpen.set(false);
     }
   }
 }

@@ -154,17 +154,146 @@
   }
 }
 
-// Below 720px: static expanded list, no hamburger (out of scope this slice).
+// The burger is desktop-hidden; the drawer rules below turn it on.
+.site-header__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  // 44px is the WCAG 2.2 AA "Target Size (Minimum)" floor (2.5.8) and the
+  // smallest comfortable thumb target — the bars are 2px tall, so the box has
+  // to be sized deliberately rather than left to hug its content.
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.site-header__burger-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--pz-ink);
+  transition: transform 0.2s ease;
+}
+
+// Below 720px the inline nav is 679px wide inside a 360px viewport: it forced
+// the whole document to ~940px and every page scrolled sideways. The nav now
+// leaves the flow entirely and becomes a drawer under the header bar.
 @media (max-width: 720px) {
+  .site-header {
+    // The 1fr auto 1fr centring survives, but the side zones no longer need to
+    // reserve room for a full nav — just the burger and the CTA.
+    column-gap: var(--pz-space-2xs);
+    padding-inline: var(--pz-space-s);
+    // Anchors the absolutely-positioned drawer to the header, not the page.
+    position: relative;
+  }
+
+  .site-header__burger {
+    display: flex;
+  }
+
+  .site-header__nav {
+    // `position: absolute` is what actually kills the overflow — the drawer
+    // stops contributing to the header's width at all. `visibility` (never
+    // `display: none`) keeps the same tabbability contract the disclosure
+    // panels already follow.
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--pz-space-xs);
+    max-height: calc(100dvh - 100%);
+    overflow-y: auto;
+    padding: var(--pz-space-s) var(--pz-space-m) var(--pz-space-m);
+    background: var(--pz-surface);
+    border-bottom: 1px solid var(--pz-hairline);
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 0.15s ease,
+      visibility 0.15s ease;
+  }
+
+  // Driven by `.is-open` ALONE — deliberately no `:focus-within` companion
+  // like the desktop disclosures have. Tried it, and it makes both Escape and
+  // close-on-navigate impossible: closing leaves focus on the burger (Escape)
+  // or on a link inside the drawer (navigation), both of which are inside this
+  // zone, so `:focus-within` immediately re-reveals what the signal just shut.
+  // `aria-expanded` read `false` while the drawer sat there open.
+  // The no-JS path is the footer, which carries every link by design — the
+  // same belt-and-braces the disclosures rely on.
+  .site-header__zone--left.is-open .site-header__nav {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  .site-header__zone--left.is-open .site-header__burger-bar:first-child {
+    transform: translateY(3.5px) rotate(45deg);
+  }
+
+  .site-header__zone--left.is-open .site-header__burger-bar:last-child {
+    transform: translateY(-3.5px) rotate(-45deg);
+  }
+
+  .site-header__link {
+    // Same 44px thumb-target floor as the burger, applied to every row in the
+    // drawer. Left-aligned because a stacked list reads down its left edge.
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    text-align: left;
+  }
+
+  // Inside the drawer the panels are plain nested lists, always shown. A
+  // disclosure inside a drawer is a second tap for nothing: the drawer already
+  // scrolls, so the five services and the articles can simply be there.
   .header-disclosure__panel {
     position: static;
     z-index: auto;
     min-width: 0;
     border: none;
+    border-left: 1px solid var(--pz-hairline);
+    border-radius: 0;
+    margin-left: var(--pz-space-2xs);
     padding-block: 0;
     padding-inline: var(--pz-space-xs);
     visibility: visible;
     opacity: 1;
+    transition: none;
+  }
+
+  .header-disclosure__link {
+    // Article titles are full sentences; on a phone they must wrap, not
+    // stretch the drawer and reintroduce the horizontal scroll this whole
+    // block exists to remove.
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    white-space: normal;
+  }
+
+  // The trigger is decorative here — its panel is already open. It stays a
+  // real button (removing it would break the desktop contract and the tests)
+  // but reads as the group heading it now is.
+  .header-disclosure__trigger {
+    font-size: var(--pz-text-small);
+    text-transform: uppercase;
+    letter-spacing: var(--pz-track-label);
+    color: var(--pz-ink-soft);
+    cursor: default;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header__nav,
+  .site-header__burger-bar {
     transition: none;
   }
 }

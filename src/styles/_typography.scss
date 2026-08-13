@@ -4,6 +4,15 @@
 // next to it) so this file is the ONLY place fonts are declared; nothing may
 // point at fonts.googleapis.com / fonts.gstatic.com. See
 // openspec/changes/foundation/design.md §2.
+//
+// Every `url()` below is RELATIVE — no leading slash. A root-relative
+// `/fonts/…` is resolved against the origin and ignores `<base href>`, so the
+// whole typographic identity silently fell back to system serif the moment
+// the app was served from a sub-path (GitHub Pages project site). Relative
+// resolves against the stylesheet's own URL when the CSS ships as a file, and
+// against `<base href>` when Angular inlines it as critical CSS — correct in
+// both cases, and on both a root deploy and a sub-path one. Same rule as
+// `image-variants.ts`'s `buildVariantPath`.
 
 // Standard "latin" Unicode subset (matches the Google Fonts latin range).
 $pz-unicode-range-latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC,
@@ -14,7 +23,7 @@ $pz-unicode-range-latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-2
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/ebgaramond-400.woff2') format('woff2');
+  src: url('fonts/ebgaramond-400.woff2') format('woff2');
   unicode-range: $pz-unicode-range-latin;
 }
 
@@ -23,7 +32,7 @@ $pz-unicode-range-latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-2
   font-style: italic;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/ebgaramond-400-italic.woff2') format('woff2');
+  src: url('fonts/ebgaramond-400-italic.woff2') format('woff2');
   unicode-range: $pz-unicode-range-latin;
 }
 
@@ -32,7 +41,7 @@ $pz-unicode-range-latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-2
   font-style: normal;
   font-weight: 600;
   font-display: swap;
-  src: url('/fonts/ebgaramond-600.woff2') format('woff2');
+  src: url('fonts/ebgaramond-600.woff2') format('woff2');
   unicode-range: $pz-unicode-range-latin;
 }
 
@@ -41,7 +50,7 @@ $pz-unicode-range-latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-2
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url('/fonts/alegreyasans-400.woff2') format('woff2');
+  src: url('fonts/alegreyasans-400.woff2') format('woff2');
   unicode-range: $pz-unicode-range-latin;
 }
 
@@ -50,7 +59,7 @@ $pz-unicode-range-latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-2
   font-style: normal;
   font-weight: 500;
   font-display: swap;
-  src: url('/fonts/alegreyasans-500.woff2') format('woff2');
+  src: url('fonts/alegreyasans-500.woff2') format('woff2');
   unicode-range: $pz-unicode-range-latin;
 }
 
@@ -59,7 +68,7 @@ $pz-unicode-range-latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-2
   font-style: normal;
   font-weight: 700;
   font-display: swap;
-  src: url('/fonts/alegreyasans-700.woff2') format('woff2');
+  src: url('fonts/alegreyasans-700.woff2') format('woff2');
   unicode-range: $pz-unicode-range-latin;
 }
 

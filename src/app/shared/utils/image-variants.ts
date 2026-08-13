@@ -32,9 +32,23 @@ export function buildVariantFilename(
   return `${base}-${width}.${format}`;
 }
 
-/** `/images/{base}-{width}.{format}` — the public URL `pz-picture` renders. */
+/** `images/{base}-{width}.{format}` — the public URL `pz-picture` renders.
+ *
+ * Deliberately RELATIVE — no leading slash. A root-relative URL (`/images/…`)
+ * is resolved against the origin and ignores `<base href>` entirely, so every
+ * photo 404s the moment the app is served from anything other than the domain
+ * root. That is exactly what happened on GitHub Pages, where the project site
+ * lives under `/pureza-belleza-natural/`: the files were deployed correctly
+ * and every `<img>` still asked for `txetxaki.github.io/images/…`.
+ *
+ * Relative is correct for BOTH deployment shapes and needs no build-time
+ * substitution: the browser resolves it against `<base href>`, which Angular
+ * emits as `/` for a root deploy and as the subpath for a project site. The
+ * same reasoning applies to the font `url()`s in `_typography.scss` and the
+ * preload in `index.html`; `favicon.ico` was already written this way.
+ */
 export function buildVariantPath(base: string, width: number, format: ImageVariantFormat): string {
-  return `/images/${buildVariantFilename(base, width, format)}`;
+  return `images/${buildVariantFilename(base, width, format)}`;
 }
 
 /** A `srcset` attribute value for one format across every generated width. */

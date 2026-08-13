@@ -30,6 +30,16 @@
               }
             ],
             "styles": ["src/styles.scss"],
+            // Keeps the relative url() font references in _typography.scss out of
+            // the bundle. They must stay RELATIVE so <base href> applies on a
+            // sub-path deploy (GitHub Pages project site), but esbuild resolves any
+            // non-absolute url() against the filesystem and fails the build because
+            // the woff2 files live in public/, not next to the stylesheet. Marking
+            // them external is esbuild's own documented escape (it is literally what
+            // the error message suggests) and emits the path untouched. The fonts are
+            // still shipped — as public/ assets, with stable unhashed names, which is
+            // what the index.html preload needs.
+            "externalDependencies": ["fonts/*.woff2"],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "security": {

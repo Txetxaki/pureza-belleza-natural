@@ -1,4 +1,4 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 // task 8.4: one desktop + one mobile viewport snapshot per route. Explicit
 // viewport sizes (not two Playwright "projects") so this is the ONLY spec
@@ -40,12 +40,54 @@ const VIEWPORTS: ReadonlyArray<{ readonly name: string; readonly width: number; 
   { name: 'mobile', width: 390, height: 844 },
 ];
 
+/**
+ * Forces every `loading="lazy"` image to load and finish decoding, then
+ * returns the page to the top.
+ *
+ * `networkidle` alone is not enough and quietly produced a flaky suite: a lazy
+ * image below the fold is never even REQUESTED until it scrolls into view, so
+ * the network goes idle with it unloaded, and `fullPage: true` then scrolls
+ * the page itself during capture — racing the decode it just triggered. The
+ * six service-page snapshots failed intermittently on the "Resultados reales"
+ * row and nowhere else, which is exactly the lazy before/after set; the main
+ * result photo above it is eager and never flaked. It only started happening
+ * when those photos became real files, because until then the row rendered
+ * empty frames with nothing to decode.
+ */
+async function settleLazyImages(page: Page): Promise<void> {
+  await page.evaluate(async () => {
+    const step = window.innerHeight;
+    for (let y = 0; y < document.body.scrollHeight; y += step) {
+      window.scrollTo(0, y);
+      // One frame per step: enough for IntersectionObserver to fire and flip
+      // the lazy images to loading, without sleeping a fixed guess.
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+    }
+
+    await Promise.all(
+      [...document.images].map((image) =>
+        image.complete
+          ? image.decode().catch(() => undefined)
+          : new Promise((resolve) => {
+              image.addEventListener('load', resolve, { once: true });
+              image.addEventListener('error', resolve, { once: true });
+            }),
+      ),
+    );
+
+    window.scrollTo(0, 0);
+  });
+
+  await page.waitForLoadState('networkidle');
+}
+
 for (const route of ROUTES) {
   for (const viewport of VIEWPORTS) {
     test(`visual snapshot — ${route.name} @ ${viewport.name}`, async ({ page }) => {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
       await page.goto(route.path);
       await page.waitForLoadState('networkidle');
+      await settleLazyImages(page);
       await expect(page).toHaveScreenshot(`${route.name}-${viewport.name}.png`, {
         fullPage: true,
         maxDiffPixelRatio: 0.02,
