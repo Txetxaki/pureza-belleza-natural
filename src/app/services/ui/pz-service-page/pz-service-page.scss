@@ -1,0 +1,248 @@
+:host {
+  display: block;
+}
+
+// ── Shared gutter/measure rhythm — same convention as home-page.scss/
+// contact-page.scss (no shared ".wrap" primitive exists yet). ────────────
+.pz-service-page__hero,
+.pz-service-page__body,
+.pz-service-page__cta-band,
+.pz-service-page__cross-links {
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+}
+
+// ── Item 1: hero ──────────────────────────────────────────────────────────
+.pz-service-page__hero {
+  padding-block: var(--pz-space-l) var(--pz-space-m);
+}
+
+.pz-service-page__h1 {
+  margin: var(--pz-space-3xs) 0 0;
+  font-family: var(--pz-display);
+  font-size: var(--pz-text-h1);
+  line-height: 1.1;
+  color: var(--pz-ink);
+}
+
+.pz-service-page__latin {
+  margin: var(--pz-space-2xs) 0 0;
+  font-family: var(--pz-display);
+  font-style: italic;
+  font-size: var(--pz-text-lead);
+  color: var(--pz-accent-text);
+}
+
+.pz-service-page__lede {
+  margin: var(--pz-space-m) 0 0;
+  max-width: var(--pz-measure);
+  color: var(--pz-ink-soft);
+  font-size: var(--pz-text-lead);
+  line-height: 1.7;
+}
+
+.pz-service-page__hero pz-cta {
+  display: inline-block;
+  margin-top: var(--pz-space-m);
+}
+
+// ── Item 2: result photo — full-bleed, no gutter ────────────────────────
+.pz-service-page__result-photo {
+  margin: 0;
+  width: 100%;
+
+  // pz-photo-pending/pz-picture render via a real child component, not
+  // ng-content projection, but ::ng-deep is still required to cross their
+  // own view-encapsulation boundary — same pattern as home-page.scss.
+  // stylelint-disable-next-line
+  ::ng-deep {
+    .pz-picture,
+    .pz-picture__img,
+    .pz-photo-pending {
+      width: 100%;
+      height: clamp(280px, 42vw, 520px);
+      object-fit: cover;
+      display: block;
+    }
+  }
+}
+
+// ── Items 3-7: body wrapper ──────────────────────────────────────────────
+.pz-service-page__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pz-space-2xl);
+  padding-block: var(--pz-space-2xl) var(--pz-space-xl);
+}
+
+.pz-service-page__what-is,
+.pz-service-page__pricing,
+.pz-service-page__before-after,
+.pz-service-page__faq {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pz-space-l);
+}
+
+.pz-service-page__process {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pz-space-l);
+}
+
+.pz-service-page__process-grid {
+  display: grid;
+  gap: var(--pz-space-l);
+  align-items: start;
+
+  @media (min-width: 720px) {
+    grid-template-columns: 1fr 1.4fr;
+  }
+}
+
+// Content is projected via <ng-content>, so it carries the CALLER's view
+// encapsulation attribute, not this component's — ::ng-deep is required to
+// style it, same documented exception as pz-plate.scss.
+// stylelint-disable-next-line
+.pz-service-page__prose {
+  max-width: var(--pz-measure);
+  color: var(--pz-ink-soft);
+  line-height: 1.7;
+
+  ::ng-deep p {
+    margin: 0 0 var(--pz-space-s);
+  }
+
+  ::ng-deep p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.pz-service-page__specimen {
+  color: var(--pz-accent-live);
+  justify-self: center;
+
+  // stylelint-disable-next-line
+  ::ng-deep svg {
+    width: clamp(6rem, 14vw, 9rem);
+    height: auto;
+  }
+}
+
+// ── Item 5: pricing ──────────────────────────────────────────────────────
+.pz-service-page__tariff-table {
+  margin: 0 auto;
+  max-width: 34rem;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th,
+  td {
+    padding-block: var(--pz-space-xs);
+    border-bottom: 1px solid var(--pz-hairline);
+    font-weight: 400;
+    color: var(--pz-ink);
+  }
+
+  td {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.pz-service-page__pricing-meta,
+.pz-service-page__pricing-note {
+  margin: 0 auto;
+  max-width: 34rem;
+  text-align: center;
+  color: var(--pz-ink-soft);
+  font-size: var(--pz-text-small);
+}
+
+// ── Item 6: before/after ─────────────────────────────────────────────────
+.pz-service-page__before-after-grid {
+  display: grid;
+  gap: var(--pz-space-m);
+
+  @media (min-width: 720px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  // stylelint-disable-next-line
+  ::ng-deep {
+    .pz-picture,
+    .pz-photo-pending {
+      border-radius: var(--pz-radius);
+      overflow: hidden;
+    }
+  }
+}
+
+// ── Item 7: FAQ ──────────────────────────────────────────────────────────
+.pz-service-page__faq-list {
+  margin: 0;
+  max-width: var(--pz-wrap);
+}
+
+.pz-service-page__faq-item {
+  padding-block: var(--pz-space-s);
+  border-bottom: 1px solid var(--pz-hairline);
+
+  dt {
+    font-family: var(--pz-display);
+    font-size: var(--pz-text-h3);
+    color: var(--pz-ink);
+  }
+
+  dd {
+    margin: var(--pz-space-2xs) 0 0;
+    color: var(--pz-ink-soft);
+    line-height: 1.6;
+  }
+}
+
+// ── Item 8: closing CTA band ─────────────────────────────────────────────
+.pz-service-page__cta-band {
+  text-align: center;
+  padding-block: var(--pz-space-xl);
+  border-top: 1px solid var(--pz-hairline);
+}
+
+.pz-service-page__cta-band-lede {
+  margin: 0 0 var(--pz-space-m);
+  font-family: var(--pz-display);
+  font-style: italic;
+  font-size: var(--pz-text-h3);
+  color: var(--pz-ink);
+}
+
+.pz-service-page__cta-band-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--pz-space-s);
+}
+
+// ── Item 9: cross-links ──────────────────────────────────────────────────
+.pz-service-page__cross-links {
+  padding-block: 0 var(--pz-space-xl);
+  text-align: center;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--pz-space-m);
+    list-style: none;
+    margin: var(--pz-space-s) 0 0;
+    padding: 0;
+  }
+
+  a {
+    color: var(--pz-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}

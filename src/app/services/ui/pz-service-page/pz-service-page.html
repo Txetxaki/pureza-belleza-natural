@@ -1,0 +1,143 @@
+<!-- Anatomy item 1: H1 + value-prop line (service-pages spec, "Nine-part
+     anatomy in fixed order"). Eyebrow and accent CTA close the Stitch
+     reading's gaps (BRIEF §3, items 1-6). -->
+<header class="pz-service-page__hero">
+  <p class="pz-eyebrow pz-eyebrow--accent">{{ eyebrow() }}</p>
+  <h1 class="pz-service-page__h1">{{ content().h1 }}</h1>
+  <p class="pz-service-page__latin">{{ content().latinBinomial }}</p>
+  <p class="pz-service-page__lede">{{ content().valueProp }}</p>
+  <pz-cta variant="primary" [accent]="true" href="/reservar">Reservar esta cita</pz-cta>
+</header>
+
+<!-- Anatomy item 2: real photo of the result. Never fabricated — pz-photo-pending
+     (design.md D9) renders the honest placeholder until the real photoshoot lands. -->
+<figure class="pz-service-page__result-photo">
+  <pz-photo-pending
+    [base]="content().resultPhoto.base"
+    [alt]="content().resultPhoto.alt"
+    [width]="resultPhotoWidth"
+    [height]="resultPhotoHeight"
+  />
+</figure>
+
+<!-- Items 3-7: the identifiable "main prose region" (excludes hero/CTA-band/
+     cross-links nav) so word-count specs (word-count.ts, Slice 4/5) can
+     select it precisely. -->
+<div class="pz-service-page__body">
+  <!-- Anatomy item 3: "qué es y para quién", client language, 150-200 words. -->
+  <section class="pz-service-page__what-is">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">Sobre el tratamiento</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">Qué es y para quién</h2>
+    </div>
+    <div class="pz-service-page__prose">
+      <ng-content select="[pzWhatIs]" />
+    </div>
+  </section>
+
+  <!-- Anatomy item 4: "cómo lo hace Virginia" — the process, step by step
+       (E-E-A-T). Two-column treatment with pz-specimen echoes the Stitch
+       benefits block (BRIEF §3, item 8) without inventing new copy fields. -->
+  <section class="pz-service-page__process">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">El proceso</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">Cómo lo hace Virginia</h2>
+    </div>
+    <div class="pz-service-page__process-grid">
+      <div class="pz-service-page__specimen" aria-hidden="true">
+        <pz-specimen [planta]="planta()" />
+      </div>
+      <div class="pz-service-page__prose">
+        <ng-content select="[pzProcess]" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Anatomy item 5: orientative price + duration, sourced from pricing.ts
+       (single source of truth) — "Consultar" while pending, never a
+       fabricated figure or a specific duration. -->
+  <section class="pz-service-page__pricing">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">Tarifas</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">Tarifas de {{ serviceBreadcrumb() }}</h2>
+    </div>
+    <table class="pz-service-page__tariff-table">
+      <tbody>
+        @for (row of content().pricing.rows; track row.label) {
+          <tr>
+            <th scope="row">{{ row.label }}</th>
+            <td>{{ row.price }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+    <p class="pz-service-page__pricing-meta">Duración orientativa: {{ durationLabel() }}</p>
+    @if (content().pricing.note) {
+      <p class="pz-service-page__pricing-note">{{ content().pricing.note }}</p>
+    }
+  </section>
+
+  <!-- Anatomy item 6: before/after, minimum three cases — same honest-placeholder
+       contract as item 2, never a fabricated or stock result. -->
+  <section class="pz-service-page__before-after">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">Antes y después</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">Resultados reales</h2>
+    </div>
+    <div class="pz-service-page__before-after-grid">
+      @for (photo of content().beforeAfter; track photo.base) {
+        <pz-photo-pending
+          [base]="photo.base"
+          [alt]="photo.alt"
+          [width]="beforeAfterWidth"
+          [height]="beforeAfterHeight"
+        />
+      }
+    </div>
+  </section>
+
+  <!-- Anatomy item 7: FAQ, 4-6 real questions. Rendered from the SAME `faq`
+       array reference the container passes to buildFaqPageSchema — the
+       rendered count and mainEntity.length can never drift apart. -->
+  <section class="pz-service-page__faq">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">Preguntas frecuentes</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">Resolvemos tus dudas</h2>
+    </div>
+    <dl class="pz-service-page__faq-list">
+      @for (entry of content().faq; track entry.question) {
+        <div class="pz-service-page__faq-item">
+          <dt>{{ entry.question }}</dt>
+          <dd>{{ entry.answer }}</dd>
+        </div>
+      }
+    </dl>
+  </section>
+</div>
+
+<!-- Anatomy item 8: double CTA (reserve + WhatsApp), together in the closing
+     band per the Stitch reading, item 10 (tasks.md 2.7). -->
+<section class="pz-service-page__cta-band">
+  <p class="pz-service-page__cta-band-lede">Inicia tu ritual — {{ fromLabel() }}</p>
+  <div class="pz-service-page__cta-band-ctas">
+    <pz-cta variant="secondary" [accent]="true" href="/reservar">Reservar</pz-cta>
+    <pz-cta variant="secondary" [href]="whatsappUrl()" [external]="true">
+      Escribir por WhatsApp
+    </pz-cta>
+  </div>
+</section>
+
+<!-- Anatomy item 9: exactly two internal cross-links, per the study's pairing map. -->
+<nav class="pz-service-page__cross-links" aria-label="Servicios relacionados">
+  <p class="pz-eyebrow">También te puede interesar</p>
+  <ul>
+    @for (path of content().crossLinks; track path) {
+      <li><a [routerLink]="'/' + path">{{ crossLinkLabel(path) }}</a></li>
+    }
+  </ul>
+</nav>

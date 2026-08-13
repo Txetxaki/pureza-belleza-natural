@@ -158,9 +158,14 @@ Design: Engram #2311 point 1; design.md Open Questions (resolved).
 
 ## Slice 2b — `pz-service-page` shared layout
 
+**Status: DONE** — task 2.7 implemented and committed on `content/02b-service-page-layout`
+(base `content/02a-service-infra-primitives`). Component-only spec file, no route wired yet
+(Slice 4/5 wire the five real containers through this layout). See `sdd/content/apply-progress`
+(Engram, project "virginia") for the exact landed `ServiceContent` input contract.
+
 Branch: `content/02b-service-page-layout`. Base: Slice 2a.
 
-### 2.7 `src/app/services/ui/pz-service-page/*` (+ `.spec.ts`)
+### 2.7 `src/app/services/ui/pz-service-page/*` (+ `.spec.ts`) — DONE
 The one presentational layout rendering all 9 anatomy parts in fixed order (D1). Inputs: a typed
 `ServiceContent` (H1 text, value-prop line, latin binomial, `pricing: ServicePricing`, `faq: {question,
 answer}[]`, `crossLinks: [ServicePath, ServicePath]`, photo/before-after `base` names for 2.2) + two named
