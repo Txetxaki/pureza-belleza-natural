@@ -1,15 +1,20 @@
+import { SCHEMA_ID } from '../domain/schema-ids';
 import { SITE } from '../domain/site';
 
 /**
  * `@type: "HairSalon"` — confirmed real schema.org subtype (Thing > Place >
  * LocalBusiness > HealthAndBeautyBusiness > HairSalon; Engram decision #2291,
  * project "virginia"), not the generic `LocalBusiness`. Emitted once, from the
- * home route (design.md §4/§7).
+ * home route (design.md §4/§7). Carries a stable `@id` (design.md, JSON-LD
+ * entity graph) so `Service.provider` and `Person.worksFor` can reference
+ * one entity graph instead of orphan nodes (seo-infrastructure spec, "@id
+ * stable and referenced by other nodes").
  */
 export function buildHairSalonSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'HairSalon',
+    '@id': SCHEMA_ID.salon,
     name: SITE.name,
     url: SITE.url,
     telephone: SITE.telephone,
