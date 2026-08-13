@@ -1,9 +1,14 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
+import { ALL_ROUTES } from './routes.fixture';
 
-// design.md "Testing strategy": axe-core AA on / + /contacto, zero external
-// network requests (self-hosted fonts, click-to-load map). task 8.3.
-const ROUTES = ['/', '/contacto'];
+// design.md "Testing strategy": axe-core AA + zero external network requests
+// (self-hosted fonts, click-to-load map) on every prerendered route.
+// Originally / + /contacto only (task 8.3); extended to all 15 routes (task
+// 9.1) once the ten remaining routes shipped — the site scores 100/100
+// Lighthouse accessibility and passes axe AA on the two original routes, and
+// this loop is the hard gate that keeps it that way for every new page.
+const ROUTES = ALL_ROUTES.map((route) => route.path);
 
 // Substring match on request URLs — design.md §2 forbids Google/Adobe Fonts
 // CDNs entirely (self-hosted from public/fonts); design.md §7/task 6.4/7.5

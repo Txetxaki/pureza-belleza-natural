@@ -544,14 +544,22 @@ no nav/footer restructure. Covered by a new `home-page.spec.ts` test asserting t
 
 ---
 
-## Slice 9 — Final: Playwright coverage, OG/Twitter, sitemap audit, full-suite verification
+## Slice 9 — Final: Playwright coverage, OG/Twitter, sitemap audit, full-suite verification — DONE
+
+**Status: DONE** — all 4 tasks implemented and committed on `content/09-e2e-final-verification`
+(base `content/08-diario`). 45 spec files / 287 vitest tests, all green (285 baseline + 2 new). 63
+Playwright tests, all green (was 8 before this slice: 4 accessibility + 1 canonical-sitemap + 1
+contact-map + 4 visual → now 15-route axe/zero-request coverage, 15-route canonical↔sitemap parity,
+new `service-pages.spec.ts` and `header-dropdown.spec.ts`, 22 visual snapshots across 11 routes).
+`npm run build` green: 15 prerendered routes, 15-URL sitemap. See `sdd/content/apply-progress`
+(Engram, project "virginia") for the hydration-race investigation note on `header-dropdown.spec.ts`.
 
 Branch: `content/09-e2e-final-verification`. Base: Slice 8b. This is the only slice where the
 end-state-only assertions deferred from earlier slices (Slice 3's "exactly five in the dropdown", Slice
 7's frieze-links scenario at full registry state) get their real Playwright coverage — everything below
 them is already true by construction; this slice proves it against the actual built site.
 
-### 9.1 `e2e/*` — extend `ROUTES` arrays + new route-specific specs [P]
+### 9.1 `e2e/*` — extend `ROUTES` arrays + new route-specific specs [P] — DONE
 Per new route: axe-core AA (reuse `accessibility.spec.ts`'s pattern), zero external requests
 (fonts/Maps — same `FORBIDDEN_HOST_SUBSTRINGS`), canonical↔sitemap parity (reuse
 `canonical-sitemap.spec.ts`'s pattern, extend `ROUTES`). Service-page-specific: exactly one
@@ -560,7 +568,15 @@ trigger, `Enter` opens, `ArrowDown`/`Tab` moves through links, `Escape` closes a
 Spec: every capability's respective "Live status"/accessibility-adjacent scenarios; `design-system` —
 "`/precios` sibling exception holds" (E2E DOM-nesting check).
 
-### 9.2 `src/app/seo/application/seo.service.spec.ts` (Modify)
+**Apply-time addition**: introduced `e2e/routes.fixture.ts` (single literal list of the 15 routes,
+consumed by `accessibility.spec.ts`/`canonical-sitemap.spec.ts`/`service-pages.spec.ts`) instead of
+hand-duplicating the list three times — reduces drift risk, same spirit as the domain bijection specs
+elsewhere in this change. `e2e/service-pages.spec.ts` (new) covers the single-`[data-planta]`-per-page
+and `/precios` five-sibling-no-nesting checks. `e2e/header-dropdown.spec.ts` (new) covers the
+keyboard-only dropdown flow. `e2e/test-helpers.ts` (new) adds `waitForHydration()` — see the apply-progress
+note below on why it's needed (a test-timing fix, not an app bug).
+
+### 9.2 `src/app/seo/application/seo.service.spec.ts` (Modify) — DONE
 Add the no-accumulation assertions foundation follow-up 2 was missing: navigate route A → route B, assert
 exactly one set of OG (`og:title`/`og:description`/`og:url`/`og:type`) and Twitter
 (`twitter:card`/`twitter:title`/`twitter:description`) tags exists, matching only route B. **This is a
@@ -569,13 +585,19 @@ correctly via `Meta.updateTag` (verified in design phase, Engram #2311) — do n
 adding the test.
 Spec: `seo-infrastructure` — "No OG/Twitter accumulation across navigation".
 
-### 9.3 `src/app/seo/generate-sitemap.spec.ts` (Modify)
+### 9.3 `src/app/seo/generate-sitemap.spec.ts` (Modify) — DONE
 Final-state assertion: sitemap contains all 12 registry routes (all now `'live'`) + 3 blog-post paths = 15
 `<url>` entries, zero `'planned'` leakage.
 Spec: `seo-infrastructure` — "Sitemap reflects prerendered output" (full 12+3 count, superseding the
 earlier 2-route version of this assertion).
 
-### 9.4 Registry status audit (no new code — verification task)
+**Apply-time note**: `scripts/generate-sitemap.mjs`'s write-time `status === 'live'` filter (the two
+"absorbed foundation follow-ups" the launch brief flagged) was **already implemented in Slice 8**
+(`selectSitemapEntries`, committed on `content/08-diario`) — confirmed by reading the script before
+starting this slice, no duplicate work done. This task only added the real-registry 15-entry assertion
+that was still missing.
+
+### 9.4 Registry status audit (no new code — verification task) — DONE
 Confirm all twelve `route-seo.registry.json` entries read `status: 'live'` (each flip already landed in
 its own slice above — this task is a grep-and-confirm, not a new flip). `npm run build` green
 (prebuild validator + image pipeline + postbuild sitemap all pass). Full `npm test -- --watch=false` and

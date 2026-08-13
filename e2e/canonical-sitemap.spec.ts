@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
+import { ALL_ROUTES } from './routes.fixture';
 
 // design.md risk E: "Canonical URL rule is expressed twice (TS + .mjs
 // sitemap). Mitigation: Playwright asserts each page's canonical equals its
@@ -10,8 +11,13 @@ import { join } from 'node:path';
 // output from this batch's `npm run build`) and the REAL rendered
 // <link rel="canonical"> for each route — no hardcoded expected URL on
 // either side, so a regression in either implementation fails this test.
+//
+// Originally / + /contacto only; extended to all 15 prerendered routes
+// (task 9.1) — this is the E2E half of design risk E's mitigation for the
+// ten routes added by `content`, closing it the same way `foundation`
+// closed it for the first two.
 
-const ROUTES = ['/', '/contacto'];
+const ROUTES = ALL_ROUTES.map((route) => route.path);
 
 function extractLocs(sitemapXml: string): string[] {
   return Array.from(sitemapXml.matchAll(/<loc>(.*?)<\/loc>/g)).map((match) => match[1]);

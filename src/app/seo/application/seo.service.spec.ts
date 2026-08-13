@@ -91,6 +91,67 @@ describe('SeoService', () => {
     );
   });
 
+  it('sets OG/Twitter meta exactly once per navigation — no accumulation (seo-infrastructure spec, "No OG/Twitter accumulation across navigation")', async () => {
+    // Coverage addition, not a bug fix: `AngularMetadataAdapter.setOpenGraph`/
+    // `setTwitterCard` already upsert via `Meta.updateTag` (verified in the
+    // `content` design phase, Engram #2311) — this closes the foundation
+    // follow-up 2 gap by asserting it, mirroring the title/description/
+    // canonical assertions above one section up.
+    TestBed.inject(SeoService);
+    const document = TestBed.inject(DOCUMENT);
+
+    const harness = await RouterTestingHarness.create('/');
+    harness.detectChanges();
+
+    expect(document.querySelectorAll('meta[property="og:title"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[property="og:description"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[property="og:url"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[property="og:type"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[name="twitter:card"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[name="twitter:title"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[name="twitter:description"]')).toHaveLength(1);
+
+    expect(document.querySelector('meta[property="og:title"]')?.getAttribute('content')).toBe(
+      HOME_SEO.title,
+    );
+    expect(document.querySelector('meta[property="og:url"]')?.getAttribute('content')).toBe(
+      canonicalUrl(''),
+    );
+    expect(document.querySelector('meta[name="twitter:title"]')?.getAttribute('content')).toBe(
+      HOME_SEO.title,
+    );
+
+    await harness.navigateByUrl('/contacto');
+    harness.detectChanges();
+
+    // Still exactly one of each node after a second navigation — the OG/
+    // Twitter tags were replaced in place, not appended, and now match ONLY
+    // route B (/contacto).
+    expect(document.querySelectorAll('meta[property="og:title"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[property="og:description"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[property="og:url"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[property="og:type"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[name="twitter:card"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[name="twitter:title"]')).toHaveLength(1);
+    expect(document.querySelectorAll('meta[name="twitter:description"]')).toHaveLength(1);
+
+    expect(document.querySelector('meta[property="og:title"]')?.getAttribute('content')).toBe(
+      CONTACT_SEO.title,
+    );
+    expect(document.querySelector('meta[property="og:description"]')?.getAttribute('content')).toBe(
+      CONTACT_SEO.description,
+    );
+    expect(document.querySelector('meta[property="og:url"]')?.getAttribute('content')).toBe(
+      canonicalUrl('contacto'),
+    );
+    expect(document.querySelector('meta[name="twitter:title"]')?.getAttribute('content')).toBe(
+      CONTACT_SEO.title,
+    );
+    expect(
+      document.querySelector('meta[name="twitter:description"]')?.getAttribute('content'),
+    ).toBe(CONTACT_SEO.description);
+  });
+
   it('replaces the existing [data-pz-schema] node on re-navigation instead of duplicating it', async () => {
     const seoService = TestBed.inject(SeoService);
     const document = TestBed.inject(DOCUMENT);

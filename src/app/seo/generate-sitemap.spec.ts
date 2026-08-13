@@ -4,6 +4,8 @@
 // and why it imports the script instead of duplicating its logic.
 import { sep } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import postsData from '../diario/posts.manifest.json';
+import registryData from './route-seo.registry.json';
 import {
   BLOG_POST_CHANGEFREQ,
   BLOG_POST_PRIORITY,
@@ -93,5 +95,41 @@ describe('selectSitemapEntries (seo-infrastructure spec, "Planned routes exclude
   it('throws when a built path matches neither the registry nor the blog post manifest', () => {
     const registry = [registryRow({ path: '', status: 'live' })];
     expect(() => selectSitemapEntries(['', 'huerfano'], registry, [])).toThrow(/no route-seo\.registry\.json or posts\.manifest\.json entry/);
+  });
+});
+
+// tasks.md Slice 9, task 9.3: "Final-state assertion: sitemap contains all
+// 12 registry routes (all now 'live') + 3 blog-post paths = 15 <url>
+// entries, zero 'planned' leakage." seo-infrastructure spec, "All twelve
+// routes present and live" (full 12+3 count, superseding the earlier
+// 2-route version of this assertion) + "Sitemap reflects prerendered
+// output". Runs `selectSitemapEntries` against the REAL registry and blog
+// manifest — not a fixture — so a `status` regression on any registry entry
+// fails this test directly, the same drift-fails-a-test pattern the other
+// bijection specs in this change use.
+describe('selectSitemapEntries — final state (real route-seo.registry.json + posts.manifest.json)', () => {
+  it('produces exactly 15 <url> entries (12 live registry routes + 3 blog posts) with zero exclusion warnings', () => {
+    const registry = registryData as unknown as SitemapRegistryRouteLike[];
+    const posts = postsData as ReadonlyArray<{ readonly slug: string }>;
+
+    expect(registry).toHaveLength(12);
+    expect(registry.every((entry) => entry.status === 'live')).toBe(true);
+    expect(posts).toHaveLength(3);
+
+    const builtRoutes = [
+      ...registry.map((entry) => entry.path),
+      ...posts.map((post) => `diario/${post.slug}`),
+    ];
+
+    const { entries, warnings } = selectSitemapEntries(builtRoutes, registry, posts);
+
+    expect(entries).toHaveLength(15);
+    expect(warnings).toEqual([]);
+
+    const locs = entries.map((entry) => entry.loc);
+    expect(new Set(locs).size).toBe(15);
+    for (const post of posts) {
+      expect(locs).toContain(`https://purezabellezanatural.es/diario/${post.slug}`);
+    }
   });
 });
