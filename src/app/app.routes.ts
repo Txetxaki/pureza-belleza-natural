@@ -9,6 +9,8 @@ import { ExtensionesCabelloNaturalPage } from './services/extensiones-cabello-na
 import { TratamientosCapilaresPage } from './services/tratamientos-capilares/tratamientos-capilares-page';
 import { VirginiaPage } from './salon/virginia/virginia-page';
 import { ElSalonPage } from './salon/el-salon/el-salon-page';
+import { PreciosPage } from './salon/precios/precios-page';
+import { ReservarPage } from './booking/reservar/reservar-page';
 
 // SEO wiring (design.md §4/§7, PR4's documented pattern, landed here in PR5):
 // `seoRouteData(path)` spreads the matching `route-seo.registry.json` entry
@@ -51,5 +53,15 @@ export const routes: Routes = [
     path: 'el-salon',
     component: ElSalonPage,
     data: seoRouteData('el-salon'),
+  },
+  {
+    path: 'precios',
+    component: PreciosPage,
+    data: seoRouteData('precios'),
+  },
+  {
+    path: 'reservar',
+    component: ReservarPage,
+    data: seoRouteData('reservar'),
   },
 ];

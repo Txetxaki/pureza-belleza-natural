@@ -100,10 +100,17 @@ describe('SiteHeader', () => {
     const el = fixture.nativeElement as HTMLElement;
     const cta = el.querySelector('.site-header__cta');
 
-    // Today's real registry: /reservar is still 'planned' (Slice 6b flips
-    // it live) — the CTA must not render a link to a route that doesn't
-    // exist in app.routes.ts yet.
-    expect(buildHeaderNav(ROUTE_SEO_REGISTRY).reserveCta).toBeUndefined();
-    expect(cta).toBeNull();
+    // Today's real registry: /reservar is now 'live' (Slice 6b) — the CTA
+    // renders and links to the real route, driven by the same
+    // buildHeaderNav() the component itself uses.
+    const reserveCta = buildHeaderNav(ROUTE_SEO_REGISTRY).reserveCta;
+    expect(reserveCta).toEqual({
+      path: 'reservar',
+      label: 'Reservar',
+      status: 'live',
+      inNav: true,
+    });
+    expect(cta?.getAttribute('href')).toBe('/reservar');
+    expect(cta?.textContent?.trim()).toBe('Reservar');
   });
 });

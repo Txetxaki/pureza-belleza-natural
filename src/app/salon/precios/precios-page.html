@@ -1,0 +1,48 @@
+<header class="precios-page__hero">
+  <p class="pz-eyebrow">Precios</p>
+  <h1 class="precios-page__h1">Precios de peluquería en Ciudad Real, servicio a servicio</h1>
+  <p class="precios-page__lede">
+    Aquí tienes cada servicio de Pureza con su tarifa orientativa. El importe final depende de la
+    longitud y densidad de tu cabello, así que siempre se confirma en tu primera consulta — nunca
+    antes ni por sorpresa.
+  </p>
+</header>
+
+<!-- The five plant accents as SIBLING [data-planta] scopes, one per row —
+     never nested, never wrapped in a sixth outer scope (design-system spec,
+     "/precios sibling exception holds"). -->
+<div class="precios-page__list">
+  @for (row of rows; track row.entry.path) {
+    <article class="precios-page__row" [attr.data-planta]="row.entry.planta">
+      <div class="precios-page__row-glyph" aria-hidden="true">
+        <pz-specimen [planta]="row.entry.planta" />
+      </div>
+      <div class="precios-page__row-body">
+        <h2 class="precios-page__row-title">{{ row.entry.breadcrumb }}</h2>
+        <table class="precios-page__tariff-table">
+          <tbody>
+            @for (tariff of row.pricing.rows; track tariff.label) {
+              <tr>
+                <th scope="row">{{ tariff.label }}</th>
+                <td>{{ tariff.price }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+        <a class="precios-page__row-link" [routerLink]="'/' + row.entry.path">
+          Ver {{ row.entry.breadcrumb }} →
+        </a>
+      </div>
+    </article>
+  }
+</div>
+
+<section class="precios-page__cta-band">
+  <p class="precios-page__cta-band-lede">¿Quieres una cifra concreta para tu melena?</p>
+  <div class="precios-page__cta-band-ctas">
+    <pz-cta variant="primary" href="/reservar">Reservar cita</pz-cta>
+    <pz-cta variant="secondary" [href]="whatsappUrl" [external]="true">
+      Escribir por WhatsApp
+    </pz-cta>
+  </div>
+</section>

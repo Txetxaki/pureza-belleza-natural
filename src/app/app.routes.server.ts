@@ -37,4 +37,12 @@ export const serverRoutes: ServerRoute[] = [
     path: 'el-salon',
     renderMode: RenderMode.Prerender,
   },
+  {
+    path: 'precios',
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: 'reservar',
+    renderMode: RenderMode.Prerender,
+  },
 ];

@@ -1,0 +1,142 @@
+:host {
+  display: block;
+}
+
+// ── Hero ──────────────────────────────────────────────────────────────────
+.precios-page__hero {
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+  padding-block: var(--pz-space-l) var(--pz-space-m);
+  text-align: center;
+}
+
+.precios-page__h1 {
+  margin: var(--pz-space-3xs) auto 0;
+  max-width: var(--pz-wrap);
+  font-family: var(--pz-display);
+  font-size: var(--pz-text-h1);
+  line-height: 1.1;
+  color: var(--pz-ink);
+}
+
+.precios-page__lede {
+  margin: var(--pz-space-m) auto 0;
+  max-width: var(--pz-measure);
+  color: var(--pz-ink-soft);
+  font-size: var(--pz-text-lead);
+  line-height: 1.7;
+}
+
+// ── Row list — five sibling [data-planta] scopes ────────────────────────
+.precios-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pz-space-xl);
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+  padding-block: var(--pz-space-2xl);
+}
+
+.precios-page__row {
+  display: grid;
+  gap: var(--pz-space-m);
+  padding-block: var(--pz-space-l);
+  border-top: 1px solid var(--pz-hairline);
+  align-items: start;
+
+  @media (min-width: 640px) {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+}
+
+.precios-page__row-glyph {
+  color: var(--pz-accent-live);
+  justify-self: center;
+
+  // stylelint-disable-next-line
+  ::ng-deep svg {
+    width: clamp(3.5rem, 8vw, 5rem);
+    height: auto;
+  }
+}
+
+.precios-page__row-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pz-space-s);
+  text-align: center;
+
+  @media (min-width: 640px) {
+    text-align: left;
+  }
+}
+
+.precios-page__row-title {
+  margin: 0;
+  font-family: var(--pz-display);
+  font-size: var(--pz-text-h3);
+  color: var(--pz-ink);
+}
+
+.precios-page__tariff-table {
+  margin: 0 auto;
+  max-width: 30rem;
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  @media (min-width: 640px) {
+    margin: 0;
+  }
+
+  th,
+  td {
+    padding-block: var(--pz-space-2xs);
+    font-weight: 400;
+    color: var(--pz-ink-soft);
+  }
+
+  td {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.precios-page__row-link {
+  align-self: center;
+  color: var(--pz-accent-text);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+
+  @media (min-width: 640px) {
+    align-self: flex-start;
+  }
+}
+
+// ── Closing CTA band ─────────────────────────────────────────────────────
+.precios-page__cta-band {
+  text-align: center;
+  padding-block: var(--pz-space-xl);
+  border-top: 1px solid var(--pz-hairline);
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+}
+
+.precios-page__cta-band-lede {
+  margin: 0 0 var(--pz-space-m);
+  font-family: var(--pz-display);
+  font-style: italic;
+  font-size: var(--pz-text-h3);
+  color: var(--pz-ink);
+}
+
+.precios-page__cta-band-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--pz-space-s);
+}

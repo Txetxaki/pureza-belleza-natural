@@ -341,11 +341,11 @@ Spec: `salon-page` — "Exempt from uniqueness check", "One honest placeholder, 
 
 ---
 
-## Slice 6b — `/precios` + `/reservar`
+## Slice 6b — `/precios` + `/reservar` — DONE
 
 Branch: `content/06b-precios-reservar`. Base: Slice 6a.
 
-### 6.4 `src/app/salon/precios/*`
+### 6.4 `src/app/salon/precios/*` — DONE
 `@for` over `SERVICE_INDEX` (1.1) × `pricing` (1.2): one row per service, each its own **sibling**
 `[data-planta]` scope (never nested, never wrapped in a sixth scope) — reuse `pz-specimen` (2.1) for the
 row glyph. All five rows render "Consultar" (no numeric price/duration — every pricing entry is still
@@ -354,7 +354,7 @@ row glyph. All five rows render "Consultar" (no numeric price/duration — every
 Spec: `precios-page` — "Five sibling scopes present", "No numeric price at launch", "Metadata matches
 registry", "Row links resolve".
 
-### 6.5 `src/app/booking/reservar/*` [P — independent of 6.4]
+### 6.5 `src/app/booking/reservar/*` [P — independent of 6.4] — DONE
 Content: how booking works + what to send Virginia (service wanted, preferred dates, hair
 length/history). **Must not** duplicate `/contacto`'s address/hours/map/NAP, and its H1 must share no
 common keyword phrase with `/contacto`'s H1 — write both H1s side by side before committing either.
