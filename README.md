@@ -142,6 +142,11 @@ file alongside the command.
   roles + 5 plant accents, each with a `-live`/`-text` pair). Components read the generic
   `--pz-accent-live`/`--pz-accent-text` pair, never a plant-specific token or a literal hex value; a
   `[data-planta="…"]` scope on an ancestor rebinds those two properties to one plant.
+- **`anyComponentStyle`'s warning budget is 5kB, not Angular's default 4kB.** `home-page.scss` is
+  legitimately the largest stylesheet on the site — hero, five-tile frieze, Aveda band, manifest,
+  carta, salon strip, quote and CTA band all live on one route — and sits at ~4.5kB. The 8kB
+  **error** ceiling is untouched, so a genuinely ballooning stylesheet still fails the build.
+  (`angular.json` is schema-validated and rejects unknown keys, so this note cannot live inline.)
 - **`info/direccion-diseno.build.SUPERSEDED-v2.html` is historical only** — an earlier mockup
   iteration with a different (rejected) token set. `openspec/changes/foundation/design.md` is the
   canonical design reference; do not copy values from the superseded file.

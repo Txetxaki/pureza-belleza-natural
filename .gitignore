@@ -33,9 +33,24 @@ yarn-error.log
 # regenerates these from the tracked public/images/*.jpg sources on every
 # build; see src/app/shared/utils/image-variants.ts for the naming
 # convention. Never commit the derived {base}-{width}.{format} files.
-public/images/*-[0-9]*.avif
-public/images/*-[0-9]*.webp
-public/images/*-[0-9]*.jpg
+#
+# The three emitted widths are spelled out instead of `*-[0-9]*`. That looser
+# pattern matches any source photo whose own name ends in a digit, and sixteen
+# of them do — `antes-despues-{planta}-{1,2,3}` and `salon-interior-1`. They
+# were silently untracked: present on this machine, absent from the repo, so a
+# clean clone or a CI runner would prerender empty frames under "Resultados
+# reales" and fail available-photos.generated.spec.ts's fresh-readdir guard.
+# Same collision the variant regex in generate-image-variants.mjs carried; a
+# naming rule duplicated in three places has to be right in all three.
+public/images/*-400.avif
+public/images/*-800.avif
+public/images/*-1200.avif
+public/images/*-400.webp
+public/images/*-800.webp
+public/images/*-1200.webp
+public/images/*-400.jpg
+public/images/*-800.jpg
+public/images/*-1200.jpg
 
 # Miscellaneous
 /.angular/cache

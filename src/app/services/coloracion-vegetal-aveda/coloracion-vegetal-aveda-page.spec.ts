@@ -76,15 +76,25 @@ describe('ColoracionVegetalAvedaPage (/coloracion-vegetal-aveda) — service-pag
     expect(h1).not.toBe(seo.primaryKeyword);
   });
 
-  it('binds exactly one [data-planta="romero"] scope, matching the registry planta ("Single accent scope per page")', async () => {
+  it('binds every [data-planta] scope to romero, none nested ("Single accent scope per page")', async () => {
     configure();
     const harness = await RouterTestingHarness.create('/coloracion-vegetal-aveda');
     harness.detectChanges();
 
     const el = harness.routeNativeElement as HTMLElement;
-    const scoped = el.querySelectorAll('[data-planta]');
-    expect(scoped).toHaveLength(1);
-    expect(scoped[0].getAttribute('data-planta')).toBe('romero');
+    const scoped = Array.from(el.querySelectorAll('[data-planta]'));
+
+    // The rule is "never nested, one accent per service route" — not "exactly
+    // one element carries the attribute". This page renders two SIBLING romero
+    // scopes: the service page itself and the Aveda credential block beneath
+    // it, the same sibling pattern the home carta and /precios already use.
+    // Asserting the plant and the non-nesting still catches the failure the
+    // old count was standing in for: a second, different accent on the page.
+    expect(scoped.length).toBeGreaterThan(0);
+    expect(new Set(scoped.map((node) => node.getAttribute('data-planta')))).toEqual(
+      new Set(['romero']),
+    );
+    expect(el.querySelectorAll('[data-planta] [data-planta]')).toHaveLength(0);
   });
 
   it('renders "qué es y para quién" between 150 and 200 words ("Word count within range")', async () => {

@@ -55,7 +55,15 @@ export function buildAvailablePhotosModule(bases) {
 const SOURCE_EXTENSION = '.jpg';
 // Matches already-generated variants (e.g. "atmosfera-romero-800.avif") so a
 // re-run never treats its own output as a new source image.
-const VARIANT_SUFFIX_RE = /-\d+\.(avif|webp|jpg)$/i;
+//
+// The widths are listed explicitly rather than matched as `-\d+`. A bare digit
+// pattern also swallows any source photo whose own name ends in a number, and
+// the before/after sets are named exactly that way — `antes-despues-romero-1`
+// through `-3`. All fifteen of them were silently classified as build output:
+// no variants were emitted, they never reached `available-photos.generated.ts`,
+// and every service page rendered empty frames under "Resultados reales" while
+// the files sat on disk the whole time.
+const VARIANT_SUFFIX_RE = new RegExp(`-(${WIDTHS.join('|')})\\.(${FORMATS.join('|')})$`, 'i');
 
 /** `{base}-{width}.{format}` — the one naming rule every consumer relies on. */
 export function buildVariantFilename(base, width, format) {

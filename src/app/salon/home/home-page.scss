@@ -92,11 +92,20 @@
 }
 
 // ── Hero frieze (five-plant mini service index) ─────────────────────────
+// Five explicit columns, not `auto-fit`: five is the whole point of the
+// frieze (five oficios, five plantas), and auto-fit orphaned the fifth tile
+// on its own row at common desktop widths. Two rows of 2+2+1 on narrow
+// screens is fine; 4+1 on a wide one is not.
 .home-frieze {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--pz-space-s);
   margin-top: var(--pz-space-l);
+
+  @media (min-width: 560px) {
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--pz-space-2xs);
+  }
 }
 
 // Each item is its own [data-planta] scope (see the template), so the tint,

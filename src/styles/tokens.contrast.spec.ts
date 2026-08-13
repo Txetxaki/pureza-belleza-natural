@@ -102,7 +102,7 @@ describe('design tokens — plant accent -text variants vs --pz-surface', () => 
  * token under 4.5:1. This computes the same mix CSS does and pins both text
  * roles that actually appear on a washed surface.
  */
-const ACCENT_WASH_PERCENT = 7;
+const ACCENT_WASH_PERCENT = 13;
 
 const LIVE_TOKENS = {
   '--pz-romero-text': '#3D8B6B',

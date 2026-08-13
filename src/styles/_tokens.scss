@@ -30,16 +30,22 @@
   --pz-accent-live: var(--pz-ink); /* unowned context degrades to ink */
   --pz-accent-text: var(--pz-ink-soft); /* → no loose colour anywhere      */
 
-  /* Derived from `--pz-accent-live`, never declared per plant: a
-     `[data-planta]` scope rebinds the two handles above and these follow for
-     free, so adding a sixth plant stays a two-line change.
-     `--pz-accent-wash` is a section-sized tint — it must stay light enough
-     that `--pz-ink` on top still clears AA, which is what
+  /* Two more accent handles, for surfaces rather than text.
+     `--pz-accent-wash` is a section-sized tint; it must stay light enough
+     that `--pz-ink`/`--pz-ink-soft` on top still clear AA, which is what
      `tokens.contrast.spec.ts` pins. `--pz-accent-rule` is for 1px hairlines
-     and other non-text strokes ONLY; it is not a text colour.
-     Small text on a filled accent still uses `--pz-accent-text`. */
-  --pz-accent-wash: color-mix(in srgb, var(--pz-accent-live) 7%, var(--pz-surface));
-  --pz-accent-rule: color-mix(in srgb, var(--pz-accent-live) 45%, var(--pz-surface));
+     and other non-text strokes ONLY — it is NOT a text colour. Small text on
+     a washed surface still uses `--pz-accent-text`.
+
+     Both are re-declared inside every `[data-planta]` block below rather than
+     derived once from `--pz-accent-live` here. That looks redundant and is
+     not: a `var()` inside a custom property is substituted at the element
+     that DECLARES the property, so a wash defined here would compute against
+     `:root`'s `--pz-accent-live` — plain ink — and inherit into every plant
+     scope as the same grey, no matter what the scope rebinds underneath.
+     (Confirmed visually: the frieze tiles rendered grey.) */
+  --pz-accent-wash: color-mix(in srgb, var(--pz-ink) 5%, var(--pz-surface));
+  --pz-accent-rule: var(--pz-hairline);
 
   /* ── Type ─────────────────────────────────────────────────────────────── */
   --pz-display: 'EB Garamond', 'Iowan Old Style', Palatino, 'Times New Roman', serif;
@@ -67,24 +73,17 @@
   --pz-wrap: 1120px;
 }
 
-/* One scope rule binds a plant to a subtree. Never nested — siblings only. */
-[data-planta='romero'] {
-  --pz-accent-live: var(--pz-romero-live);
-  --pz-accent-text: var(--pz-romero-text);
-}
-[data-planta='espliego'] {
-  --pz-accent-live: var(--pz-espliego-live);
-  --pz-accent-text: var(--pz-espliego-text);
-}
-[data-planta='esparto'] {
-  --pz-accent-live: var(--pz-esparto-live);
-  --pz-accent-text: var(--pz-esparto-text);
-}
-[data-planta='vid'] {
-  --pz-accent-live: var(--pz-vid-live);
-  --pz-accent-text: var(--pz-vid-text);
-}
-[data-planta='olivo'] {
-  --pz-accent-live: var(--pz-olivo-live);
-  --pz-accent-text: var(--pz-olivo-text);
+/* One scope rule binds a plant to a subtree. Never nested — siblings only.
+   Each scope rebinds all four handles; the two surface ones mix from the
+   plant's own `-live` token rather than from `--pz-accent-live`, for the
+   substitution reason documented above. */
+$plantas: romero, espliego, esparto, vid, olivo;
+
+@each $planta in $plantas {
+  [data-planta='#{$planta}'] {
+    --pz-accent-live: var(--pz-#{$planta}-live);
+    --pz-accent-text: var(--pz-#{$planta}-text);
+    --pz-accent-wash: color-mix(in srgb, var(--pz-#{$planta}-live) 13%, var(--pz-surface));
+    --pz-accent-rule: color-mix(in srgb, var(--pz-#{$planta}-live) 55%, var(--pz-surface));
+  }
 }

@@ -11,7 +11,14 @@ import { AVAILABLE_PHOTO_BASES } from './available-photos.generated';
 // deliberate, documented duplication already used for image-variants.ts's
 // naming convention and tokens.contrast.spec.ts's hex values.
 const SOURCE_EXTENSION = '.jpg';
-const VARIANT_SUFFIX_RE = /-\d+\.(avif|webp|jpg)$/i;
+const WIDTHS = [400, 800, 1200];
+const FORMATS = ['avif', 'webp', 'jpg'];
+// Only the widths the pipeline actually emits, never a bare `-\d+`. This
+// duplicated rule previously carried the same bug as the script it mirrors —
+// `-\d+` also matches `antes-despues-romero-1.jpg` — so the guard agreed with
+// the generator and neither noticed that fifteen real photos were being
+// skipped. Duplicating a rule is only safe when both copies are right.
+const VARIANT_SUFFIX_RE = new RegExp(`-(${WIDTHS.join('|')})\\.(${FORMATS.join('|')})$`, 'i');
 
 function isSourceImage(filename: string): boolean {
   return filename.toLowerCase().endsWith(SOURCE_EXTENSION) && !VARIANT_SUFFIX_RE.test(filename);
@@ -32,5 +39,28 @@ describe('available-photos.generated.ts — sync guard (design.md D9)', () => {
 
   it('is non-empty — the repo always carries at least the AI atmosphere bases', () => {
     expect(AVAILABLE_PHOTO_BASES.length).toBeGreaterThan(0);
+  });
+
+  it('treats a source photo whose name ends in a digit as a source, not as build output', () => {
+    // The exact collision that hid all fifteen before/after photos: their
+    // names end in -1/-2/-3, which a bare `-\d+` variant pattern swallows.
+    expect(isSourceImage('antes-despues-romero-1.jpg')).toBe(true);
+    expect(isSourceImage('salon-interior-1.jpg')).toBe(true);
+
+    // ...while the real variants are still correctly excluded.
+    expect(isSourceImage('antes-despues-romero-1-800.jpg')).toBe(false);
+    expect(isSourceImage('atmosfera-romero-1200.jpg')).toBe(false);
+    expect(isSourceImage('atmosfera-romero-400.avif')).toBe(false);
+  });
+
+  it('lists every before/after and result slot the service pages reference', () => {
+    const plantas = ['romero', 'espliego', 'esparto', 'vid', 'olivo'];
+    const required = [
+      'salon-interior-1',
+      ...plantas.map((planta) => `resultado-${planta}`),
+      ...plantas.flatMap((planta) => [1, 2, 3].map((n) => `antes-despues-${planta}-${n}`)),
+    ];
+
+    expect(required.filter((base) => !AVAILABLE_PHOTO_BASES.includes(base))).toEqual([]);
   });
 });
