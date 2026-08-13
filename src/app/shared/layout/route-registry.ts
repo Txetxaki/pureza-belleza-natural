@@ -54,12 +54,21 @@ export type HeaderNavSourceEntry = Pick<
 export interface HeaderNav {
   /** Always `'Pureza'`, centred (app-shell spec: "Wordmark centred"). */
   readonly wordmark: NavRouteEntry;
-  /** Non-service, non-home, non-reserve entries — left of the wordmark. */
+  /** Non-service, non-home, non-reserve, non-diario entries — left of the
+   * wordmark. `diario` is excluded for the same reason `reservar` is: it owns
+   * its own zone (a disclosure whose panel holds its child articles), so
+   * leaving it here too would render the label twice. */
   readonly navLeft: readonly NavRouteEntry[];
   /** The `Carta` dropdown's entries — live service routes only, never a
    * `/servicios` index (anti-cannibalization rule 1). Empty until the first
    * service route flips live (Slice 4). */
   readonly dropdownServices: readonly NavRouteEntry[];
+  /** The `Diario` disclosure's own trigger entry. `undefined` until `/diario`
+   * is live and in-nav, exactly like `reserveCta` — no dead trigger. The
+   * articles that hang beneath it are NOT registry rows (they live in
+   * `posts.manifest.json`), so the header composes them separately via
+   * `buildDiarioNav`. */
+  readonly diarioParent: NavRouteEntry | undefined;
   /** `undefined` until `/reservar` itself flips live — no dead CTA link. */
   readonly reserveCta: NavRouteEntry | undefined;
 }
@@ -85,15 +94,15 @@ const isServiceEntry = (
  */
 export function buildHeaderNav(entries: readonly HeaderNavSourceEntry[]): HeaderNav {
   const home = entries.find((entry) => entry.path === '');
-  const reservar = entries.find((entry) => entry.path === 'reservar');
   const liveInNav = entries.filter((entry) => entry.status === 'live' && entry.inNav);
+  const ownsOwnZone = (path: string) => path === 'reservar' || path === 'diario';
 
   const wordmark = toNavEntry(
     home ?? { path: '', breadcrumb: 'Pureza', planta: null, status: 'live', inNav: true },
   );
 
   const navLeft = liveInNav
-    .filter((entry) => entry.path !== '' && entry.path !== 'reservar' && !isServiceEntry(entry))
+    .filter((entry) => entry.path !== '' && !ownsOwnZone(entry.path) && !isServiceEntry(entry))
     .map(toNavEntry);
 
   // Both zones below check `inNav` as well as `status`, matching `navLeft`
@@ -105,8 +114,38 @@ export function buildHeaderNav(entries: readonly HeaderNavSourceEntry[]): Header
   // the dropdown depends on: the footer carrying the same links.
   const dropdownServices = liveInNav.filter(isServiceEntry).map(toNavEntry);
 
-  const reserveCta =
-    reservar && reservar.status === 'live' && reservar.inNav ? toNavEntry(reservar) : undefined;
+  // Both derived from `liveInNav`, so each is `undefined` exactly when its
+  // route is not shipped — the zone disappears rather than rendering a dead
+  // trigger, and flipping the registry row back restores it with no edit here.
+  const findLive = (path: string) => {
+    const entry = liveInNav.find((candidate) => candidate.path === path);
+    return entry ? toNavEntry(entry) : undefined;
+  };
 
-  return { wordmark, navLeft, dropdownServices, reserveCta };
+  return {
+    wordmark,
+    navLeft,
+    dropdownServices,
+    diarioParent: findLive('diario'),
+    reserveCta: findLive('reservar'),
+  };
+}
+
+/**
+ * The three launch articles projected into the same `NavRouteEntry` shape as
+ * every other nav link, so the `Diario` disclosure's panel and the footer's
+ * article row can both consume them without either knowing about
+ * `PostManifestEntry`. Paths are namespaced under the parent — a post is
+ * reachable only through `/diario/<slug>`, which is precisely the "everything
+ * hangs from its parent" rule this projection exists to encode.
+ */
+export function buildDiarioNav(
+  posts: readonly { readonly slug: string; readonly title: string }[],
+): NavRouteEntry[] {
+  return posts.map((post) => ({
+    path: `diario/${post.slug}`,
+    label: post.title,
+    status: 'live' as const,
+    inNav: true,
+  }));
 }

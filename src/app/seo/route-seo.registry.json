@@ -80,7 +80,7 @@
     "planta": null,
     "changefreq": "yearly",
     "priority": 0.5,
-    "inNav": false,
+    "inNav": true,
     "status": "live"
   },
   {

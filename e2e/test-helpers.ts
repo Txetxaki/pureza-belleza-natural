@@ -23,8 +23,15 @@ import { expect, type Page } from '@playwright/test';
  * keyboard- or mouse-driven Angular interaction right after `page.goto`
  * should call this first.
  */
+/** The header now has two disclosures sharing one class, so every locator
+ * addresses a trigger through the panel id it declares in `aria-controls`. */
+export const CARTA_TRIGGER = '.header-disclosure__trigger[aria-controls="header-carta"]';
+export const CARTA_LINKS = '#header-carta .header-disclosure__link';
+export const DIARIO_TRIGGER = '.header-disclosure__trigger[aria-controls="header-diario"]';
+export const DIARIO_LINKS = '#header-diario .header-disclosure__link';
+
 export async function waitForHydration(page: Page): Promise<void> {
-  const trigger = page.locator('.header-carta__trigger');
+  const trigger = page.locator(CARTA_TRIGGER);
   await expect(async () => {
     await trigger.click();
     await expect(trigger).toHaveAttribute('aria-expanded', 'true');

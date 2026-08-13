@@ -73,11 +73,12 @@
 // Disclosure pattern (design.md "Header dropdown") — not role="menu", plain
 // button + <ul>. The panel is ALWAYS in the DOM; visibility toggles via
 // visibility/opacity so it stays tabbable, never display: none.
-.header-carta {
+// Shared by both the `Carta` (services) and `Diario` (articles) disclosures.
+.header-disclosure {
   position: relative;
 }
 
-.header-carta__panel {
+.header-disclosure__panel {
   position: absolute;
   top: calc(100% + var(--pz-space-2xs));
   left: 0;
@@ -101,13 +102,23 @@
 // script. Known, accepted imperfection (design.md): aria-expanded stays
 // "false" here since no click ran — mitigated by the same five links also
 // living in the centred footer.
-.header-carta:focus-within .header-carta__panel,
-.header-carta--open .header-carta__panel {
+.header-disclosure:focus-within .header-disclosure__panel,
+.header-disclosure--open .header-disclosure__panel {
   visibility: visible;
   opacity: 1;
 }
 
-.header-carta__link {
+// Article titles are full sentences, not two-word service names — they need
+// room to wrap instead of forcing a 30rem-wide panel off the viewport edge.
+.header-disclosure__panel--wide {
+  min-width: 18rem;
+
+  .header-disclosure__link {
+    white-space: normal;
+  }
+}
+
+.header-disclosure__link {
   display: block;
   padding-block: var(--pz-space-3xs);
   padding-inline: var(--pz-space-xs);
@@ -117,6 +128,10 @@
   text-decoration: none;
   white-space: nowrap;
 
+  &.is-active {
+    color: var(--pz-ink);
+  }
+
   &:hover,
   &:focus-visible {
     color: var(--pz-ink);
@@ -124,15 +139,27 @@
   }
 }
 
+// The index link that heads the Diario panel — separated from the articles
+// beneath it by a hairline, so the panel reads as "the parent, then its
+// children" rather than four peers.
+.header-disclosure__link--parent {
+  font-size: var(--pz-text-small);
+  text-transform: uppercase;
+  letter-spacing: var(--pz-track-label);
+  border-bottom: 1px solid var(--pz-hairline);
+  margin-bottom: var(--pz-space-3xs);
+  padding-bottom: var(--pz-space-3xs);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .header-carta__panel {
+  .header-disclosure__panel {
     transition: none;
   }
 }
 
 // Below 720px: static expanded list, no hamburger (out of scope this slice).
 @media (max-width: 720px) {
-  .header-carta__panel {
+  .header-disclosure__panel {
     position: static;
     z-index: auto;
     min-width: 0;

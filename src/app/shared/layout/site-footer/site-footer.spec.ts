@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { describe, expect, it } from 'vitest';
 import { SITE } from '../../site';
+import { POSTS_MANIFEST } from '../../../diario/domain/post-manifest';
 import { NAV_ROUTES, filterNavEntries } from '../route-registry';
 import { SiteFooter } from './site-footer';
 
@@ -70,5 +71,33 @@ describe('SiteFooter', () => {
       .map((entry) => `/${entry.path}`);
 
     expect(linkHrefs).toEqual(expected);
+  });
+
+  it('carries every article too — the deepest pages on the site, and the ones the header can only reach through a scripted disclosure', async () => {
+    const el = await render();
+    const hrefs = Array.from(el.querySelectorAll('.site-footer__article-link')).map((a) =>
+      a.getAttribute('href'),
+    );
+
+    expect(hrefs).toEqual(POSTS_MANIFEST.map((post) => `/diario/${post.slug}`));
+  });
+
+  it('leaves nothing unreachable: every prerendered route has a footer link', async () => {
+    const el = await render();
+    const hrefs = new Set(
+      Array.from(el.querySelectorAll<HTMLAnchorElement>('a[href]')).map((a) =>
+        a.getAttribute('href'),
+      ),
+    );
+
+    const everyRoute = [
+      '/',
+      ...filterNavEntries(NAV_ROUTES)
+        .filter((entry) => entry.path !== '')
+        .map((entry) => `/${entry.path}`),
+      ...POSTS_MANIFEST.map((post) => `/diario/${post.slug}`),
+    ];
+
+    expect(everyRoute.filter((route) => !hrefs.has(route))).toEqual([]);
   });
 });

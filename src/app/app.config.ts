@@ -1,5 +1,5 @@
 import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -11,7 +11,16 @@ import { SeoService } from './seo/application/seo.service';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    // `scrollPositionRestoration: 'top'`, not `'enabled'`. `'enabled'` restores
+    // the previous scroll offset on backwards navigation, which is correct for
+    // a browsing app but wrong here: every route is a standalone editorial page
+    // and a forward click that lands mid-page reads as a broken link. `'top'`
+    // sends every navigation to the top unconditionally. `anchorScrolling`
+    // keeps in-page `#fragment` links (the `/precios` service anchors) working.
+    provideRouter(
+      routes,
+      withInMemoryScrolling({ scrollPositionRestoration: 'top', anchorScrolling: 'enabled' }),
+    ),
     provideClientHydration(),
     { provide: MetadataPort, useClass: AngularMetadataAdapter },
     { provide: JsonLdPort, useClass: JsonLdAdapter },

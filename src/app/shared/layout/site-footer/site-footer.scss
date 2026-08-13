@@ -43,6 +43,30 @@
   }
 }
 
+// Set below the small-caps route row, in sentence case rather than caps: these
+// are article titles, and shouting a full sentence would compete with the row
+// above it for the same eye.
+.site-footer__articles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--pz-space-2xs) var(--pz-space-s);
+  max-width: 46rem;
+}
+
+.site-footer__article-link {
+  font-family: var(--pz-body);
+  font-size: var(--pz-text-small);
+  color: var(--pz-ink-soft);
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--pz-ink);
+    text-decoration: underline;
+  }
+}
+
 .site-footer__nap {
   display: flex;
   flex-direction: column;

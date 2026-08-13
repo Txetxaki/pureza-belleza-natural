@@ -9,6 +9,16 @@
     </nav>
   }
 
+  @if (articles.length > 0) {
+    <nav class="site-footer__articles" aria-label="Artículos del diario">
+      @for (article of articles; track article.path) {
+        <a class="site-footer__article-link" [routerLink]="'/' + article.path">
+          {{ article.label }}
+        </a>
+      }
+    </nav>
+  }
+
   <div class="site-footer__nap">
     <p class="site-footer__name">{{ site.name }}</p>
     <address class="site-footer__address">

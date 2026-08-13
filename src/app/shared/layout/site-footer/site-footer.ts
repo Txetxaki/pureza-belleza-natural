@@ -1,7 +1,8 @@
 import { Component, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { POSTS_MANIFEST } from '../../../diario/domain/post-manifest';
 import { SITE, type Site } from '../../site';
-import { filterNavEntries, NAV_ROUTES, type NavRouteEntry } from '../route-registry';
+import { buildDiarioNav, filterNavEntries, NAV_ROUTES, type NavRouteEntry } from '../route-registry';
 
 /**
  * Site-wide footer. Column-centred (design.md "Closing the four Stitch
@@ -31,4 +32,13 @@ export class SiteFooter {
   protected readonly links = computed<NavRouteEntry[]>(() =>
     filterNavEntries(NAV_ROUTES).filter((entry) => entry.path !== ''),
   );
+
+  /**
+   * The three articles, in their own row beneath the route links. Articles are
+   * not registry rows, so `filterNavEntries` above can never reach them — yet
+   * they are exactly the pages that most need a scriptless path, being two
+   * levels deep. This row is what makes the header's `Diario` disclosure a
+   * true enhancement rather than the only way in.
+   */
+  protected readonly articles: readonly NavRouteEntry[] = buildDiarioNav(POSTS_MANIFEST);
 }

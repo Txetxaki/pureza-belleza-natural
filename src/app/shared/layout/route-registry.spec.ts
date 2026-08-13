@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
+import { POSTS_MANIFEST } from '../../diario/domain/post-manifest';
 import { ROUTE_SEO_REGISTRY } from '../../seo/domain/route-seo';
 import {
+  buildDiarioNav,
   buildHeaderNav,
   filterNavEntries,
   NAV_ROUTES,
@@ -31,7 +33,7 @@ describe('filterNavEntries', () => {
     expect(result.some((entry) => entry.path === 'coloracion-vegetal-aveda')).toBe(false);
   });
 
-  it("today's real NAV_ROUTES yields the brand link, all five live service routes (Slices 4+5), /el-salon (Slice 6a — inNav: true; /virginia stays out, inNav: false), /precios and /reservar (Slice 6b), /contacto, and /diario (Slice 8 — footer's flat projection grows automatically, zero further edits — D7)", () => {
+  it("today's real NAV_ROUTES yields the brand link and every other live route — /virginia included, since the feedback round flipped it inNav (it was reachable only by guessing the URL before that)", () => {
     expect(filterNavEntries(NAV_ROUTES).map((entry) => entry.path)).toEqual([
       '',
       'coloracion-vegetal-aveda',
@@ -39,12 +41,19 @@ describe('filterNavEntries', () => {
       'rastas',
       'extensiones-cabello-natural',
       'tratamientos-capilares',
+      'virginia',
       'el-salon',
       'precios',
       'reservar',
       'contacto',
       'diario',
     ]);
+  });
+
+  it('leaves no live route orphaned — every live registry entry is reachable from the footer projection', () => {
+    const live = NAV_ROUTES.filter((entry) => entry.status === 'live').map((entry) => entry.path);
+    const reachable = filterNavEntries(NAV_ROUTES).map((entry) => entry.path);
+    expect(reachable).toEqual(live);
   });
 });
 
@@ -85,6 +94,7 @@ describe('buildHeaderNav', () => {
     { path: 'el-salon', breadcrumb: 'El Salón', planta: null, status: 'live', inNav: true },
     { path: 'reservar', breadcrumb: 'Reservar', planta: null, status: 'live', inNav: true },
     { path: 'contacto', breadcrumb: 'Contacto', planta: null, status: 'live', inNav: true },
+    { path: 'diario', breadcrumb: 'Diario', planta: null, status: 'live', inNav: true },
   ];
 
   it('lists exactly the 2 live service routes in dropdownServices', () => {
@@ -107,14 +117,29 @@ describe('buildHeaderNav', () => {
     ]);
   });
 
-  it('keeps service routes and /reservar out of navLeft — they only appear in the dropdown/CTA zones', () => {
+  it('keeps service routes, /reservar and /diario out of navLeft — each already owns a zone, so leaving them here would render the label twice', () => {
     const result = buildHeaderNav(baseFixture);
     const navLeftPaths = result.navLeft.map((entry) => entry.path);
 
     expect(navLeftPaths).toEqual(['el-salon', 'contacto']);
     expect(navLeftPaths).not.toContain('coloracion-vegetal-aveda');
     expect(navLeftPaths).not.toContain('reservar');
+    expect(navLeftPaths).not.toContain('diario');
     expect(navLeftPaths).not.toContain('');
+  });
+
+  it('diarioParent follows the same status/inNav rule as reserveCta — no dead trigger', () => {
+    expect(buildHeaderNav(baseFixture).diarioParent).toEqual({
+      path: 'diario',
+      label: 'Diario',
+      status: 'live',
+      inNav: true,
+    });
+
+    const hidden = buildHeaderNav(
+      baseFixture.map((entry) => (entry.path === 'diario' ? { ...entry, inNav: false } : entry)),
+    );
+    expect(hidden.diarioParent).toBeUndefined();
   });
 
   it('wordmark is always "Pureza", regardless of the home entry\'s breadcrumb', () => {
@@ -139,7 +164,7 @@ describe('buildHeaderNav', () => {
     });
   });
 
-  it("today's real ROUTE_SEO_REGISTRY yields all five live service routes in the dropdown (Slices 4+5 complete), /el-salon, /precios, /contacto and /diario in navLeft (Slices 6a+6b+8) and a live reserveCta (/reservar live, Slice 6b)", () => {
+  it("today's real ROUTE_SEO_REGISTRY yields all five service routes in the Carta dropdown, /virginia /el-salon /precios /contacto in navLeft, and live diario/reserve zones", () => {
     const result = buildHeaderNav(ROUTE_SEO_REGISTRY);
     expect(result.dropdownServices.map((entry) => entry.path)).toEqual([
       'coloracion-vegetal-aveda',
@@ -154,11 +179,54 @@ describe('buildHeaderNav', () => {
       status: 'live',
       inNav: true,
     });
+    expect(result.diarioParent).toEqual({
+      path: 'diario',
+      label: 'Diario',
+      status: 'live',
+      inNav: true,
+    });
     expect(result.navLeft.map((entry) => entry.path)).toEqual([
+      'virginia',
       'el-salon',
       'precios',
       'contacto',
-      'diario',
     ]);
+  });
+
+  it('every live route reaches the header through exactly one zone — no orphans, no duplicates', () => {
+    const result = buildHeaderNav(ROUTE_SEO_REGISTRY);
+    const placed = [
+      result.wordmark.path,
+      ...result.navLeft.map((entry) => entry.path),
+      ...result.dropdownServices.map((entry) => entry.path),
+      ...(result.diarioParent ? [result.diarioParent.path] : []),
+      ...(result.reserveCta ? [result.reserveCta.path] : []),
+    ];
+    const liveInNav = ROUTE_SEO_REGISTRY.filter(
+      (entry) => entry.status === 'live' && entry.inNav,
+    ).map((entry) => entry.path);
+
+    expect(new Set(placed).size).toBe(placed.length);
+    expect([...placed].sort()).toEqual([...liveInNav].sort());
+  });
+});
+
+describe('buildDiarioNav', () => {
+  it('namespaces every post under its parent — a post is reachable only as /diario/<slug>', () => {
+    const result = buildDiarioNav([
+      { slug: 'primera-entrada', title: 'Primera entrada' },
+      { slug: 'segunda-entrada', title: 'Segunda entrada' },
+    ]);
+
+    expect(result).toEqual([
+      { path: 'diario/primera-entrada', label: 'Primera entrada', status: 'live', inNav: true },
+      { path: 'diario/segunda-entrada', label: 'Segunda entrada', status: 'live', inNav: true },
+    ]);
+  });
+
+  it('projects the real manifest one-for-one, in manifest order', () => {
+    expect(buildDiarioNav(POSTS_MANIFEST).map((entry) => entry.path)).toEqual(
+      POSTS_MANIFEST.map((post) => `diario/${post.slug}`),
+    );
   });
 });

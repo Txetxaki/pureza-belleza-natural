@@ -1,41 +1,38 @@
 <header class="site-header">
   <div class="site-header__zone site-header__zone--left">
     <nav class="site-header__nav" aria-label="Principal">
-      @for (link of nav().navLeft; track link.path) {
-        <a class="site-header__link" [routerLink]="'/' + link.path" routerLinkActive="is-active">
-          {{ link.label }}
-        </a>
-      }
-
       <!-- Always rendered, even with zero entries (tasks.md Slice 3: "the
            dropdown renders zero entries until Slice 4 starts flipping routes
            live, then grows automatically with no further edits"). Keeping
            the trigger present rather than conditionally hidden also keeps
            its keyboard/ARIA wiring exercised by tests from day one. -->
       <div
-        class="header-carta"
-        [class.header-carta--open]="dropdownOpen()"
+        class="header-disclosure"
+        [class.header-disclosure--open]="isOpen('carta')"
         (focusout)="onContainerFocusOut($event)"
       >
         <button
           type="button"
-          class="site-header__link header-carta__trigger"
-          [attr.aria-expanded]="dropdownOpen()"
+          class="site-header__link header-disclosure__trigger"
+          [class.is-active]="cartaActive()"
+          [attr.aria-expanded]="isOpen('carta')"
           aria-controls="header-carta"
-          (click)="toggleDropdown()"
-          (keydown.escape)="closeAndReturnFocus()"
-          (keydown.arrowdown)="openAndFocusFirstLink($event)"
+          (click)="togglePanel('carta')"
+          (keydown.escape)="closeAndReturnFocus(cartaTrigger)"
+          (keydown.arrowdown)="openAndFocusFirstLink('carta', $event, cartaPanel)"
           #cartaTrigger
         >
           Carta
         </button>
-        <ul id="header-carta" class="header-carta__panel" #cartaPanel>
+        <ul id="header-carta" class="header-disclosure__panel" #cartaPanel>
           @for (service of nav().dropdownServices; track service.path) {
             <li>
               <a
-                class="header-carta__link"
+                class="header-disclosure__link"
                 [routerLink]="'/' + service.path"
-                (keydown.escape)="closeAndReturnFocus()"
+                routerLinkActive="is-active"
+                (click)="closePanel()"
+                (keydown.escape)="closeAndReturnFocus(cartaTrigger)"
               >
                 {{ service.label }}
               </a>
@@ -43,6 +40,67 @@
           }
         </ul>
       </div>
+
+      @if (nav().diarioParent; as diario) {
+        <div
+          class="header-disclosure"
+          [class.header-disclosure--open]="isOpen('diario')"
+          (focusout)="onContainerFocusOut($event)"
+        >
+          <button
+            type="button"
+            class="site-header__link header-disclosure__trigger"
+            [class.is-active]="diarioActive()"
+            [attr.aria-expanded]="isOpen('diario')"
+            aria-controls="header-diario"
+            (click)="togglePanel('diario')"
+            (keydown.escape)="closeAndReturnFocus(diarioTrigger)"
+            (keydown.arrowdown)="openAndFocusFirstLink('diario', $event, diarioPanel)"
+            #diarioTrigger
+          >
+            {{ diario.label }}
+          </button>
+          <ul
+            id="header-diario"
+            class="header-disclosure__panel header-disclosure__panel--wide"
+            #diarioPanel
+          >
+            <!-- The index itself heads its own panel: the articles hang from
+                 their parent, and the parent stays reachable. -->
+            <li>
+              <a
+                class="header-disclosure__link header-disclosure__link--parent"
+                [routerLink]="'/' + diario.path"
+                routerLinkActive="is-active"
+                [routerLinkActiveOptions]="{ exact: true }"
+                (click)="closePanel()"
+                (keydown.escape)="closeAndReturnFocus(diarioTrigger)"
+              >
+                Todos los artículos
+              </a>
+            </li>
+            @for (post of diarioPosts; track post.path) {
+              <li>
+                <a
+                  class="header-disclosure__link"
+                  [routerLink]="'/' + post.path"
+                  routerLinkActive="is-active"
+                  (click)="closePanel()"
+                  (keydown.escape)="closeAndReturnFocus(diarioTrigger)"
+                >
+                  {{ post.label }}
+                </a>
+              </li>
+            }
+          </ul>
+        </div>
+      }
+
+      @for (link of nav().navLeft; track link.path) {
+        <a class="site-header__link" [routerLink]="'/' + link.path" routerLinkActive="is-active">
+          {{ link.label }}
+        </a>
+      }
     </nav>
   </div>
 
