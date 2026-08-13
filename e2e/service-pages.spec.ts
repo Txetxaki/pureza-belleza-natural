@@ -1,20 +1,34 @@
 import { expect, test } from '@playwright/test';
 import { SERVICE_ROUTES } from './routes.fixture';
 
-// tasks.md Slice 9, task 9.1: "Service-page-specific: exactly one
-// [data-planta] per page." design.md D2 / service-pages spec "Single accent
-// scope per page" — already guaranteed at construction by `pz-service-page`
-// binding `host: { '[attr.data-planta]': planta() }` and unit-tested at the
-// component level (`pz-service-page.spec.ts`); this is the real-browser,
-// real-route confirmation against the actual prerendered HTML.
+// design.md D2 / service-pages spec "Single accent scope per page". The rule
+// the design actually states is "never nested, one accent per service route" —
+// NOT "exactly one element carries the attribute". This test used to assert
+// the count, which was an accurate proxy only while every service route
+// happened to render a single scoped element; the Aveda credential block on
+// /coloracion-vegetal-aveda is a legitimate SIBLING scope of the same plant,
+// exactly like the five siblings on the home carta and on /precios.
+//
+// So the two properties asserted here are the real ones: every scope on the
+// route names that route's registry planta, and no scope is nested inside
+// another. Both would still catch the failure the count was standing in for —
+// a second, different accent bleeding onto the page.
 for (const route of SERVICE_ROUTES) {
-  test(`${route.path} — renders exactly one [data-planta] scope, matching its registry planta`, async ({
+  test(`${route.path} — every [data-planta] scope is its registry planta, and none is nested`, async ({
     page,
   }) => {
     await page.goto(route.path);
+
     const scopes = page.locator('[data-planta]');
-    await expect(scopes).toHaveCount(1);
-    await expect(scopes).toHaveAttribute('data-planta', route.planta);
+    await expect(scopes.first()).toBeAttached();
+
+    const plantas = await scopes.evaluateAll((nodes) =>
+      nodes.map((node) => node.getAttribute('data-planta')),
+    );
+    expect(new Set(plantas)).toEqual(new Set([route.planta]));
+
+    const nested = await page.locator('[data-planta] [data-planta]').count();
+    expect(nested).toBe(0);
   });
 }
 

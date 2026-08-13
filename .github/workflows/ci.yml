@@ -72,7 +72,14 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm run build
-      - run: npm run e2e
+
+      # `--ignore-snapshots`: the committed visual baselines are rendered on
+      # Windows, and font rasterisation differs enough on Linux that every
+      # comparison would fail for reasons unrelated to the change. The specs
+      # still execute here — navigation, a11y and console errors are all
+      # caught — only the pixel comparison is skipped. Visual regressions are
+      # reviewed locally, where the baselines were made.
+      - run: npm run e2e -- --ignore-snapshots
 
       - uses: actions/upload-artifact@v4
         # The report is only worth keeping when something failed.

@@ -52,8 +52,11 @@ jobs:
       # This deployment is a preview for review, not the live site — the real
       # domain is purezabellezanatural.es. Keeping it out of the index avoids
       # competing with the eventual production site for the same content.
+      # Block scalar, not an inline one: a plain YAML scalar cannot contain
+      # ": ", and "User-agent: *" would otherwise be parsed as a mapping.
       - name: Keep the preview out of search results
-        run: printf 'User-agent: *\nDisallow: /\n' > dist/pureza/browser/robots.txt
+        run: |
+          printf 'User-agent: *\nDisallow: /\n' > dist/pureza/browser/robots.txt
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
