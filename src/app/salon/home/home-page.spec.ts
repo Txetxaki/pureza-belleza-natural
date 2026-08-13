@@ -10,19 +10,7 @@ import { canonicalUrl, getRouteSeo } from '../../seo/domain/route-seo';
 import { AngularMetadataAdapter } from '../../seo/infrastructure/angular-metadata.adapter';
 import { JsonLdAdapter } from '../../seo/infrastructure/json-ld.adapter';
 import { SeoService } from '../../seo/application/seo.service';
-
-const FUTURE_ROUTE_PREFIXES = [
-  '/coloracion-vegetal-aveda',
-  '/mechas-babylights-balayage',
-  '/rastas',
-  '/extensiones-cabello-natural',
-  '/tratamientos-capilares',
-  '/virginia',
-  '/el-salon',
-  '/precios',
-  '/reservar',
-  '/diario',
-];
+import { SERVICE_INDEX } from '../../services/domain/service-index';
 
 describe('HomePage (/) — routed through the real app.routes', () => {
   function configure() {
@@ -62,16 +50,63 @@ describe('HomePage (/) — routed through the real app.routes', () => {
     expect(el.querySelector('app-home-page')).toBeTruthy();
   });
 
-  it('has no <a href> targeting any of the five future service routes, /virginia, /el-salon, /precios, /reservar, or /diario', async () => {
+  // REPLACED (Slice 7, not relaxed): all five service routes are now live
+  // (Slices 4/5) — the old "no dead links to future routes" rule is now
+  // wrong. Its inverse, and a stronger guard: the frieze/carta MUST link to
+  // every one of them, AND every such link MUST resolve to a `status:
+  // 'live'` registry entry (a route regressing to `'planned'` would fail
+  // this test loudly instead of shipping a dead/premature link).
+  it('links to all five live service routes from the hero frieze or the carta, each resolving to a live registry entry — home-page spec "Carta and frieze link to all five service routes"', async () => {
     configure();
     const harness = await RouterTestingHarness.create('/');
     harness.detectChanges();
 
     const el = harness.routeNativeElement as HTMLElement;
-    const hrefs = Array.from(el.querySelectorAll('a[href]')).map((a) => a.getAttribute('href') ?? '');
+    const hrefs = new Set(
+      Array.from(el.querySelectorAll('a[href]')).map((a) => a.getAttribute('href') ?? ''),
+    );
 
-    for (const forbidden of FUTURE_ROUTE_PREFIXES) {
-      expect(hrefs.some((href) => href === forbidden || href.startsWith(`${forbidden}/`))).toBe(false);
+    expect(SERVICE_INDEX).toHaveLength(5);
+    for (const entry of SERVICE_INDEX) {
+      expect(hrefs.has(`/${entry.path}`)).toBe(true);
+      expect(getRouteSeo(entry.path)?.status).toBe('live');
+    }
+  });
+
+  it('reaches /el-salon, /precios and /reservar via the shared footer nav — home-page spec "Home route composition links to all five live service routes"', async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter(routes),
+        { provide: MetadataPort, useClass: AngularMetadataAdapter },
+        { provide: JsonLdPort, useClass: JsonLdAdapter },
+      ],
+    });
+
+    // Full app shell (header + footer), same composition as the "layout
+    // shell present" test above — the footer link row lives outside
+    // HomePage's own route element.
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const router = TestBed.inject(Router);
+    await router.navigateByUrl('/');
+    fixture.detectChanges();
+
+    const el = fixture.nativeElement as HTMLElement;
+    const footerHrefs = Array.from(el.querySelectorAll('.site-footer a[href]')).map(
+      (a) => a.getAttribute('href') ?? '',
+    );
+
+    // /virginia and /diario are deliberately NOT asserted here: /virginia's
+    // registry entry carries `inNav: false` by design (it has no nav/footer
+    // link anywhere in the app today, service pages/home/footer all checked
+    // — a genuine, pre-existing gap noted in this slice's apply-progress,
+    // not introduced by it) and /diario is still `status: 'planned'` at
+    // this point in the chain (flips live in Slice 8), so
+    // `filterNavEntries` correctly excludes it from the footer until then.
+    for (const path of ['el-salon', 'precios', 'reservar']) {
+      expect(footerHrefs).toContain(`/${path}`);
     }
   });
 

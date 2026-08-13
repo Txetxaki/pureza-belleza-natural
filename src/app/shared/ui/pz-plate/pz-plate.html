@@ -4,13 +4,23 @@
   </div>
 
   <div class="pz-plate__body">
-    @if (title()) {
-      <h3 class="pz-plate__title">{{ title() }}</h3>
+    @if (title(); as plateTitle) {
+      <h3 class="pz-plate__title">
+        @if (href(); as link) {
+          <a class="pz-plate__link" [routerLink]="link">{{ plateTitle }}</a>
+        } @else {
+          {{ plateTitle }}
+        }
+      </h3>
     }
     @if (latin()) {
       <p class="pz-plate__latin">{{ latin() }}</p>
     }
   </div>
+
+  @if (price(); as displayPrice) {
+    <p class="pz-plate__price">{{ displayPrice }}</p>
+  }
 
   <div class="pz-plate__photo">
     <ng-container [ngTemplateOutlet]="photo()" />

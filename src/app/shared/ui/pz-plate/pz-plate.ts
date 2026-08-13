@@ -1,5 +1,6 @@
 import { Component, input, TemplateRef } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 /**
  * The herbarium plate — the signature element (design.md §6). `specimen`
@@ -8,13 +9,18 @@ import { NgTemplateOutlet } from '@angular/common';
  * therefore a compile-time contract — a template omitting either input fails
  * to compile, not merely a review note.
  *
- * Non-interactive in this change: the service routes these plates would link
- * to don't exist yet. No click/link behaviour here — that's a future
- * "content" change concern.
+ * `price` and `href` (design.md "Closing the four Stitch gaps" — row "Carta
+ * price column", Slice 7) are BOTH optional, so no existing usage breaks by
+ * default. `price` is a pre-formatted display string — `pz-plate` stays
+ * presentational and learns nothing about the pricing domain, it never
+ * receives a raw number or a `ServicePricing` object. `href` makes the title
+ * a link (`RouterLink`) whose `::after` stretches over the whole `<article>`
+ * (`position: relative` on the host), so the entire plate becomes the click
+ * target while the accessibility tree still exposes exactly one link.
  */
 @Component({
   selector: 'pz-plate',
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, RouterLink],
   templateUrl: './pz-plate.html',
   styleUrl: './pz-plate.scss',
 })
@@ -29,4 +35,9 @@ export class PzPlate {
 
   readonly title = input<string>('');
   readonly latin = input<string>('');
+
+  /** Pre-formatted price text (e.g. `formatFrom(pricingFor(path))`) — never a raw number. */
+  readonly price = input<string | undefined>(undefined);
+  /** Router path with leading slash (e.g. `'/' + path`). Omit to keep the plate non-interactive. */
+  readonly href = input<string | undefined>(undefined);
 }

@@ -1,13 +1,27 @@
 .pz-plate {
+  // Anchors the stretched-link ::after below when `href` is set.
+  position: relative;
   display: grid;
+  // Narrow viewports: price drops to its own row under the title/latin so
+  // it never crowds a wrapped title (e.g. "Extensiones naturales") against
+  // the photo thumbnail. Same breakpoint convention as
+  // precios-page.scss's row layout.
   grid-template-columns: auto 1fr auto;
+  grid-template-areas: 'specimen body photo' 'specimen price photo';
   align-items: center;
-  gap: var(--pz-space-m);
+  gap: var(--pz-space-2xs) var(--pz-space-m);
   padding-block: var(--pz-space-s);
   border-bottom: 1px solid var(--pz-hairline);
+
+  @media (min-width: 480px) {
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: 'specimen body price photo';
+    gap: var(--pz-space-m);
+  }
 }
 
 .pz-plate__specimen {
+  grid-area: specimen;
   color: var(--pz-accent-live);
   display: flex;
   align-items: center;
@@ -27,6 +41,7 @@
 }
 
 .pz-plate__body {
+  grid-area: body;
   min-width: 0;
 }
 
@@ -45,7 +60,31 @@
   color: var(--pz-accent-text);
 }
 
+// One `<a>` wraps just the title text; its `::after` stretches over the
+// whole `.pz-plate` (which is `position: relative` above) so the entire
+// plate is the click target while only one link exists in the a11y tree.
+.pz-plate__link {
+  color: inherit;
+  text-decoration: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+}
+
+.pz-plate__price {
+  grid-area: price;
+  margin: 0;
+  color: var(--pz-ink-soft);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+}
+
 .pz-plate__photo {
+  grid-area: photo;
   width: 4.5rem;
   height: 4.5rem;
   overflow: hidden;

@@ -91,15 +91,55 @@
   margin-top: var(--pz-space-m);
 }
 
-// ── Manifest ─────────────────────────────────────────────────────────────
+// ── Hero frieze (five-plant mini service index) ─────────────────────────
+.home-frieze {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--pz-space-m) var(--pz-space-s);
+  margin-top: var(--pz-space-l);
+}
+
+.home-frieze__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--pz-space-2xs);
+  text-align: center;
+  text-decoration: none;
+}
+
+.home-frieze__glyph {
+  color: var(--pz-accent-live);
+
+  // pz-specimen renders its <svg> under the CALLER's view-encapsulation
+  // attribute — same documented cross-boundary case as pz-plate.scss and
+  // precios-page.scss.
+  // stylelint-disable-next-line
+  ::ng-deep svg {
+    width: 2.75rem;
+    height: auto;
+  }
+}
+
+// ── Manifest (value-prop band) ───────────────────────────────────────────
+// Centred as a group (home-page spec "Value-prop band centred") — each item
+// reads as a short, self-contained statement, so centring its own short
+// copy stays tasteful (unlike longer body prose elsewhere on the page,
+// which stays left-aligned).
 .home-manifest {
   display: grid;
   gap: var(--pz-space-l);
   padding-block: var(--pz-space-l);
+  text-align: center;
 
   @media (min-width: 720px) {
     grid-template-columns: repeat(3, 1fr);
   }
+}
+
+.home-manifest__item {
+  max-width: 24rem;
+  margin-inline: auto;
 }
 
 .home-manifest__title {
@@ -120,22 +160,18 @@
   padding-block: var(--pz-space-l);
 }
 
+// .pz-section-head (_sections.scss, shipped Slice 2a) supplies the centred
+// eyebrow/hairline/italic-title rhythm; only the bottom margin is local.
 .home-carta__head {
+  margin-bottom: var(--pz-space-m);
+}
+
+.home-carta__lede {
   max-width: var(--pz-measure);
-  margin-bottom: var(--pz-space-l);
-
-  h2 {
-    font-family: var(--pz-display);
-    font-size: var(--pz-text-h2);
-    margin: var(--pz-space-3xs) 0 0;
-    color: var(--pz-ink);
-  }
-
-  p {
-    margin: var(--pz-space-s) 0 0;
-    color: var(--pz-ink-soft);
-    line-height: 1.6;
-  }
+  margin: 0 auto var(--pz-space-l);
+  text-align: center;
+  color: var(--pz-ink-soft);
+  line-height: 1.6;
 }
 
 // pz-plate is a real block-level custom element rendered directly as a

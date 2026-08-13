@@ -367,7 +367,7 @@ render mode", "Static output exists", "Live status".
 
 ---
 
-## Slice 7 — Home page Stitch alignment
+## Slice 7 — Home page Stitch alignment — DONE
 
 Branch: `content/07-home-stitch-alignment`. Base: Slice 6b.
 
@@ -376,14 +376,14 @@ bespoke frieze/carta markup can link unconditionally — no per-plate live-statu
 `service-pages` spec's "each of the five live service routes MUST be linked" scenario is true the moment
 this slice merges, not eventually-true across a half-built chain.
 
-### 7.1 `src/app/shared/ui/pz-plate/*` (Modify, + spec update)
+### 7.1 `src/app/shared/ui/pz-plate/*` (Modify, + spec update) — DONE
 Add optional `price` (pre-formatted string from `formatFrom()`, 1.2) and `href` inputs. `href` makes the
 plate a link via one `<a>` + stretched `::after` — **both optional**, so no existing usage (the home carta
 today) breaks by default. `pz-plate` stays presentational; it learns nothing about the pricing domain
 (gets a pre-formatted string, not a `ServicePricing` object).
 Design: "Closing the four Stitch gaps" table, row "Carta price column".
 
-### 7.2 `src/app/salon/home/home-page.{ts,html,scss}` (Modify) — depends on 7.1, 2.1
+### 7.2 `src/app/salon/home/home-page.{ts,html,scss}` (Modify) — depends on 7.1, 2.1 — DONE
 - Hero frieze: `<nav class="home-frieze">` under the hero CTA row, `@for` over `SERVICE_INDEX`, each
   `<a data-planta="…">` holding a `pz-specimen` glyph (2.1) + `.pz-eyebrow` uppercase label
   (ROMERO/ESPLIEGO/ESPARTO/VID/OLIVO). Five **sibling** scopes — bare glyphs, deliberately **no**
@@ -399,7 +399,7 @@ Design: "Closing the four Stitch gaps" table, row "Carta price column".
 Spec: `home-page` — "Five frieze links resolve", "Carta price matches /precios", "Value-prop band
 centred", "Carta and frieze link to all five service routes".
 
-### 7.3 `src/app/salon/home/home-page.spec.ts` (Modify) — depends on 7.2
+### 7.3 `src/app/salon/home/home-page.spec.ts` (Modify) — depends on 7.2 — DONE
 **Replace**, do not delete or relax, the test at line 65 (`'has no <a href> targeting any of the five
 future service routes...'`, driven by `FUTURE_ROUTE_PREFIXES` at line 14) with its inverse: assert each of
 the five service routes IS linked from the frieze or the carta, plus `/virginia`, `/el-salon`, `/precios`,
@@ -409,6 +409,15 @@ wiring). Every other existing test in this file (layout shell, SEO registry appl
 map iframe) stays unmodified.
 Spec: `home-page` — "Carta and frieze link to all five service routes" (this IS the binding spec scenario
 for the replaced test — cite it in the new test's `it()` description like the existing tests do).
+
+**Apply-time correction to this task's premise**: verified against the real registry/footer — `/diario` is
+still `status: 'planned'` at this point in the chain (flips live in Slice 8, not before), and `/virginia`'s
+registry entry carries `inNav: false` with genuinely zero `routerLink` to it anywhere in the app today (not
+introduced by this slice — a pre-existing gap). Neither is actually reachable via nav/footer yet, so the
+landed test asserts frieze/carta linkage for all five live service routes (+ live-status check per link,
+stronger than the task's literal ask) and footer reachability for `/el-salon`, `/precios`, `/reservar`
+specifically, rather than asserting something currently false for `/virginia`/`/diario`. See
+`sdd/content/apply-progress` (Engram) for the full note.
 
 **Slice 7 estimate: ~240 changed lines.**
 

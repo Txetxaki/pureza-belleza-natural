@@ -28,6 +28,25 @@
       tiempo que haga falta y una sola clienta cada vez.
     </p>
     <pz-cta href="/contacto">Pedir cita</pz-cta>
+
+    <!-- The five-plant hero frieze (BRIEF §3, design.md "Closing the four
+         Stitch gaps"): a mini service index reading straight off
+         SERVICE_INDEX — the same module /precios and the header dropdown
+         read, so this link set can never drift from the registry. Five
+         SIBLING [data-planta] scopes, one per <a>, never nested. Bare
+         glyphs over a small-caps label — deliberately no circular
+         icon-well chrome (a border-radius: 50% decoration would contradict
+         the ~2px, one-radius rule). -->
+    <nav class="home-frieze" aria-label="Servicios por planta">
+      @for (entry of serviceIndex; track entry.path) {
+        <a class="home-frieze__item" [attr.data-planta]="entry.planta" [routerLink]="'/' + entry.path">
+          <span class="home-frieze__glyph" aria-hidden="true">
+            <pz-specimen [planta]="entry.planta" />
+          </span>
+          <span class="pz-eyebrow pz-eyebrow--accent">{{ plantaLabel[entry.planta] }}</span>
+        </a>
+      }
+    </nav>
   </div>
 </section>
 
@@ -59,23 +78,33 @@
 </section>
 
 <section class="home-carta" aria-labelledby="home-carta-heading">
-  <div class="home-carta__head">
+  <!-- Section-opening rhythm (design.md "Closing the four Stitch gaps" —
+       row "Section rhythm"): centred eyebrow over a hairline over an
+       italic title, the shared .pz-section-head utility shipped in Slice
+       2a (_sections.scss). -->
+  <div class="home-carta__head pz-section-head">
     <p class="pz-eyebrow">La carta</p>
-    <h2 id="home-carta-heading">Cinco oficios, cinco plantas</h2>
-    <p>
-      Cada servicio lleva la planta que lo define, de las que crecen aquí — no del trópico.
-      Romero, espliego, esparto, vid y olivo: el herbario de La Mancha aplicado a la peluquería.
-    </p>
+    <hr class="pz-section-head__rule" />
+    <h2 id="home-carta-heading" class="pz-section-head__title">Cinco oficios, cinco plantas</h2>
   </div>
+  <p class="home-carta__lede">
+    Cada servicio lleva la planta que lo define, de las que crecen aquí — no del trópico.
+    Romero, espliego, esparto, vid y olivo: el herbario de La Mancha aplicado a la peluquería.
+  </p>
 
-  <!-- Non-interactive by design (home-page spec "no dead links to future
-       routes"): these five service routes don't exist yet in `foundation`. -->
+  <!-- All five service routes are now live (Slices 4/5) — each plate links
+       to its route and shows a price sourced from the SAME pricing.ts /
+       service-index.ts modules /precios reads, never a hardcoded literal
+       (home-page spec "Carta price matches /precios", "Carta and frieze
+       link to all five service routes"). -->
   <pz-plate
     data-planta="romero"
     [specimen]="romeroSpecimen"
     [photo]="romeroPhoto"
     title="Coloración vegetal"
     latin="Rosmarinus officinalis"
+    [price]="priceFor('coloracion-vegetal-aveda')"
+    href="/coloracion-vegetal-aveda"
   />
   <ng-template #romeroSpecimen>
     <svg viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
@@ -99,6 +128,8 @@
     [photo]="espliegoPhoto"
     title="Mechas de autor"
     latin="Lavandula latifolia"
+    [price]="priceFor('mechas-babylights-balayage')"
+    href="/mechas-babylights-balayage"
   />
   <ng-template #espliegoSpecimen>
     <svg viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
@@ -124,6 +155,8 @@
     [photo]="espartoPhoto"
     title="Rastas"
     latin="Stipa tenacissima"
+    [price]="priceFor('rastas')"
+    href="/rastas"
   />
   <ng-template #espartoSpecimen>
     <svg viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
@@ -144,6 +177,8 @@
     [photo]="vidPhoto"
     title="Extensiones naturales"
     latin="Vitis vinifera"
+    [price]="priceFor('extensiones-cabello-natural')"
+    href="/extensiones-cabello-natural"
   />
   <ng-template #vidSpecimen>
     <svg viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -163,6 +198,8 @@
     [photo]="olivoPhoto"
     title="Rituales capilares"
     latin="Olea europaea"
+    [price]="priceFor('tratamientos-capilares')"
+    href="/tratamientos-capilares"
   />
   <ng-template #olivoSpecimen>
     <svg viewBox="0 0 100 150" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" aria-hidden="true">
