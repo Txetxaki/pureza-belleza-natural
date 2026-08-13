@@ -1,4 +1,14 @@
 <footer class="site-footer">
+  <a class="site-footer__brand" routerLink="/">Pureza</a>
+
+  @if (links().length > 0) {
+    <nav class="site-footer__nav" aria-label="Footer">
+      @for (link of links(); track link.path) {
+        <a class="site-footer__link" [routerLink]="'/' + link.path">{{ link.label }}</a>
+      }
+    </nav>
+  }
+
   <div class="site-footer__nap">
     <p class="site-footer__name">{{ site.name }}</p>
     <address class="site-footer__address">
@@ -6,5 +16,6 @@
     </address>
     <a class="site-footer__phone" [href]="'tel:' + site.telephone">{{ site.telephoneDisplay }}</a>
   </div>
+
   <p class="site-footer__legal">© {{ year }} {{ site.name }}</p>
 </footer>

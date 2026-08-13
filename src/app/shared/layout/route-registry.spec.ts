@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { filterNavEntries, NAV_ROUTES, type NavRouteEntry } from './route-registry';
+import { ROUTE_SEO_REGISTRY } from '../../seo/domain/route-seo';
+import {
+  buildHeaderNav,
+  filterNavEntries,
+  NAV_ROUTES,
+  type HeaderNavSourceEntry,
+  type NavRouteEntry,
+} from './route-registry';
 
 describe('filterNavEntries', () => {
   const fixture: NavRouteEntry[] = [
@@ -26,5 +33,104 @@ describe('filterNavEntries', () => {
 
   it("today's real NAV_ROUTES yields exactly the brand link and /contacto", () => {
     expect(filterNavEntries(NAV_ROUTES).map((entry) => entry.path)).toEqual(['', 'contacto']);
+  });
+});
+
+describe('buildHeaderNav', () => {
+  // A fixture registry with 2 of the 5 service routes live — mirrors the
+  // real shape mid-rollout (Slices 4/5 flip these one at a time).
+  const baseFixture: HeaderNavSourceEntry[] = [
+    { path: '', breadcrumb: 'Inicio', planta: null, status: 'live', inNav: true },
+    {
+      path: 'coloracion-vegetal-aveda',
+      breadcrumb: 'Coloración Vegetal',
+      planta: 'romero',
+      status: 'live',
+      inNav: true,
+    },
+    {
+      path: 'mechas-babylights-balayage',
+      breadcrumb: 'Mechas de Autor',
+      planta: 'espliego',
+      status: 'live',
+      inNav: true,
+    },
+    { path: 'rastas', breadcrumb: 'Rastas', planta: 'esparto', status: 'planned', inNav: true },
+    {
+      path: 'extensiones-cabello-natural',
+      breadcrumb: 'Extensiones Naturales',
+      planta: 'vid',
+      status: 'planned',
+      inNav: true,
+    },
+    {
+      path: 'tratamientos-capilares',
+      breadcrumb: 'Rituales Capilares',
+      planta: 'olivo',
+      status: 'planned',
+      inNav: true,
+    },
+    { path: 'el-salon', breadcrumb: 'El Salón', planta: null, status: 'live', inNav: true },
+    { path: 'reservar', breadcrumb: 'Reservar', planta: null, status: 'live', inNav: true },
+    { path: 'contacto', breadcrumb: 'Contacto', planta: null, status: 'live', inNav: true },
+  ];
+
+  it('lists exactly the 2 live service routes in dropdownServices', () => {
+    const result = buildHeaderNav(baseFixture);
+    expect(result.dropdownServices.map((entry) => entry.path)).toEqual([
+      'coloracion-vegetal-aveda',
+      'mechas-babylights-balayage',
+    ]);
+  });
+
+  it("flipping a live service route back to 'planned' removes it (D7 rollback property)", () => {
+    const rolledBack = baseFixture.map((entry) =>
+      entry.path === 'mechas-babylights-balayage'
+        ? { ...entry, status: 'planned' as const }
+        : entry,
+    );
+    const result = buildHeaderNav(rolledBack);
+    expect(result.dropdownServices.map((entry) => entry.path)).toEqual([
+      'coloracion-vegetal-aveda',
+    ]);
+  });
+
+  it('keeps service routes and /reservar out of navLeft — they only appear in the dropdown/CTA zones', () => {
+    const result = buildHeaderNav(baseFixture);
+    const navLeftPaths = result.navLeft.map((entry) => entry.path);
+
+    expect(navLeftPaths).toEqual(['el-salon', 'contacto']);
+    expect(navLeftPaths).not.toContain('coloracion-vegetal-aveda');
+    expect(navLeftPaths).not.toContain('reservar');
+    expect(navLeftPaths).not.toContain('');
+  });
+
+  it('wordmark is always "Pureza", regardless of the home entry\'s breadcrumb', () => {
+    const result = buildHeaderNav(baseFixture);
+    expect(result.wordmark).toEqual({ path: '', label: 'Pureza', status: 'live', inNav: true });
+  });
+
+  it('reserveCta is undefined while /reservar is still planned, present once live', () => {
+    const stillPlanned = buildHeaderNav(
+      baseFixture.map((entry) =>
+        entry.path === 'reservar' ? { ...entry, status: 'planned' as const } : entry,
+      ),
+    );
+    expect(stillPlanned.reserveCta).toBeUndefined();
+
+    const live = buildHeaderNav(baseFixture);
+    expect(live.reserveCta).toEqual({
+      path: 'reservar',
+      label: 'Reservar',
+      status: 'live',
+      inNav: true,
+    });
+  });
+
+  it("today's real ROUTE_SEO_REGISTRY yields an empty dropdown and no reserveCta (nothing service-owned or /reservar is live yet)", () => {
+    const result = buildHeaderNav(ROUTE_SEO_REGISTRY);
+    expect(result.dropdownServices).toEqual([]);
+    expect(result.reserveCta).toBeUndefined();
+    expect(result.navLeft.map((entry) => entry.path)).toEqual(['contacto']);
   });
 });

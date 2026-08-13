@@ -193,6 +193,13 @@ copy lands on top of it in Slices 4/5.
 
 ## Slice 3 — App shell: header dropdown + centred footer
 
+**Status: DONE** — all 3 tasks implemented and committed on `content/03-header-footer-shell`
+(base `content/02a-service-infra-primitives`, commit `28e1655` — branched directly off 2a per this
+section's own note below, since 2b and 3 are independent; ran in parallel with 2b in the same working
+tree). 14 new/changed unit tests on this branch (26 spec files / 146 tests, all green — 132 baseline +
+14). `npm run build` green, 2 prerendered routes (unchanged — no registry flip in this slice). See
+`sdd/content/apply-progress` (Engram, project "virginia") for exact landed shapes.
+
 Branch: `content/03-header-footer-shell`. Base: Slice 2b. (Independent of 2b's content — could instead
 base directly on 2a if the orchestrator wants 2b and 3 reviewed in parallel by different reviewers; listed
 sequential here to keep one linear chain.)
@@ -205,7 +212,7 @@ further edits — the same "rollback property" D7 already claims for the flat na
 frieze/carta markup does not get this filtering for free (it is bespoke, not a `NAV_ROUTES` projection) —
 that is why home's own linking work is scheduled later, in Slice 7, after it exists.
 
-### 3.1 `src/app/shared/layout/route-registry.ts` (Modify, + `.spec.ts` update)
+### 3.1 `src/app/shared/layout/route-registry.ts` (Modify, + `.spec.ts` update) — DONE
 Add pure `buildHeaderNav(entries): { navLeft, wordmark, dropdownServices, reserveCta }` (exact shape is an
 implementation choice; must satisfy 3.2's three-zone consumption) filtering `dropdownServices` to
 `SERVICE_INDEX` entries whose registry `status === 'live'`. Unit spec: fixture registry with 2/5 service
@@ -215,7 +222,7 @@ Spec: `app-shell` — "Dropdown links to five service routes, no index page" (co
 the *filtering logic*; the end-state "exactly five" E2E assertion moves to Slice 9 once all five are
 actually live).
 
-### 3.2 `src/app/shared/layout/site-header/*` (Modify)
+### 3.2 `src/app/shared/layout/site-header/*` (Modify) — DONE
 `grid-template-columns: 1fr auto 1fr` — nav left, wordmark centred, `RESERVAR` (small-caps, accent-text
 colour per the Stitch header reading) right. Disclosure pattern for "Carta" (not `role="menu"` — five
 links don't need the APG menu contract):
@@ -231,7 +238,7 @@ trigger; panel `role`/`aria-controls` wiring present.
 Spec: `app-shell` — "Wordmark centred", "Dropdown links to five service routes, no index page". Design:
 "Header dropdown (accessible, degrades without JS)" section.
 
-### 3.3 `src/app/shared/layout/site-footer/*` (Modify)
+### 3.3 `src/app/shared/layout/site-footer/*` (Modify) — DONE
 Column-centred: italic wordmark → centred small-caps link row (NAV_ROUTES filtered live, **including**
 the five service links once they're live) → centred copyright line, in that order. NAP stays present,
 only re-laid-out (do not regress `app-shell`'s existing "NAP consistency" scenario).
