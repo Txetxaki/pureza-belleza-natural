@@ -13,10 +13,8 @@
   text-align: center;
 }
 
+// Type is `pz-wordmark`'s job now — this is only the link box around it.
 .site-footer__brand {
-  font-family: var(--pz-display);
-  font-style: italic;
-  font-size: var(--pz-text-lead);
   color: var(--pz-ink);
   text-decoration: none;
 }

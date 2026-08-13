@@ -25,14 +25,11 @@
   gap: var(--pz-space-m);
 }
 
+// Type is `pz-wordmark`'s job now — this is only the link box around it.
 .site-header__brand {
   justify-self: center;
-  font-family: var(--pz-display);
-  font-style: italic;
-  font-size: var(--pz-text-lead);
   color: var(--pz-ink);
   text-decoration: none;
-  letter-spacing: 0.01em;
 }
 
 .site-header__link {

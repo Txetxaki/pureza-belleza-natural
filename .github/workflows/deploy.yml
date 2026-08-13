@@ -1,0 +1,71 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never let two deploys race; let an in-flight one finish rather than
+# cancelling it half-published.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - run: npm ci
+
+      # A project Pages site is served from /<repo>/, not from /. Without a
+      # matching base-href every asset and router link 404s.
+      - name: Build with the Pages base href
+        run: npm run build -- --base-href "/${{ github.event.repository.name }}/"
+
+      # Without this, Pages runs the output through Jekyll, which drops any
+      # file or directory starting with an underscore.
+      - run: touch dist/pureza/browser/.nojekyll
+
+      # Every route is prerendered to its own index.html, so deep links work
+      # natively. This only covers genuinely unknown URLs, and it must be the
+      # app's own 404 page rather than GitHub's.
+      - name: Add the SPA 404 fallback
+        run: |
+          if [ -f dist/pureza/browser/404/index.html ]; then
+            cp dist/pureza/browser/404/index.html dist/pureza/browser/404.html
+          else
+            cp dist/pureza/browser/index.html dist/pureza/browser/404.html
+          fi
+
+      # This deployment is a preview for review, not the live site — the real
+      # domain is purezabellezanatural.es. Keeping it out of the index avoids
+      # competing with the eventual production site for the same content.
+      - name: Keep the preview out of search results
+        run: printf 'User-agent: *\nDisallow: /\n' > dist/pureza/browser/robots.txt
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist/pureza/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

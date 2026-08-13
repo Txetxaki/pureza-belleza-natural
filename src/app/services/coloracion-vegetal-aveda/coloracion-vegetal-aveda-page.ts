@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { PzServicePage, type ServiceContent, type ServicePhoto } from '../ui/pz-service-page/pz-service-page';
+import { PzAveda } from '../../shared/ui/pz-aveda/pz-aveda';
 import { SeoService } from '../../seo/application/seo.service';
 import { buildBreadcrumbListSchema } from '../../seo/generators/breadcrumb-list.schema';
 import { buildFaqPageSchema, type FaqEntry } from '../../seo/generators/faq-page.schema';
@@ -48,12 +49,12 @@ const FAQ: readonly FaqEntry[] = [
   {
     question: '¿Cubre canas al 100%?',
     answer:
-      'Sí. La línea Aveda que usa Virginia tiene capacidad de cobertura total; el nivel de cobertura y la nitidez del resultado se ajustan en la consulta previa según el porcentaje de canas y el tono de partida.',
+      'Sí. La línea Aveda con la que trabajo tiene capacidad de cobertura total; ajusto el nivel de cobertura y la nitidez del resultado en la consulta previa, según tu porcentaje de canas y tu tono de partida.',
   },
   {
     question: '¿Cuánto dura la coloración?',
     answer:
-      'Depende de si es coloración completa o retoque de raíz, y de la densidad de tu melena — Virginia te da un tiempo orientativo al reservar, así organizas tu tarde con margen.',
+      'Depende de si es coloración completa o retoque de raíz, y de la densidad de tu melena — te doy un tiempo orientativo al reservar, así organizas tu tarde con margen.',
   },
   {
     question: '¿Puedo colorearme si tengo el pelo decolorado o con mechas previas?',
@@ -73,7 +74,7 @@ const FAQ: readonly FaqEntry[] = [
   {
     question: '¿Puedo teñirme si estoy embarazada o en periodo de lactancia?',
     answer:
-      'Es una decisión que debes consultar con tu ginecólogo; Virginia puede explicarte la composición del producto para que decidas con esa información, pero la indicación médica final no la da la peluquería.',
+      'Es una decisión que debes consultar con tu ginecólogo; yo te explico la composición del producto para que decidas con esa información, pero la indicación médica final no la da la peluquería.',
   },
 ];
 
@@ -107,7 +108,7 @@ const CONTENT: ServiceContent = {
  */
 @Component({
   selector: 'app-coloracion-vegetal-aveda-page',
-  imports: [PzServicePage],
+  imports: [PzServicePage, PzAveda],
   templateUrl: './coloracion-vegetal-aveda-page.html',
 })
 export class ColoracionVegetalAvedaPage implements OnInit {

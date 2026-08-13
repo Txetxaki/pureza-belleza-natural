@@ -2,50 +2,62 @@
   <!-- Anatomy item 3: "qué es y para quién" — 150-200 words, client language. -->
   <p pzWhatIs>
     La coloración vegetal sustituye el amoniaco y los oxidantes de la tinción convencional por
-    pigmentos de origen botánico, en este caso asociados al romero. Virginia trabaja con la línea
-    de color Aveda, formulada con hasta un 96% de ingredientes de origen natural, que cubre canas
-    y aporta color real, con reflejos vivos, sin el olor penetrante ni la tirantez en el cuero
-    cabelludo que deja la química agresiva.
+    pigmentos de origen botánico, en este caso asociados al romero. Trabajo con la línea de color
+    Aveda, formulada con hasta un 96% de ingredientes de origen natural, que cubre canas y aporta
+    color real, con reflejos vivos, sin el olor penetrante ni la tirantez en el cuero cabelludo
+    que deja la química agresiva.
   </p>
   <p pzWhatIs>
     Es la opción adecuada si notas el cuero cabelludo sensible después de teñirte, si quieres
     reducir tu exposición a amoniaco y resorcinol, o si buscas un color con más brillo natural y
     menos aspecto plano que el de una coloración de supermercado. También funciona si vienes de
     una coloración química y quieres hacer la transición sin cortarte la melena de golpe: en la
-    consulta previa se valora tu punto de partida y el proceso se adapta a tu pelo, no al revés,
-    sesión a sesión.
+    consulta previa valoro tu punto de partida y adapto el proceso a tu pelo, no al revés, sesión
+    a sesión.
   </p>
 
-  <!-- Anatomy item 4: "cómo lo hace Virginia" — the real process, step by step (E-E-A-T). -->
+  <!-- Anatomy item 4: the real process, step by step, in the first person (E-E-A-T). -->
   <p pzProcess>
-    Antes de mezclar nada, Virginia revisa tu cabello: historial de coloración, porcentaje de
-    canas, textura y estado del cuero cabelludo. Esa consulta decide la fórmula exacta, porque no
-    hay dos melenas iguales y un mismo tono de romero no se comporta igual en un cabello fino que
-    en uno grueso o poroso.
+    Antes de mezclar nada reviso tu cabello: historial de coloración, porcentaje de canas, textura
+    y estado del cuero cabelludo. Esa consulta decide la fórmula exacta, porque no hay dos melenas
+    iguales y un mismo tono de romero no se comporta igual en un cabello fino que en uno grueso o
+    poroso.
   </p>
   <p pzProcess>
-    El pigmento se mezcla en el momento, justo antes de aplicarlo — los tintes vegetales no vienen
-    premezclados de fábrica como los tubos convencionales, así que cada mezcla se prepara para tu
-    color de partida y el resultado que buscas. La aplicación se hace mecha a mecha o de raíz a
-    puntas según lo que necesite tu melena, nunca de forma genérica.
+    Mezclo el pigmento en el momento, justo antes de aplicarlo — los tintes vegetales no vienen
+    premezclados de fábrica como los tubos convencionales, así que preparo cada mezcla para tu
+    color de partida y el resultado que buscas. Aplico mecha a mecha o de raíz a puntas según lo
+    que necesite tu melena, nunca de forma genérica.
   </p>
   <p pzProcess>
-    Durante el tiempo de exposición, Virginia vigila cómo va evolucionando el color directamente
-    sobre tu pelo, no por un cronómetro fijo — los pigmentos vegetales se revelan de forma
-    distinta según la porosidad de cada mechón, así que el tiempo real varía de una clienta a
-    otra. Al aclarar, se usa un producto post-color que sella la cutícula y ayuda a fijar el
-    pigmento.
+    Durante el tiempo de exposición vigilo cómo va evolucionando el color directamente sobre tu
+    pelo, no por un cronómetro fijo — los pigmentos vegetales se revelan de forma distinta según
+    la porosidad de cada mechón, así que el tiempo real varía de una clienta a otra. Al aclarar
+    uso un producto post-color que sella la cutícula y ayuda a fijar el pigmento.
   </p>
   <p pzProcess>
-    Todo el proceso ocurre con una sola clienta en el sillón a la vez: nadie te atiende a medias
-    mientras espera otro color en la cabeza de al lado. Al terminar, sales con recomendaciones
-    concretas de mantenimiento — qué champú usar y cada cuánto conviene retocar la raíz — para que
-    el color aguante bien hasta tu próxima cita.
+    Trabajo con una sola clienta en el sillón a la vez: nadie te atiende a medias mientras espera
+    otro color en la cabeza de al lado. Al terminar te doy recomendaciones concretas de
+    mantenimiento — qué champú usar y cada cuánto conviene retocar la raíz — para que el color
+    aguante bien hasta tu próxima cita.
   </p>
   <p pzProcess>
-    Si es tu primera cita con Virginia, siempre empieza con esa consulta de diagnóstico antes de
-    tocar el pelo con ningún producto — así evitáis sorpresas de tono el día de la cita y decidís
+    Si es tu primera cita conmigo, siempre empiezo con esa consulta de diagnóstico antes de tocar
+    el pelo con ningún producto — así evitamos sorpresas de tono el día de la cita y decidimos
     juntas si conviene hacer el cambio en una sola sesión o repartirlo en dos para cuidar mejor la
     fibra.
   </p>
 </pz-service-page>
+
+<!-- Deliberately OUTSIDE `pz-service-page`: the service-pages spec fixes a
+     nine-part anatomy in a fixed order, and a tenth section inside it would
+     break that contract. This is the one route where the Aveda relationship
+     is the subject rather than a supporting fact, so it earns a block of its
+     own — with no link, since it would only point back at this page. The
+     `data-planta` scope comes from the host route's own accent. -->
+<div class="coloracion-aveda" data-planta="romero">
+  <pz-aveda
+    title="Por qué trabajo con Aveda"
+    body="Elegí Aveda porque su línea de color botánico llega a un 96 % de ingredientes de origen natural sin renunciar a cubrir canas de verdad. Trabajo con ella a diario, conozco cómo se comporta en cada tipo de fibra y te recomiendo para casa exactamente los mismos productos que uso en cabina."
+  />
+</div>

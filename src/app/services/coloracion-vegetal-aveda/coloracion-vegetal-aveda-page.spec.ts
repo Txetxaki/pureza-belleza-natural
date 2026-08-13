@@ -143,11 +143,14 @@ describe('ColoracionVegetalAvedaPage (/coloracion-vegetal-aveda) — service-pag
     harness.detectChanges();
 
     const el = harness.routeNativeElement as HTMLElement;
-    expect(el.querySelector('.pz-service-page__result-photo .pz-photo-pending')).toBeTruthy();
-    expect(el.querySelectorAll('.pz-service-page__before-after .pz-photo-pending')).toHaveLength(
-      3,
-    );
-    expect(el.querySelector('.pz-service-page__result-photo .pz-picture')).toBeNull();
+    // Every slot now ships a real file (scripts/generate-photos-comfyui.mjs),
+    // so pz-photo-pending resolves to a genuine <picture> — the file-drop swap
+    // it was built for, asserted from the outside.
+    expect(el.querySelector('.pz-service-page__result-photo picture.pz-picture')).toBeTruthy();
+    expect(
+      el.querySelectorAll('.pz-service-page__before-after picture.pz-picture'),
+    ).toHaveLength(3);
+    expect(el.querySelector('.pz-service-page__result-photo .pz-photo-pending')).toBeNull();
   });
 
   it('renders "Consultar" and never a numeric price or duration while pricing is pending ("Pending entry renders Consultar")', async () => {

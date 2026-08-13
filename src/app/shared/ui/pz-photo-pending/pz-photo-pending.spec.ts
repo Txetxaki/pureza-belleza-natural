@@ -16,10 +16,12 @@ import { PzPhotoPending } from './pz-photo-pending';
   `,
 })
 class TestHost {
-  base = 'resultado-romero';
+  // A base that will never exist on disk — every real slot now ships a
+  // photo, so the fallback branch needs a synthetic name to be testable.
+  base = 'slot-sin-foto';
 }
 
-describe('PzPhotoPending (service-pages spec: "No fabricated hair photography", "Placeholder reads as pending, not broken"; salon-page spec: "One honest placeholder")', () => {
+describe('PzPhotoPending (service-pages spec: "No fabricated hair photography"; salon-page spec: "One honest placeholder")', () => {
   async function render(base: string) {
     await TestBed.configureTestingModule({ imports: [TestHost] }).compileComponents();
     const fixture = TestBed.createComponent(TestHost);
@@ -30,35 +32,30 @@ describe('PzPhotoPending (service-pages spec: "No fabricated hair photography", 
     return fixture.nativeElement as HTMLElement;
   }
 
-  it('renders the honest "Foto pendiente de la sesión" label — no <picture>/<img> at all — when base is absent from available-photos.generated.ts', async () => {
-    // "resultado-romero" is the stable placeholder-photo filename convention
-    // documented in design.md ("Stable placeholder filenames") — not present
-    // in public/images/ yet, so this must render the pending label, never a
-    // broken-image state and never a fabricated result.
-    const el = await render('resultado-romero');
+  it('renders a silent frame — never a fabricated result, and never a line of copy telling the visitor the site is unfinished', async () => {
+    const el = await render('slot-sin-foto');
 
     expect(el.querySelector('picture')).toBeNull();
     expect(el.querySelector('img')).toBeNull();
     const placeholder = el.querySelector('.pz-photo-pending');
     expect(placeholder).toBeTruthy();
-    expect(placeholder?.textContent?.trim().toLowerCase()).toBe('foto pendiente de la sesión');
+    expect(placeholder?.textContent?.trim()).toBe('');
   });
 
   it('carries the correct final aspect-ratio on the placeholder so layout is already right', async () => {
-    const el = await render('resultado-romero');
+    const el = await render('slot-sin-foto');
     const placeholder = el.querySelector<HTMLElement>('.pz-photo-pending');
 
     expect(placeholder?.style.aspectRatio).toBe('1200 / 800');
   });
 
-  it('exposes an accessible label naming both the subject and the pending state, not a broken/blank image', async () => {
-    const el = await render('resultado-romero');
+  it('stays out of the accessibility tree — announcing an empty frame is noise, not information', async () => {
+    const el = await render('slot-sin-foto');
     const placeholder = el.querySelector('.pz-photo-pending');
 
-    expect(placeholder?.getAttribute('role')).toBe('img');
-    expect(placeholder?.getAttribute('aria-label')).toBe(
-      'Resultado de coloración vegetal, planta romero — foto pendiente de la sesión',
-    );
+    expect(placeholder?.getAttribute('aria-hidden')).toBe('true');
+    expect(placeholder?.hasAttribute('role')).toBe(false);
+    expect(placeholder?.hasAttribute('aria-label')).toBe(false);
   });
 
   it('renders the real pz-picture (a genuine <picture>) once base is present in available-photos.generated.ts — a pure file-drop swap, zero template change', async () => {

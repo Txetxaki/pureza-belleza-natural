@@ -4,6 +4,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { filter, map } from 'rxjs/operators';
 import { POSTS_MANIFEST } from '../../../diario/domain/post-manifest';
 import { ROUTE_SEO_REGISTRY } from '../../../seo/domain/route-seo';
+import { PzWordmark } from '../../ui/pz-wordmark/pz-wordmark';
 import { buildDiarioNav, buildHeaderNav, type HeaderNav, type NavRouteEntry } from '../route-registry';
 
 /** The two disclosures this header owns; `null` means both panels are shut. */
@@ -42,7 +43,7 @@ type PanelId = 'carta' | 'diario';
  */
 @Component({
   selector: 'app-site-header',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, PzWordmark],
   templateUrl: './site-header.html',
   styleUrl: './site-header.scss',
 })

@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+# A newer push to the same branch makes the in-flight run pointless.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # The Angular 22 CLI hard-exits on anything below 22.22.3.
+          node-version: 22.x
+          cache: npm
+
+      - run: npm ci
+      - run: npm test
+
+  build:
+    name: Build and prerender
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - run: npm ci
+
+      # `npm run build`, never a bare `ng build`: the anti-cannibalization
+      # keyword validator and the responsive-image pipeline are the `prebuild`
+      # step, and the sitemap generator is `postbuild`. Calling `ng build`
+      # directly silently skips all three.
+      - run: npm run build
+
+      - name: Check every route prerendered
+        run: |
+          count=$(find dist/pureza/browser -name 'index.html' | wc -l)
+          echo "prerendered pages: $count"
+          test "$count" -ge 15
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/pureza/browser
+          retention-days: 7
+
+  e2e:
+    name: End-to-end
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: npm
+
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run e2e
+
+      - uses: actions/upload-artifact@v4
+        # The report is only worth keeping when something failed.
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7

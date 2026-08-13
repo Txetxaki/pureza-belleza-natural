@@ -48,7 +48,7 @@ const FAQ: readonly FaqEntry[] = [
   {
     question: '¿Con qué frecuencia debo hacerme un tratamiento capilar?',
     answer:
-      'Depende del estado de tu fibra y de cuánto la sometas a procesos químicos o calor — Virginia te da una referencia orientativa al terminar la primera sesión, según tu caso concreto y tu rutina diaria.',
+      'Depende del estado de tu fibra y de cuánto la sometas a procesos químicos o calor — te doy una referencia orientativa al terminar la primera sesión, según tu caso concreto y tu rutina diaria.',
   },
   {
     question: '¿Sirve para cabello ya dañado por decoloraciones?',

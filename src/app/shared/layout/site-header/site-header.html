@@ -104,13 +104,17 @@
     </nav>
   </div>
 
+  <!-- `nav().wordmark.label` is still the accessible name, so the registry
+       stays the single source of truth for it; `pz-wordmark` supplies the
+       visible lockup. -->
   <a
     class="site-header__brand"
     routerLink="/"
     routerLinkActive="is-active"
     [routerLinkActiveOptions]="{ exact: true }"
+    [attr.aria-label]="nav().wordmark.label"
   >
-    {{ nav().wordmark.label }}
+    <pz-wordmark size="lead" [label]="nav().wordmark.label" />
   </a>
 
   <div class="site-header__zone site-header__zone--right">

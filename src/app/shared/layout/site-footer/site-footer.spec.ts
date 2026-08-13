@@ -40,7 +40,9 @@ describe('SiteFooter', () => {
     const nav = el.querySelector('.site-footer__nav');
     const legal = el.querySelector('.site-footer__legal');
 
-    expect(brand?.textContent?.trim()).toBe('Pureza');
+    // Two-line lockup: assert the accessible name, not concatenated text.
+    expect(brand?.getAttribute('aria-label')).toBe('Pureza Belleza Natural');
+    expect(brand?.textContent).toContain('Belleza Natural');
     expect(legal?.textContent).toContain(SITE.name);
 
     // DOCUMENT_POSITION_FOLLOWING (4) — brand precedes nav precedes legal.

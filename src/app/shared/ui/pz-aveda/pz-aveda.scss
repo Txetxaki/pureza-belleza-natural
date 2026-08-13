@@ -1,0 +1,75 @@
+// Owns its own outer spacing so a caller only has to supply the
+// `[data-planta]` scope — no page needs a wrapper rule just to place it.
+:host {
+  display: block;
+  margin-block: var(--pz-space-l);
+  padding-inline: var(--pz-space-m);
+}
+
+// A bordered credential block, not a logo lockup. Colour comes from whatever
+// [data-planta] scope the caller places it in; outside one it degrades to the
+// neutral ink pair rather than losing its structure.
+.pz-aveda {
+  display: grid;
+  gap: var(--pz-space-m);
+  align-items: center;
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding: var(--pz-space-l) var(--pz-space-m);
+  background: var(--pz-accent-wash);
+  border: 1px solid var(--pz-accent-rule);
+  border-radius: var(--pz-radius);
+
+  @media (min-width: 720px) {
+    grid-template-columns: auto 1fr;
+    gap: var(--pz-space-xl);
+    padding-inline: var(--pz-space-l);
+  }
+}
+
+.pz-aveda__wordmark {
+  margin: 0;
+  font-family: var(--pz-body);
+  font-size: clamp(1.5rem, 3.4vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  // The tracking is applied after the last glyph too, which pushes the word
+  // visually left of centre; this pulls it back.
+  text-indent: 0.34em;
+  text-align: center;
+  color: var(--pz-accent-text);
+}
+
+.pz-aveda__title {
+  margin: 0;
+  font-family: var(--pz-display);
+  font-style: italic;
+  font-size: var(--pz-text-h3);
+  color: var(--pz-ink);
+}
+
+.pz-aveda__body {
+  margin: var(--pz-space-xs) 0 0;
+  max-width: var(--pz-measure);
+  color: var(--pz-ink-soft);
+  line-height: 1.6;
+}
+
+.pz-aveda__link {
+  display: inline-block;
+  margin-top: var(--pz-space-s);
+  padding-bottom: var(--pz-space-3xs);
+  font-family: var(--pz-body);
+  font-size: var(--pz-text-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--pz-track-label);
+  color: var(--pz-accent-text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--pz-accent-rule);
+
+  &:hover,
+  &:focus-visible {
+    border-bottom-color: var(--pz-accent-text);
+  }
+}

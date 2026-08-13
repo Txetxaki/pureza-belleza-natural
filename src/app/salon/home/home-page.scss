@@ -93,19 +93,32 @@
 
 // ── Hero frieze (five-plant mini service index) ─────────────────────────
 .home-frieze {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--pz-space-m) var(--pz-space-s);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6rem, 1fr));
+  gap: var(--pz-space-s);
   margin-top: var(--pz-space-l);
 }
 
+// Each item is its own [data-planta] scope (see the template), so the tint,
+// the hairline and the glyph below all resolve to that plant's colour without
+// a single per-plant rule here.
 .home-frieze__item {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--pz-space-2xs);
+  padding-block: var(--pz-space-s) var(--pz-space-xs);
+  padding-inline: var(--pz-space-3xs);
   text-align: center;
   text-decoration: none;
+  background: var(--pz-accent-wash);
+  border: 1px solid var(--pz-accent-rule);
+  border-radius: var(--pz-radius);
+
+  &:hover,
+  &:focus-visible {
+    background: color-mix(in srgb, var(--pz-accent-live) 14%, var(--pz-surface));
+  }
 }
 
 .home-frieze__glyph {
@@ -116,7 +129,9 @@
   // precios-page.scss.
   // stylelint-disable-next-line
   ::ng-deep svg {
-    width: 2.75rem;
+    // These five glyphs are the identity of the page. At 2.75rem they read as
+    // incidental icons; at this size they read as the specimen plates they are.
+    width: clamp(3.75rem, 5.5vw, 5.5rem);
     height: auto;
   }
 }
@@ -137,9 +152,14 @@
   }
 }
 
+// Three sibling [data-planta] scopes, exactly like the carta plates below —
+// never nested. The rule and eyebrow are the only coloured parts: a full wash
+// here would fight the washed frieze tiles directly above it.
 .home-manifest__item {
   max-width: 24rem;
   margin-inline: auto;
+  padding-top: var(--pz-space-s);
+  border-top: 2px solid var(--pz-accent-live);
 }
 
 .home-manifest__title {
@@ -247,10 +267,14 @@ app-home-page pz-plate {
 }
 
 // ── CTA band ─────────────────────────────────────────────────────────────
+// The one large colour field on the page. It closes the scroll, so it can
+// carry weight the sections above it should not.
 .home-cta-band {
   text-align: center;
   padding-block: var(--pz-space-xl);
-  border-top: 1px solid var(--pz-hairline);
+  border-top: 1px solid var(--pz-accent-rule);
+  background: var(--pz-accent-wash);
+  border-radius: var(--pz-radius);
 }
 
 .home-cta-band__title {

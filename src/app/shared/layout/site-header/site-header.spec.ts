@@ -33,7 +33,12 @@ describe('SiteHeader', () => {
     const el = fixture.nativeElement as HTMLElement;
 
     const brand = el.querySelector('.site-header__brand');
-    expect(brand?.textContent?.trim()).toBe('Pureza');
+    // The visible mark is now a two-line lockup, so the assertion is on the
+    // accessible name — the thing a screen reader and the registry agree on —
+    // rather than on concatenated textContent.
+    expect(brand?.getAttribute('aria-label')).toBe('Pureza');
+    expect(brand?.querySelector('pz-wordmark')).not.toBeNull();
+    expect(brand?.textContent).toContain('Belleza Natural');
     expect(brand?.getAttribute('href')).toBe('/');
 
     // Structural centring: the header's three top-level children are the

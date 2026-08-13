@@ -22,12 +22,15 @@
   text-align: center;
 }
 
+// Takes the page's accent rather than the neutral hairline. In an unowned
+// context `--pz-accent-rule` resolves from `--pz-ink`, so this degrades to a
+// soft grey rule instead of disappearing.
 .pz-section-head__rule {
-  width: 2.5rem;
+  width: 3.5rem;
   height: 0;
   margin: 0;
   border: none;
-  border-top: 1px solid var(--pz-hairline);
+  border-top: 1px solid var(--pz-accent-rule);
 }
 
 .pz-section-head__title {

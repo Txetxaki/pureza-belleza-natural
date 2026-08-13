@@ -1,0 +1,12 @@
+<section class="pz-aveda" aria-labelledby="pz-aveda-heading">
+  <!-- Typographic, never an imitation of the Aveda mark. See the component
+       docblock for the real-asset swap path. -->
+  <p class="pz-aveda__wordmark">AVEDA</p>
+  <div class="pz-aveda__type">
+    <h2 id="pz-aveda-heading" class="pz-aveda__title">{{ title() }}</h2>
+    <p class="pz-aveda__body">{{ body() }}</p>
+    @if (link(); as href) {
+      <a class="pz-aveda__link" [routerLink]="href">{{ linkLabel() }}</a>
+    }
+  </div>
+</section>

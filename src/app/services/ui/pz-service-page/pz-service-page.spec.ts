@@ -40,7 +40,7 @@ const FIXTURE: ServiceContent = {
         renunciar a un acabado impecable.
       </p>
       <p pzProcess>
-        PROCESO_MARKER — Virginia valora tu melena, mezcla el pigmento botánico en el momento y
+        PROCESO_MARKER — valoro tu melena, mezclo el pigmento botánico en el momento y
         aplica la coloración paso a paso, vigilando el tiempo de exposición en todo momento.
       </p>
     </pz-service-page>
@@ -110,7 +110,7 @@ describe('PzServicePage (design.md D1/D2; service-pages spec)', () => {
     expect(eyebrow?.textContent?.trim()).toBe('Coloración Vegetal · romero');
   });
 
-  it('projects the "qué es y para quién" and "cómo lo hace Virginia" slots into their respective anatomy sections, in order', async () => {
+  it('projects the "qué es y para quién" and "cómo trabajo" slots into their respective anatomy sections, in order', async () => {
     const el = await render();
 
     expect(el.querySelector('.pz-service-page__what-is')?.textContent).toContain('QUE_ES_MARKER');
@@ -122,13 +122,14 @@ describe('PzServicePage (design.md D1/D2; service-pages spec)', () => {
     );
   });
 
-  it('renders the result photo and exactly three before/after photos via pz-photo-pending — no fabricated imagery', async () => {
+  it('renders the result photo and exactly three before/after photos through pz-photo-pending', async () => {
     const el = await render();
 
-    expect(el.querySelector('.pz-service-page__result-photo .pz-photo-pending')).toBeTruthy();
-    expect(el.querySelectorAll('.pz-service-page__before-after .pz-photo-pending')).toHaveLength(
-      3,
-    );
+    // Asserted on the component element, not on which branch it took: the
+    // anatomy is "one result photo and three before/afters", and that holds
+    // whether a given base has landed on disk yet or not.
+    expect(el.querySelectorAll('.pz-service-page__result-photo pz-photo-pending')).toHaveLength(1);
+    expect(el.querySelectorAll('.pz-service-page__before-after pz-photo-pending')).toHaveLength(3);
   });
 
   it('renders "Consultar" and the pending note for price/duration while pricing is pending — never a fabricated figure ("Pending entry renders Consultar")', async () => {

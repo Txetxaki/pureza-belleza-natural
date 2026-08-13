@@ -1,12 +1,11 @@
 @if (available()) {
   <pz-picture [base]="base()" [alt]="alt()" [width]="width()" [height]="height()" />
 } @else {
-  <div
-    class="pz-photo-pending"
-    [style.aspect-ratio]="aspectRatio()"
-    role="img"
-    [attr.aria-label]="alt() + ' — foto pendiente de la sesión'"
-  >
-    <p class="pz-photo-pending__label pz-eyebrow">Foto pendiente de la sesión</p>
-  </div>
+  <!-- Silent fallback. It used to print "Foto pendiente de la sesión" across
+       the frame, which told every visitor the site was unfinished — a
+       production site should never narrate its own gaps to a client. It keeps
+       the exact final aspect-ratio so nothing reflows when the photo lands,
+       and stays out of the accessibility tree entirely: announcing a frame
+       with no picture in it is noise, not information. -->
+  <div class="pz-photo-pending" [style.aspect-ratio]="aspectRatio()" aria-hidden="true"></div>
 }

@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PzPicture } from '../../shared/ui/pz-picture/pz-picture';
 import { PzPlate } from '../../shared/ui/pz-plate/pz-plate';
+import { PzAveda } from '../../shared/ui/pz-aveda/pz-aveda';
 import { PzCta } from '../../shared/ui/pz-cta/pz-cta';
 import { PzSpecimen } from '../../shared/ui/pz-specimen/pz-specimen';
 import { SeoService } from '../../seo/application/seo.service';
@@ -33,7 +34,7 @@ const PLANTA_LABEL: Readonly<Record<Planta, string>> = {
  */
 @Component({
   selector: 'app-home-page',
-  imports: [PzPicture, PzPlate, PzCta, PzSpecimen, RouterLink],
+  imports: [PzPicture, PzPlate, PzCta, PzSpecimen, PzAveda, RouterLink],
   templateUrl: './home-page.html',
   styleUrl: './home-page.scss',
 })

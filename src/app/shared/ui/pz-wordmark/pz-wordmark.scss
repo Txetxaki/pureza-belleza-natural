@@ -1,0 +1,50 @@
+// Everything scales off one local custom property, so the two lines and the
+// rule between them can never drift apart at different sizes.
+:host {
+  --pz-wordmark-size: var(--pz-text-lead);
+
+  display: inline-block;
+  color: var(--pz-ink);
+}
+
+:host([data-size='display']) {
+  --pz-wordmark-size: var(--pz-text-h3);
+}
+
+.pz-wordmark {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.18em;
+  line-height: 1;
+}
+
+.pz-wordmark__name {
+  font-family: var(--pz-display);
+  font-style: italic;
+  font-size: var(--pz-wordmark-size);
+  letter-spacing: 0.01em;
+  color: currentcolor;
+}
+
+// Set in `em` so it tracks the name's optical width rather than a fixed pixel
+// length that would look right at one size and wrong at the other.
+.pz-wordmark__rule {
+  width: 3.2em;
+  height: 0;
+  border-top: 1px solid var(--pz-hairline);
+}
+
+.pz-wordmark__tagline {
+  font-family: var(--pz-body);
+  // Small enough to read as a supporting line, never as a second title.
+  font-size: calc(var(--pz-wordmark-size) * 0.38);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--pz-track-label);
+  // Cancels the trailing letter-space so the tagline optically centres under
+  // the name instead of sitting one space to the left.
+  text-indent: var(--pz-track-label);
+  color: var(--pz-ink-soft);
+  white-space: nowrap;
+}

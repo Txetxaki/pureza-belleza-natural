@@ -48,12 +48,12 @@ const FAQ: readonly FaqEntry[] = [
   {
     question: '¿Duele el proceso de creación?',
     answer:
-      'No debería doler: la técnica de aguja tira del cabello, no de la piel, y Virginia ajusta la tensión de cada mechón según lo que tu cuero cabelludo vaya tolerando durante la sesión, parando si notas alguna zona especialmente sensible.',
+      'No debería doler: la técnica de aguja tira del cabello, no de la piel, y ajusto la tensión de cada mechón según lo que tu cuero cabelludo vaya tolerando durante la sesión, parando si notas alguna zona especialmente sensible.',
   },
   {
     question: '¿Puedo lavarme el pelo con normalidad?',
     answer:
-      'Sí, aunque conviene espaciar un poco más los lavados que antes y secar bien la raíz de cada rasta para que no quede humedad retenida — Virginia te explica el ritmo concreto y los productos recomendados al terminar la sesión.',
+      'Sí, aunque conviene espaciar un poco más los lavados que antes y secar bien la raíz de cada rasta para que no quede humedad retenida — te explico el ritmo concreto y los productos recomendados al terminar la sesión.',
   },
   {
     question: '¿Funciona en cualquier tipo de cabello?',
@@ -68,7 +68,7 @@ const FAQ: readonly FaqEntry[] = [
   {
     question: '¿Cada cuánto necesito una revisión de mantenimiento?',
     answer:
-      'Depende de cómo crezca tu raíz y de cuánto se aflojen los mechones con el uso diario — Virginia te da una referencia orientativa al terminar la creación, según tu caso concreto y tu ritmo de crecimiento.',
+      'Depende de cómo crezca tu raíz y de cuánto se aflojen los mechones con el uso diario — te doy una referencia orientativa al terminar la creación, según tu caso concreto y tu ritmo de crecimiento.',
   },
   {
     question: '¿Se pueden deshacer sin dañar el pelo?',

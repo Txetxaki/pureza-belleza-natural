@@ -48,7 +48,7 @@ const FAQ: readonly FaqEntry[] = [
   {
     question: '¿Se nota que llevo extensiones?',
     answer:
-      'Si la integración y el tono se ajustan bien, no debería notarse: por eso Virginia dedica tiempo a igualar el color a la luz natural y a colocar cada extensión bajo tu propio pelo, no encima.',
+      'Si la integración y el tono se ajustan bien, no debería notarse: por eso dedico tiempo a igualar el color a la luz natural y a colocar cada extensión bajo tu propio pelo, no encima.',
   },
   {
     question: '¿Dañan mi cabello natural?',
@@ -58,22 +58,22 @@ const FAQ: readonly FaqEntry[] = [
   {
     question: '¿Puedo hacer deporte o nadar con ellas puestas?',
     answer:
-      'Sí, aunque conviene recogerlas bien y secarlas a fondo después para que el punto de integración no quede húmedo demasiado tiempo — Virginia te da recomendaciones concretas según tu rutina de ejercicio.',
+      'Sí, aunque conviene recogerlas bien y secarlas a fondo después para que el punto de integración no quede húmedo demasiado tiempo — te doy recomendaciones concretas según tu rutina de ejercicio.',
   },
   {
     question: '¿Cuánto duran antes de necesitar mantenimiento?',
     answer:
-      'Depende de cómo crezca tu propio pelo y de cuánto roce reciban en el día a día — Virginia te da una referencia orientativa al terminar la sesión, según tu caso y tu rutina de cuidado.',
+      'Depende de cómo crezca tu propio pelo y de cuánto roce reciban en el día a día — te doy una referencia orientativa al terminar la sesión, según tu caso y tu rutina de cuidado.',
   },
   {
     question: '¿Puedo teñirme el pelo llevando extensiones?',
     answer:
-      'Se valora en la consulta previa: al ser cabello natural, admite algunos procesos de color, pero conviene decidirlo junto con Virginia para no comprometer ni tu melena ni la extensión integrada.',
+      'Se valora en la consulta previa: al ser cabello natural, admite algunos procesos de color, pero conviene que lo decidamos juntas para no comprometer ni tu melena ni la extensión integrada.',
   },
   {
-    question: '¿De dónde viene el cabello que usáis?',
+    question: '¿De dónde viene el cabello que usas?',
     answer:
-      'Es cabello natural de origen ético, seleccionado antes de integrarlo en tu melena — Virginia puede resolver cualquier duda concreta sobre su procedencia en la consulta previa, sin compromiso.',
+      'Es cabello natural de origen ético, seleccionado antes de integrarlo en tu melena — resuelvo cualquier duda concreta sobre su procedencia en la consulta previa, sin compromiso.',
   },
 ];
 

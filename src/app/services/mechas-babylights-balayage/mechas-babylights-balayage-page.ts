@@ -73,7 +73,7 @@ const FAQ: readonly FaqEntry[] = [
   {
     question: '¿Cuánto dura el mantenimiento?',
     answer:
-      'El intervalo entre retoques depende de cómo crezca tu color de base y de cuánto contraste tenga con las mechas — Virginia te da una referencia orientativa al terminar la sesión, según tu caso concreto.',
+      'El intervalo entre retoques depende de cómo crezca tu color de base y de cuánto contraste tenga con las mechas — te doy una referencia orientativa al terminar la sesión, según tu caso concreto.',
   },
 ];
 

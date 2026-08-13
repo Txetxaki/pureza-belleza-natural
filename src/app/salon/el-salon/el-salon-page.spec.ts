@@ -59,16 +59,16 @@ describe('ElSalonPage (/el-salon) — salon-page spec', () => {
     );
   });
 
-  it('renders exactly one honest interior placeholder, labelled as pending, not a broken image ("One honest placeholder, no fabricated interior")', async () => {
+  it('renders the interior photo through pz-photo-pending, with no pending frame left anywhere on the page', async () => {
     configure();
     const harness = await RouterTestingHarness.create('/el-salon');
     harness.detectChanges();
 
     const el = harness.routeNativeElement as HTMLElement;
-    const placeholders = el.querySelectorAll('.pz-photo-pending');
-    expect(placeholders).toHaveLength(1);
-    expect(placeholders[0].textContent).toContain('Foto pendiente de la sesión');
-    expect(placeholders[0].getAttribute('role')).toBe('img');
+    // salon-interior-1 now exists on disk, so the single pz-photo-pending slot
+    // resolves to a real <picture> — the file-drop swap, observed from outside.
+    expect(el.querySelectorAll('.pz-photo-pending')).toHaveLength(0);
+    expect(el.querySelector('pz-photo-pending picture.pz-picture')).toBeTruthy();
   });
 
   it('uses only atmosfera-* botanical imagery for its non-interior photography — no fabricated interior/people imagery, no stock', async () => {
@@ -77,7 +77,11 @@ describe('ElSalonPage (/el-salon) — salon-page spec', () => {
     harness.detectChanges();
 
     const el = harness.routeNativeElement as HTMLElement;
-    const pictures = Array.from(el.querySelectorAll('pz-picture'));
+    // The interior slot is excluded by selector, not by counting: it renders
+    // through pz-photo-pending and is legitimately not an `atmosfera-*` frame.
+    const pictures = Array.from(el.querySelectorAll('pz-picture')).filter(
+      (picture) => picture.closest('pz-photo-pending') === null,
+    );
     expect(pictures.length).toBeGreaterThan(0);
     for (const picture of pictures) {
       const src = picture.querySelector('img')?.getAttribute('src') ?? '';

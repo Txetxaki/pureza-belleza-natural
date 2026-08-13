@@ -30,6 +30,17 @@
   --pz-accent-live: var(--pz-ink); /* unowned context degrades to ink */
   --pz-accent-text: var(--pz-ink-soft); /* → no loose colour anywhere      */
 
+  /* Derived from `--pz-accent-live`, never declared per plant: a
+     `[data-planta]` scope rebinds the two handles above and these follow for
+     free, so adding a sixth plant stays a two-line change.
+     `--pz-accent-wash` is a section-sized tint — it must stay light enough
+     that `--pz-ink` on top still clears AA, which is what
+     `tokens.contrast.spec.ts` pins. `--pz-accent-rule` is for 1px hairlines
+     and other non-text strokes ONLY; it is not a text colour.
+     Small text on a filled accent still uses `--pz-accent-text`. */
+  --pz-accent-wash: color-mix(in srgb, var(--pz-accent-live) 7%, var(--pz-surface));
+  --pz-accent-rule: color-mix(in srgb, var(--pz-accent-live) 45%, var(--pz-surface));
+
   /* ── Type ─────────────────────────────────────────────────────────────── */
   --pz-display: 'EB Garamond', 'Iowan Old Style', Palatino, 'Times New Roman', serif;
   --pz-body: 'Alegreya Sans', 'Segoe UI', system-ui, sans-serif;

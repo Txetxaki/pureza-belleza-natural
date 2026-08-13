@@ -50,25 +50,34 @@
   </div>
 </section>
 
+<!-- Scoped to romero, the plant that owns the coloración route this credential
+     points at. A sibling scope, never nested. -->
+<div class="home-aveda" data-planta="romero">
+  <pz-aveda link="/coloracion-vegetal-aveda" />
+</div>
+
+<!-- Three sibling [data-planta] scopes — the same never-nested rule the carta
+     plates below follow. The plants are the house palette shown as a band,
+     not a claim that each statement belongs to that service. -->
 <section class="home-manifest">
-  <div class="home-manifest__item">
-    <p class="pz-eyebrow">96 % botánico</p>
+  <div class="home-manifest__item" data-planta="romero">
+    <p class="pz-eyebrow pz-eyebrow--accent">96 % botánico</p>
     <h2 class="home-manifest__title">Color que no quema</h2>
     <p class="home-manifest__body">
       Coloración Aveda con hasta un 96 % de ingredientes de origen natural. Sin amoniaco, sin olor
       químico, sin picor en el cuero cabelludo.
     </p>
   </div>
-  <div class="home-manifest__item">
-    <p class="pz-eyebrow">Una cada vez</p>
+  <div class="home-manifest__item" data-planta="esparto">
+    <p class="pz-eyebrow pz-eyebrow--accent">Una cada vez</p>
     <h2 class="home-manifest__title">El salón entero para ti</h2>
     <p class="home-manifest__body">
       No hay dos sillones ocupados a la vez. Ni turnos solapados, ni esperas con el tinte puesto
       mientras atienden a otra.
     </p>
   </div>
-  <div class="home-manifest__item">
-    <p class="pz-eyebrow">Centro histórico</p>
+  <div class="home-manifest__item" data-planta="olivo">
+    <p class="pz-eyebrow pz-eyebrow--accent">Centro histórico</p>
     <h2 class="home-manifest__title">A un paso de la Plaza Mayor</h2>
     <p class="home-manifest__body">
       Calle Pozo Dulce, 1. Cinco minutos andando desde la estación de autobuses y desde el
@@ -242,7 +251,7 @@
   </figure>
 </section>
 
-<section class="home-cta-band">
+<section class="home-cta-band" data-planta="vid">
   <h2 class="home-cta-band__title">¿Hablamos?</h2>
   <p class="home-cta-band__lede">Cuéntame qué necesitas y buscamos hueco.</p>
   <pz-cta href="/contacto">Ir a contacto</pz-cta>

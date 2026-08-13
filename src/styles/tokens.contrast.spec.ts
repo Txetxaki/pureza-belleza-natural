@@ -94,6 +94,59 @@ describe('design tokens — plant accent -text variants vs --pz-surface', () => 
  * only this describe block still sees the eyebrow-role floor proven directly,
  * not inferred from a differently-named test elsewhere.
  */
+/**
+ * `--pz-accent-wash` (`_tokens.scss`) tints a section with 7% of the live
+ * accent over `--pz-surface`. Text on those sections therefore no longer sits
+ * on pure white, and the block above stops being the whole story: a wash dark
+ * enough to look interesting is also a wash that can quietly pull a `-text`
+ * token under 4.5:1. This computes the same mix CSS does and pins both text
+ * roles that actually appear on a washed surface.
+ */
+const ACCENT_WASH_PERCENT = 7;
+
+const LIVE_TOKENS = {
+  '--pz-romero-text': '#3D8B6B',
+  '--pz-espliego-text': '#7C6BC4',
+  '--pz-esparto-text': '#C1912B',
+  '--pz-vid-text': '#B44A63',
+  '--pz-olivo-text': '#7A8B2F',
+} as const;
+
+/** `color-mix(in srgb, live P%, surface)` — sRGB is the gamma-encoded space,
+ * so this is a plain per-channel interpolation of the 8-bit values. */
+function mixSrgb(hexA: string, hexB: string, percentA: number): string {
+  const [rA, gA, bA] = hexToRgb(hexA);
+  const [rB, gB, bB] = hexToRgb(hexB);
+  const t = percentA / 100;
+  const channel = (a: number, b: number) =>
+    Math.round(a * t + b * (1 - t))
+      .toString(16)
+      .padStart(2, '0');
+  return `#${channel(rA, rB)}${channel(gA, gB)}${channel(bA, bB)}`;
+}
+
+describe('--pz-accent-wash — a tinted section is still a readable one', () => {
+  it.each(Object.entries(LIVE_TOKENS))(
+    'the %s wash keeps its own -text token above 4.5:1',
+    (tokenName, liveHex) => {
+      const wash = mixSrgb(liveHex, PZ_SURFACE, ACCENT_WASH_PERCENT);
+      const textHex = TEXT_TOKENS[tokenName as keyof typeof TEXT_TOKENS];
+
+      expect(contrastRatio(textHex, wash)).toBeGreaterThanOrEqual(WCAG_AA_NORMAL_TEXT);
+    },
+  );
+
+  it.each(Object.entries(LIVE_TOKENS))(
+    'the %s wash keeps --pz-ink-soft body copy above 4.5:1',
+    (_tokenName, liveHex) => {
+      const wash = mixSrgb(liveHex, PZ_SURFACE, ACCENT_WASH_PERCENT);
+
+      // `--pz-ink-soft`, the token every washed block's body copy uses.
+      expect(contrastRatio('#4F574F', wash)).toBeGreaterThanOrEqual(WCAG_AA_NORMAL_TEXT);
+    },
+  );
+});
+
 describe('.pz-eyebrow--accent — 11px/700 is normal-size text (WCAG 2.2 §1.4.3), needs 4.5:1 not 3:1', () => {
   it.each(Object.entries(TEXT_TOKENS))(
     '%s clears the eyebrow-role floor of 4.5:1 against #FFFFFF',

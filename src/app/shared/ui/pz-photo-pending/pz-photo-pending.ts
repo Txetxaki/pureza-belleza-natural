@@ -3,14 +3,18 @@ import { PzPicture } from '../pz-picture/pz-picture';
 import { AVAILABLE_PHOTO_BASES } from './available-photos.generated';
 
 /**
- * Honest "foto pendiente de la sesión" placeholder for the service-result and
- * before/after photography we do not have yet (BRIEF §4 — never fabricate an
- * AI hair result, never use stock). Same input contract as `pz-picture`
- * (`base`/`alt`/`width`/`height`, all required) so swapping in the real photo
- * is a pure file drop: once `base` appears in `available-photos.generated.ts`
- * (design.md D9, emitted by `generate-image-variants.mjs`), this component
- * renders `pz-picture` instead of the placeholder with ZERO template/code
- * change at any call site.
+ * Renders the real photograph when it exists on disk, and a silent tinted
+ * frame of the right shape when it does not.
+ *
+ * Same input contract as `pz-picture` (`base`/`alt`/`width`/`height`, all
+ * required) so swapping in a photo is a pure file drop: once `base` appears in
+ * `available-photos.generated.ts` (design.md D9, emitted by
+ * `generate-image-variants.mjs`), this renders `pz-picture` instead, with ZERO
+ * template or code change at any call site.
+ *
+ * Every slot is currently filled by `scripts/generate-photos-comfyui.mjs`, so
+ * the fallback branch should not render anywhere in production — it stays as
+ * the safety net for a slot added faster than its photograph.
  */
 @Component({
   selector: 'pz-photo-pending',

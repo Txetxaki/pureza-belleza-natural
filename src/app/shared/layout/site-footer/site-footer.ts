@@ -2,6 +2,7 @@ import { Component, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { POSTS_MANIFEST } from '../../../diario/domain/post-manifest';
 import { SITE, type Site } from '../../site';
+import { PzWordmark } from '../../ui/pz-wordmark/pz-wordmark';
 import { buildDiarioNav, filterNavEntries, NAV_ROUTES, type NavRouteEntry } from '../route-registry';
 
 /**
@@ -20,7 +21,7 @@ import { buildDiarioNav, filterNavEntries, NAV_ROUTES, type NavRouteEntry } from
  */
 @Component({
   selector: 'app-site-footer',
-  imports: [RouterLink],
+  imports: [RouterLink, PzWordmark],
   templateUrl: './site-footer.html',
   styleUrl: './site-footer.scss',
 })

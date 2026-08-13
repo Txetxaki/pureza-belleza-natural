@@ -146,6 +146,56 @@ file alongside the command.
   iteration with a different (rejected) token set. `openspec/changes/foundation/design.md` is the
   canonical design reference; do not copy values from the superseded file.
 
+## Swapping in real photography
+
+Every photograph on the site is a **placeholder generated locally** with ComfyUI
+(`scripts/generate-photos-comfyui.mjs`, FLUX.1-schnell). They exist so the site can be shown to
+clients without empty frames — they are not the salon, and they are meant to be replaced.
+
+**To replace any photo: drop a `.jpg` over the same filename in `public/images/`, then run
+`npm run build`.** Nothing else changes — no template edit, no code edit. The build regenerates the
+responsive `avif`/`webp`/`jpg` variants at 400/800/1200px and rewrites
+`src/app/shared/ui/pz-photo-pending/available-photos.generated.ts`.
+
+Aim for a landscape frame around 1200×800 (or 1400×930 for the salon interior) and square-ish for
+the before/after set; the pipeline downsizes but never upscales.
+
+| File in `public/images/` | Where it appears |
+| --- | --- |
+| `retrato-virginia.jpg` | `/` hero portrait (the one duotone image on the site) and `/virginia` |
+| `salon-interior-1.jpg` | `/el-salon`, the interior slot |
+| `manos-pigmento.jpg` | `/` quote section |
+| `textura-lino.jpg` | `/` full-width strip between carta and quote |
+| `atmosfera-romero.jpg` | `/` carta plate · `/el-salon` opener |
+| `atmosfera-espliego.jpg` | `/` carta plate |
+| `atmosfera-esparto.jpg` | `/` carta plate |
+| `atmosfera-vid.jpg` | `/` carta plate |
+| `atmosfera-olivo.jpg` | `/` carta plate · `/el-salon` closer |
+| `resultado-romero.jpg` | `/coloracion-vegetal-aveda`, main result photo |
+| `antes-despues-romero-{1,2,3}.jpg` | `/coloracion-vegetal-aveda`, before/after row |
+| `resultado-espliego.jpg` | `/mechas-babylights-balayage`, main result photo |
+| `antes-despues-espliego-{1,2,3}.jpg` | `/mechas-babylights-balayage`, before/after row |
+| `resultado-esparto.jpg` | `/rastas`, main result photo |
+| `antes-despues-esparto-{1,2,3}.jpg` | `/rastas`, before/after row |
+| `resultado-vid.jpg` | `/extensiones-cabello-natural`, main result photo |
+| `antes-despues-vid-{1,2,3}.jpg` | `/extensiones-cabello-natural`, before/after row |
+| `resultado-olivo.jpg` | `/tratamientos-capilares`, main result photo |
+| `antes-despues-olivo-{1,2,3}.jpg` | `/tratamientos-capilares`, before/after row |
+
+Ignore the `-400`/`-800`/`-1200` files — those are build output and are overwritten every time.
+
+**Alt text** lives next to each slot in code (the `alt:` field in each service page's `ServicePhoto`
+entries, or the `alt=` attribute on `pz-picture`). Update it when the photo changes; it describes
+the picture, so a new picture needs new words.
+
+**Regenerating placeholders** (needs ComfyUI on `127.0.0.1:8188` with the `ComfyUI-GGUF` node,
+`flux1-schnell-Q4_K_S.gguf`, `t5xxl_fp8_e4m3fn` + `clip_l`, and the FLUX `ae.safetensors` VAE):
+
+```bash
+node scripts/generate-photos-comfyui.mjs                  # fills only missing slots
+node scripts/generate-photos-comfyui.mjs resultado-olivo  # forces one slot
+```
+
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
