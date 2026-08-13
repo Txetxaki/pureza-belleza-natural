@@ -3,8 +3,12 @@ engram_project: virginia
 context: |
   Product: Pureza · Belleza Natural — chemical-free hair salon marketing site (Ciudad Real, Spain).
   Owner: Virginia. Domain: purezabellezanatural.es. Repo root recommended: this directory (Pureza/).
-  Stack: Angular 22 standalone + signals + @angular/ssr, hybrid rendering (11 routes Prerender,
-  /reservar/** Server), TypeScript strict, SCSS design tokens, self-hosted fonts, incremental hydration.
+  Stack: Angular 22 standalone + signals + @angular/ssr, ALL 12 routes Prerender (no server-rendered
+  route — the earlier "/reservar/** Server" plan is superseded: see
+  openspec/changes/foundation/exploration.md §2.1, Vercel has no first-party Angular SSR adapter and
+  the community workaround would route the prerendered pages through a serverless function too;
+  /reservar is a static WhatsApp/tel conversion page in this phase per decision #2267),
+  TypeScript strict, SCSS design tokens, self-hosted fonts, incremental hydration.
   Architecture: Screaming/Hexagonal by domain (salon, services, booking), atomic design,
   container-presentational pattern — not layered-by-technical-type.
   SEO: 12-route URL map, 4 anti-cannibalization rules, long-tail strategy. Full detail in Engram
