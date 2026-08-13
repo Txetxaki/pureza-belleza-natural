@@ -423,43 +423,53 @@ specifically, rather than asserting something currently false for `/virginia`/`/
 
 ---
 
-## Slice 8a — `/diario` infrastructure
+## Slice 8a — `/diario` infrastructure — DONE
 
-Branch: `content/08a-diario-infra`. Base: Slice 7.
+**Status: DONE** — implemented together with Slice 8b on a single combined branch
+`content/08-diario` (base `content/07-home-stitch-alignment`, per explicit orchestrator direction: the
+manifest shape (8a) and the three articles that consume it (8b) are tightly coupled enough to ship as
+one reviewable unit rather than two chained branches). 44 spec files / 283 tests, all green (239
+baseline + 44). `npm run build` green: **15 prerendered routes**, sitemap **15 URLs**. See
+`sdd/content/apply-progress` (Engram, project "virginia") for exact landed shapes and the interpretive
+note on where `BlogPosting` JSON-LD gets emitted (8.10-8.12, below).
 
-### 8.1 `src/app/diario/posts.manifest.json` + `src/app/diario/domain/post-manifest.ts` (+ `.spec.ts`)
+Branch: `content/08a-diario-infra` (actual: `content/08-diario`, combined with 8b). Base: Slice 7.
+
+### 8.1 `src/app/diario/posts.manifest.json` + `src/app/diario/domain/post-manifest.ts` (+ `.spec.ts`) — DONE
 Three entries (slug, title, description, publish intent — one per contested niche per proposal decision
 4). `post-manifest.ts` imports the JSON, joins each entry to its body component by slug (D6). Bijection
 spec: every manifest slug has a matching component reference and vice versa (same drift-proof pattern as
 the SEO registry / pricing bijections).
 Spec: `diario` — "Three prerendered posts" (manifest half).
 
-### 8.2 `src/app/diario/domain/post-seo.resolver.ts` (+ `.spec.ts`)
+### 8.2 `src/app/diario/domain/post-seo.resolver.ts` (+ `.spec.ts`) — DONE
 Route `resolve` (D5 — not a container `ngOnInit` call) merging matched-slug metadata into
 `route.snapshot.data['seo']` so `SeoService.applyFromActivatedRoute` picks it up with zero `SeoService`
 changes. Unknown slug → `RedirectCommand('/diario')` (verified present in the installed `@angular/ssr`
 22.1.3 per Engram #2311 — no fallback branch needed).
 Spec: `seo-infrastructure` — "Title and canonical set on navigation" (registry-less-route case).
 
-### 8.3 `src/app/diario/diario-page/*` (index) [P — independent of 8.4]
+### 8.3 `src/app/diario/diario-page/*` (index) [P — independent of 8.4] — DONE
 Lists all three articles with links to `/diario/:slug`. H1/`<title>` do not contain "Ciudad Real" (title/
 H1 only — the registry `description` for `diario` deliberately does and stays exempt, do not "fix" it).
 Registry flip `diario: 'planned' → 'live'`.
 Spec: `diario` — "Title/H1 clean", "Description exempt", "Index lists three articles", "Live status".
 
-### 8.4 `src/app/diario/post-page/*` (shell, `NgComponentOutlet`) [P — independent of 8.3]
+### 8.4 `src/app/diario/post-page/*` (shell, `NgComponentOutlet`) [P — independent of 8.3] — DONE
 Resolves the post component by slug (8.1) and renders it via `NgComponentOutlet` — content present in
-prerendered HTML, never `innerHTML`/an unsanitized string. Component spec can use a minimal stub body
-component (the three real ones land in Slice 8b) to prove the shell mechanism in isolation.
+prerendered HTML, never `innerHTML`/an unsanitized string. **Apply-time note**: since 8a and 8b landed
+together on one branch, the component spec exercises the real three post components end-to-end through
+the real routes (RouterTestingHarness) rather than a minimal stub — a stronger integration test than the
+task's literal "can use a stub" allowance, not a deviation from it.
 Spec: `diario` — "Content present without JS".
 
-### 8.5 `scripts/validate-keyword-uniqueness.mjs` (Modify, + spec update)
+### 8.5 `scripts/validate-keyword-uniqueness.mjs` (Modify, + spec update) — DONE
 Add the blog rule: no post **title** may contain "ciudad real" (accent/case-insensitive, reuse the
 existing `normalizeKeyword`-style normalization). Title only — descriptions exempt (the shipped `/diario`
 registry description contains it deliberately; do not write a rule that would flag it).
 Spec: `seo-infrastructure` — "Title/H1 violation fails build", "Description exempt, build passes".
 
-### 8.6 `scripts/generate-sitemap.mjs` (Modify, + spec update)
+### 8.6 `scripts/generate-sitemap.mjs` (Modify, + spec update) — DONE
 Write-time `status === 'live'` filter (a `'planned'` entry's files must not appear in `sitemap.xml` even
 if they exist on disk from a prior partial build — `console.warn` per exclusion, not throw, so a
 half-flipped intermediate build still succeeds). Allow `diario/{slug}` paths that have no matching
@@ -467,7 +477,7 @@ registry entry, with a documented default `changefreq`/`priority`.
 Spec: `seo-infrastructure` — "Planned routes excluded", "Blog posts get a default priority", "Sitemap
 regenerates without manual editing".
 
-### 8.7 `app.routes.ts` / `app.routes.server.ts` (Modify) — depends on 8.1–8.4
+### 8.7 `app.routes.ts` / `app.routes.server.ts` (Modify) — depends on 8.1–8.4 — DONE
 `/diario` (index) + `/diario/:slug` with `getPrerenderParams` returning the three manifest slugs, both
 `RenderMode.Prerender`.
 Spec: `diario` — "Three prerendered posts" (build-output half); `app-shell` — "Diario slugs prerendered
@@ -475,36 +485,62 @@ via getPrerenderParams".
 
 **Slice 8a estimate: ~730 changed lines** — tight against the 800 budget on its own; if apply-time count
 runs over, pull 8.5+8.6 (the two script changes, ~160 lines together) into their own trailing micro-slice
-before 8b.
+before 8b. **Landed combined with 8b as a single branch (see note above) — combined diff exceeds the
+800-line single-slice budget by design/instruction, treated as an accepted size exception for this
+tightly-coupled pair rather than two separately reviewed branches.**
 
 ---
 
-## Slice 8b — `/diario` three launch articles
+## Slice 8b — `/diario` three launch articles — DONE
 
-Branch: `content/08b-diario-articles`. Base: Slice 8a.
+**Status: DONE** — see Slice 8a's status note above; both slices share one branch/commit set.
 
-### 8.8 `src/app/seo/generators/blog-posting.schema.ts` (+ `.spec.ts`)
+Branch: `content/08b-diario-articles` (actual: `content/08-diario`, combined with 8a). Base: Slice 8a.
+
+### 8.8 `src/app/seo/generators/blog-posting.schema.ts` (+ `.spec.ts`) — DONE
 Deferred from Slice 1. `buildBlogPostingSchema`, `author` referencing `Person.@id` (6.1's stable `@id` —
 assert equality against `/virginia`'s emitted value, not a re-typed literal).
 Spec: `seo-infrastructure` — "All four generators produce valid JSON-LD"; `virginia-page` — "Person @id is
 stable and referenced" (the cross-page half, completing 6.1's deferred assertion); `diario` — "Three
 prerendered posts" (schema half).
 
-### 8.9 `src/app/services/ui/pz-service-anchor/*` (+ `.spec.ts`)
+### 8.9 `src/app/services/ui/pz-service-anchor/*` (+ `.spec.ts`) — DONE
 Renders a service link whose text **is** `seoData(path).primaryKeyword` verbatim — exact-match anchor
 text cannot drift because it is derived, never typed twice. First and only consumer in this change: each
 article's single outbound link to its paired service page.
 Spec: `diario` — "Anchor text matches target keyword".
 
-### 8.10–8.12 Three post body components, one per contested niche [P — independent file trees]
+### 8.10–8.12 Three post body components, one per contested niche [P — independent file trees] — DONE
 Each: standalone component (not markdown, not an HTML string — D6), substantive answer-a-question body
-copy, prerendered, exactly one `pz-service-anchor` (8.9) link to its paired service route, `BlogPosting`
-JSON-LD (8.8) via the same route-`resolve` wiring (8.2). H1/`<title>` never contain "Ciudad Real" (build-
-enforced by 8.5 — treat a red build here as the spec working correctly, not a bug to route around).
+copy (~500-700 Spanish words), prerendered, exactly one `pz-service-anchor` (8.9) link to its paired
+service route, H1/`<title>` never contain "Ciudad Real" (build-enforced by 8.5). Topics: "¿Cuánto dura una
+coloración sin amoniaco?" → `/coloracion-vegetal-aveda`; "Cómo se cuidan unas rastas para que duren años"
+→ `/rastas`; "Babylights o balayage: en qué se diferencian de verdad" → `/mechas-babylights-balayage`.
+Single consistent launch date (`2026-06-15`) across all three — no fabricated publication history.
+
+**Apply-time interpretive note (not a deviation, a resolved ambiguity)**: the task text says `BlogPosting`
+JSON-LD lands "via the same route-`resolve` wiring (8.2)". Read literally that could mean the resolver
+itself injects the schema; instead, `BlogPosting` is built and emitted ONCE by `post-page.ts` (the
+`NgComponentOutlet` shell, 8.4) in its own `ngOnInit`, reading the SAME `posts.manifest.json` entry (via
+`postManifestEntry(slug)`) that `post-seo.resolver.ts` also reads by slug — the same underlying
+single-source-of-truth module, not the resolver function itself performing the DOM side effect. This
+mirrors every other route in the app (container emits JSON-LD in `ngOnInit`; body content emits none) and
+avoids duplicating `BlogPosting`-construction boilerplate three times across the actually-interchangeable
+post components. Documented here and in `post-page.ts`'s doc comment.
 Spec: `diario` — "Title/H1 clean", "Anchor text matches target keyword", "Prerendered content, no
 client-only render".
 
 **Slice 8b estimate: ~520 changed lines.**
+
+---
+
+## Extra task (outside Slices 8a/8b) — `/virginia` orphan-page fix — DONE
+
+Slice 7 flagged `/virginia` as a genuine pre-existing orphan: `inNav: false` in the registry (by design)
+AND zero `routerLink`/`href` pointing at it anywhere in the app. Fixed with ONE contextual link: the home
+page's quote attribution ("— Virginia · Pureza") now wraps "Virginia" in a `routerLink="/virginia"`
+(`home-page.html`, `.home-quote__author-link` in `home-page.scss`) — the least-forced natural placement,
+no nav/footer restructure. Covered by a new `home-page.spec.ts` test asserting the link's `href`.
 
 ---
 

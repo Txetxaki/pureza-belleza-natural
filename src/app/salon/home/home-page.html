@@ -231,7 +231,14 @@
     <blockquote class="home-quote__text">
       Aquí no eres una clienta más. Solo estamos tú, tu cabello y yo.
     </blockquote>
-    <figcaption class="home-quote__caption">— Virginia · Pureza</figcaption>
+    <!-- The only internal link to /virginia anywhere in the app (registry
+         `inNav: false` — no header/footer link by design, Slice 7's apply-
+         time note). Without this, /virginia is a genuine orphan page with
+         zero internal link equity — one tasteful contextual link here, not
+         a nav restructure. -->
+    <figcaption class="home-quote__caption">
+      — <a class="home-quote__author-link" routerLink="/virginia">Virginia</a> · Pureza
+    </figcaption>
   </figure>
 </section>
 

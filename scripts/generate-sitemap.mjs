@@ -49,6 +49,83 @@ async function findPrerenderedRoutes(dir, baseDir = dir) {
   return routes;
 }
 
+// Documented default for blog post paths, which have no
+// route-seo.registry.json entry of their own (design.md D6; seo-
+// infrastructure spec, "Blog posts get a default priority"). Monthly
+// matches other evergreen/informational routes (/el-salon, /virginia);
+// 0.5 sits below the five service routes (0.8) and the home page (1),
+// above nothing being indexed at all.
+export const BLOG_POST_CHANGEFREQ = 'monthly';
+export const BLOG_POST_PRIORITY = 0.5;
+
+/**
+ * Pure selection (postbuild sitemap spec, "Planned routes excluded", "Blog
+ * posts get a default priority"): given every prerendered path, the
+ * registry, and the blog post manifest, returns the sitemap entries to
+ * write plus one warning string per excluded built-but-not-live path
+ * (write-time `status === 'live'` filter — `console.warn`, never a throw,
+ * so a half-flipped intermediate build still succeeds). Throws if a `live`
+ * registry route OR a manifest post is missing from `builtRoutes`, or if a
+ * built route matches neither the registry nor the manifest.
+ */
+export function selectSitemapEntries(builtRoutes, registry, posts) {
+  const registryByPath = new Map(registry.map((entry) => [entry.path, entry]));
+  const postSlugs = new Set(posts.map((post) => `diario/${post.slug}`));
+
+  const liveRoutes = registry.filter((entry) => entry.status === 'live');
+  const missingLive = liveRoutes.filter((entry) => !builtRoutes.includes(entry.path));
+  if (missingLive.length > 0) {
+    throw new Error(
+      `[generate-sitemap] 'live' route(s) missing from prerendered output: ${missingLive
+        .map((entry) => `"${entry.path}"`)
+        .join(', ')} — check app.routes.server.ts`,
+    );
+  }
+
+  const missingPosts = posts.filter((post) => !builtRoutes.includes(`diario/${post.slug}`));
+  if (missingPosts.length > 0) {
+    throw new Error(
+      `[generate-sitemap] blog post(s) missing from prerendered output: ${missingPosts
+        .map((post) => `"diario/${post.slug}"`)
+        .join(', ')} — check app.routes.server.ts's getPrerenderParams`,
+    );
+  }
+
+  const orphanBuiltRoutes = builtRoutes.filter(
+    (path) => !registryByPath.has(path) && !postSlugs.has(path),
+  );
+  if (orphanBuiltRoutes.length > 0) {
+    throw new Error(
+      `[generate-sitemap] built path(s) with no route-seo.registry.json or posts.manifest.json entry: ${orphanBuiltRoutes
+        .map((path) => `"${path}"`)
+        .join(', ')}`,
+    );
+  }
+
+  const warnings = [];
+  const entries = [];
+  for (const path of builtRoutes) {
+    if (postSlugs.has(path)) {
+      entries.push({ loc: pathToUrl(path), changefreq: BLOG_POST_CHANGEFREQ, priority: BLOG_POST_PRIORITY });
+      continue;
+    }
+    const registryEntry = registryByPath.get(path);
+    if (registryEntry.status !== 'live') {
+      warnings.push(
+        `excluding "${path}" from sitemap.xml — registry status is "${registryEntry.status}", not "live"`,
+      );
+      continue;
+    }
+    entries.push({
+      loc: pathToUrl(path),
+      changefreq: registryEntry.changefreq,
+      priority: registryEntry.priority,
+    });
+  }
+
+  return { entries, warnings };
+}
+
 function buildSitemapXml(entries) {
   const items = entries
     .map(
@@ -62,39 +139,25 @@ function buildSitemapXml(entries) {
 async function main() {
   const browserDir = join(process.cwd(), 'dist', 'pureza', 'browser');
   const registryPath = join(process.cwd(), 'src', 'app', 'seo', 'route-seo.registry.json');
+  const postsManifestPath = join(process.cwd(), 'src', 'app', 'diario', 'posts.manifest.json');
 
   const registry = JSON.parse(await readFile(registryPath, 'utf-8'));
-  const registryByPath = new Map(registry.map((entry) => [entry.path, entry]));
+
+  let posts = [];
+  try {
+    posts = JSON.parse(await readFile(postsManifestPath, 'utf-8'));
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      throw error;
+    }
+  }
 
   const builtRoutes = await findPrerenderedRoutes(browserDir);
+  const { entries, warnings } = selectSitemapEntries(builtRoutes, registry, posts);
 
-  const liveRoutes = registry.filter((entry) => entry.status === 'live');
-  const missingLive = liveRoutes.filter((entry) => !builtRoutes.includes(entry.path));
-  if (missingLive.length > 0) {
-    throw new Error(
-      `[generate-sitemap] 'live' route(s) missing from prerendered output: ${missingLive
-        .map((entry) => `"${entry.path}"`)
-        .join(', ')} — check app.routes.server.ts`,
-    );
+  for (const warning of warnings) {
+    console.warn(`[generate-sitemap] ${warning}`);
   }
-
-  const orphanBuiltRoutes = builtRoutes.filter((path) => !registryByPath.has(path));
-  if (orphanBuiltRoutes.length > 0) {
-    throw new Error(
-      `[generate-sitemap] built path(s) with no route-seo.registry.json entry: ${orphanBuiltRoutes
-        .map((path) => `"${path}"`)
-        .join(', ')}`,
-    );
-  }
-
-  const entries = builtRoutes.map((path) => {
-    const registryEntry = registryByPath.get(path);
-    return {
-      loc: pathToUrl(path),
-      changefreq: registryEntry.changefreq,
-      priority: registryEntry.priority,
-    };
-  });
 
   const xml = buildSitemapXml(entries);
   await writeFile(join(browserDir, 'sitemap.xml'), xml, 'utf-8');

@@ -3,13 +3,14 @@ import { canonicalUrl, getRouteSeo, ROUTE_SEO_REGISTRY, seoData, seoRouteData } 
 import { SITE } from './site';
 
 describe('route-seo registry', () => {
-  it('has exactly twelve routes, with /, /contacto, all five service routes (Slices 4+5), /virginia + /el-salon (Slice 6a) and /precios + /reservar (Slice 6b) live — only /diario still planned', () => {
+  it('has exactly twelve routes, ALL live — /diario flips live in Slice 8, completing the registry (seo-infrastructure spec, "All twelve routes present and live")', () => {
     expect(ROUTE_SEO_REGISTRY).toHaveLength(12);
     const live = ROUTE_SEO_REGISTRY.filter((entry) => entry.status === 'live');
     expect(live.map((entry) => entry.path).sort()).toEqual([
       '',
       'coloracion-vegetal-aveda',
       'contacto',
+      'diario',
       'el-salon',
       'extensiones-cabello-natural',
       'mechas-babylights-balayage',

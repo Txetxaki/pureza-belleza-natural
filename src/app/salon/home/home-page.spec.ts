@@ -98,16 +98,25 @@ describe('HomePage (/) — routed through the real app.routes', () => {
       (a) => a.getAttribute('href') ?? '',
     );
 
-    // /virginia and /diario are deliberately NOT asserted here: /virginia's
-    // registry entry carries `inNav: false` by design (it has no nav/footer
-    // link anywhere in the app today, service pages/home/footer all checked
-    // — a genuine, pre-existing gap noted in this slice's apply-progress,
-    // not introduced by it) and /diario is still `status: 'planned'` at
-    // this point in the chain (flips live in Slice 8), so
-    // `filterNavEntries` correctly excludes it from the footer until then.
-    for (const path of ['el-salon', 'precios', 'reservar']) {
+    // /virginia is deliberately NOT asserted here: its registry entry
+    // carries `inNav: false` by design, so `filterNavEntries` correctly
+    // excludes it from the footer — it is now reachable via ONE tasteful
+    // contextual link in the home quote attribution instead (see the
+    // dedicated test below; content/08-diario's "orphan page" fix).
+    // /diario is now live too (Slice 8) and IS in nav, so it belongs here.
+    for (const path of ['el-salon', 'precios', 'reservar', 'diario']) {
       expect(footerHrefs).toContain(`/${path}`);
     }
+  });
+
+  it('links to /virginia from the quote attribution — content/08-diario fix for a genuine pre-existing orphan page (no other route linked there before)', async () => {
+    configure();
+    const harness = await RouterTestingHarness.create('/');
+    harness.detectChanges();
+
+    const el = harness.routeNativeElement as HTMLElement;
+    const link = el.querySelector<HTMLAnchorElement>('.home-quote__author-link');
+    expect(link?.getAttribute('href')).toBe('/virginia');
   });
 
   it('applies title/description/canonical from the route-seo registry entry for "/"', async () => {

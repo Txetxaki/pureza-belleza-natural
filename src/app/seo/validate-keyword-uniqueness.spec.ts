@@ -10,6 +10,7 @@
 // `scripts/validate-keyword-uniqueness.mjs`.
 import { describe, expect, it } from 'vitest';
 import {
+  findBlogTitleLocalityViolations,
   findDuplicateKeywords,
   findDuplicatePaths,
   findDuplicatePlantas,
@@ -125,6 +126,37 @@ describe('findFieldViolations', () => {
   });
 });
 
+function post(overrides: Record<string, unknown> = {}) {
+  return {
+    slug: 'un-articulo',
+    title: 'Un título sin la palabra prohibida',
+    description: 'Descripción libre.',
+    standfirst: 'Resumen libre.',
+    publishedAt: '2026-06-15',
+    ...overrides,
+  };
+}
+
+describe('findBlogTitleLocalityViolations (diario spec, "Blog locality-term validator — title and H1 only")', () => {
+  it('passes when no post title contains "Ciudad Real"', () => {
+    expect(findBlogTitleLocalityViolations([post()])).toEqual([]);
+  });
+
+  it('flags a post title containing "Ciudad Real", accent/case-insensitive', () => {
+    const violations = findBlogTitleLocalityViolations([
+      post({ slug: 'malo', title: 'Peluquería en CIUDAD REAL, lo mejor' }),
+    ]);
+    expect(violations).toEqual([{ slug: 'malo', field: 'title', reason: 'contains "Ciudad Real"' }]);
+  });
+
+  it('never inspects description — a post description containing it is NOT flagged (title only)', () => {
+    const violations = findBlogTitleLocalityViolations([
+      post({ description: 'Consejos de peluquería en Ciudad Real.' }),
+    ]);
+    expect(violations).toEqual([]);
+  });
+});
+
 describe('validateRegistry + hasViolations', () => {
   it('reports no violations for a clean registry', () => {
     const routes = [
@@ -140,5 +172,16 @@ describe('validateRegistry + hasViolations', () => {
       route({ path: 'b', primaryKeyword: 'rastas Ciudad Real' }),
     ];
     expect(hasViolations(validateRegistry(routes))).toBe(true);
+  });
+
+  it('reports violations when a blog post title contains "Ciudad Real"', () => {
+    const routes = [route({ path: '', primaryKeyword: null })];
+    const posts = [post({ title: 'Peluquería en Ciudad Real, la mejor' })];
+    expect(hasViolations(validateRegistry(routes, posts))).toBe(true);
+  });
+
+  it('defaults to no blog posts when the second argument is omitted (backward compatible)', () => {
+    const routes = [route({ path: '', primaryKeyword: null })];
+    expect(hasViolations(validateRegistry(routes))).toBe(false);
   });
 });

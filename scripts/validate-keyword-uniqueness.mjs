@@ -114,13 +114,36 @@ export function findFieldViolations(routes) {
   return violations;
 }
 
-/** Runs all four checks; each key holds that check's violations array (empty = pass). */
-export function validateRegistry(routes) {
+/**
+ * Blog locality rule (diario spec, "Blog locality-term validator — title
+ * and H1 only"): no post TITLE may contain "ciudad real", accent/case-
+ * insensitive, reusing the same `normalizeKeyword` normalization. The H1
+ * half of this rule is enforced at render time by each post component's
+ * literal copy (never fabricated from user input), not re-checked here —
+ * this script only has access to `posts.manifest.json`, which carries
+ * `title`, not each component's H1 markup. Title only — `description` is
+ * exempt (the shipped `/diario` registry description contains "Ciudad
+ * Real" deliberately; this function is never given descriptions to check).
+ */
+export function findBlogTitleLocalityViolations(posts) {
+  const violations = [];
+  for (const post of posts) {
+    const normalized = normalizeKeyword(post.title);
+    if (normalized !== null && normalized.includes('ciudad real')) {
+      violations.push({ slug: post.slug, field: 'title', reason: 'contains "Ciudad Real"' });
+    }
+  }
+  return violations;
+}
+
+/** Runs all five checks; each key holds that check's violations array (empty = pass). */
+export function validateRegistry(routes, posts = []) {
   return {
     duplicateKeywords: findDuplicateKeywords(routes),
     duplicatePaths: findDuplicatePaths(routes),
     duplicatePlantas: findDuplicatePlantas(routes),
     fieldViolations: findFieldViolations(routes),
+    blogTitleLocality: findBlogTitleLocalityViolations(posts),
   };
 }
 
@@ -129,7 +152,8 @@ export function hasViolations(result) {
     result.duplicateKeywords.length > 0 ||
     result.duplicatePaths.length > 0 ||
     result.duplicatePlantas.length > 0 ||
-    result.fieldViolations.length > 0
+    result.fieldViolations.length > 0 ||
+    result.blogTitleLocality.length > 0
   );
 }
 
@@ -147,14 +171,31 @@ function formatResult(result) {
   for (const violation of result.fieldViolations) {
     lines.push(`  ${violation.path || '(root)'}: ${violation.field} — ${violation.reason}`);
   }
+  for (const violation of result.blogTitleLocality ?? []) {
+    lines.push(`  diario/${violation.slug}: ${violation.field} — ${violation.reason}`);
+  }
   return lines.join('\n');
 }
 
 async function main() {
   const registryPath = join(process.cwd(), 'src', 'app', 'seo', 'route-seo.registry.json');
-  const raw = await readFile(registryPath, 'utf-8');
-  const routes = JSON.parse(raw);
-  const result = validateRegistry(routes);
+  const postsManifestPath = join(process.cwd(), 'src', 'app', 'diario', 'posts.manifest.json');
+  const routes = JSON.parse(await readFile(registryPath, 'utf-8'));
+
+  // Tolerant read: the fixture spec spawns this script against a temp
+  // directory holding ONLY a copy of route-seo.registry.json (see
+  // validate-keyword-uniqueness.fixture.spec.ts) — a missing manifest there
+  // is expected, not a validation failure.
+  let posts = [];
+  try {
+    posts = JSON.parse(await readFile(postsManifestPath, 'utf-8'));
+  } catch (error) {
+    if (error.code !== 'ENOENT') {
+      throw error;
+    }
+  }
+
+  const result = validateRegistry(routes, posts);
 
   if (hasViolations(result)) {
     console.error('[validate-keyword-uniqueness] registry validation failed:');
@@ -163,7 +204,7 @@ async function main() {
     return;
   }
 
-  console.log(`[validate-keyword-uniqueness] ${routes.length} routes OK`);
+  console.log(`[validate-keyword-uniqueness] ${routes.length} routes OK (${posts.length} blog posts)`);
 }
 
 const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];

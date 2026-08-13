@@ -1,0 +1,19 @@
+<header class="diario-page__hero">
+  <p class="pz-eyebrow">Diario</p>
+  <h1 class="diario-page__h1">Ideas y cuidados de cabecera, explicados sin prisa</h1>
+  <p class="diario-page__lede">
+    Artículos pensados para responder dudas reales sobre coloración vegetal, rastas y técnicas de
+    mechas — sin tecnicismos y sin química agresiva de por medio.
+  </p>
+</header>
+
+<ul class="diario-page__list">
+  @for (post of posts; track post.slug) {
+    <li class="diario-page__item">
+      <a class="diario-page__link" [routerLink]="['/diario', post.slug]">
+        <h2 class="diario-page__item-title">{{ post.title }}</h2>
+      </a>
+      <p class="diario-page__standfirst">{{ post.standfirst }}</p>
+    </li>
+  }
+</ul>

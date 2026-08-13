@@ -34,11 +34,25 @@ export interface FieldViolation {
   readonly reason: string;
 }
 
+/** `posts.manifest.json` entry shape `findBlogTitleLocalityViolations` reads. */
+export interface PostManifestLike {
+  readonly slug: string;
+  readonly title: string;
+  readonly [key: string]: unknown;
+}
+
+export interface BlogTitleLocalityViolation {
+  readonly slug: string;
+  readonly field: 'title';
+  readonly reason: string;
+}
+
 export interface ValidationResult {
   readonly duplicateKeywords: readonly KeywordDuplicate[];
   readonly duplicatePaths: readonly PathDuplicate[];
   readonly duplicatePlantas: readonly PlantaDuplicate[];
   readonly fieldViolations: readonly FieldViolation[];
+  readonly blogTitleLocality: readonly BlogTitleLocalityViolation[];
 }
 
 export declare const TITLE_MAX: number;
@@ -49,5 +63,11 @@ export declare function findDuplicateKeywords(routes: readonly RegistryRouteLike
 export declare function findDuplicatePaths(routes: readonly RegistryRouteLike[]): PathDuplicate[];
 export declare function findDuplicatePlantas(routes: readonly RegistryRouteLike[]): PlantaDuplicate[];
 export declare function findFieldViolations(routes: readonly RegistryRouteLike[]): FieldViolation[];
-export declare function validateRegistry(routes: readonly RegistryRouteLike[]): ValidationResult;
+export declare function findBlogTitleLocalityViolations(
+  posts: readonly PostManifestLike[],
+): BlogTitleLocalityViolation[];
+export declare function validateRegistry(
+  routes: readonly RegistryRouteLike[],
+  posts?: readonly PostManifestLike[],
+): ValidationResult;
 export declare function hasViolations(result: ValidationResult): boolean;

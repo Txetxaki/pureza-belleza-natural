@@ -240,6 +240,12 @@ app-home-page pz-plate {
   font-size: var(--pz-text-small);
 }
 
+.home-quote__author-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 // ── CTA band ─────────────────────────────────────────────────────────────
 .home-cta-band {
   text-align: center;

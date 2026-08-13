@@ -84,3 +84,46 @@ $pz-unicode-range-latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-2
 .pz-eyebrow--accent {
   color: var(--pz-accent-text);
 }
+
+// Blog-post prose utility (diario spec) — shared by the three launch
+// article components (Slice 8b). Angular view encapsulation means content
+// rendered by `NgComponentOutlet` (post-page.ts) is a genuinely separate
+// component tree from its shell, so a scoped `post-page.scss` rule can never
+// reach it — this global utility keeps prose styling in exactly one place
+// instead of duplicated per post.
+.pz-article {
+  max-width: var(--pz-measure);
+  margin-inline: auto;
+  color: var(--pz-ink-soft);
+  line-height: 1.7;
+
+  h1 {
+    margin: 0 0 var(--pz-space-xs);
+    font-family: var(--pz-display);
+    font-size: var(--pz-text-h1);
+    line-height: 1.1;
+    color: var(--pz-ink);
+  }
+
+  h2 {
+    margin: var(--pz-space-l) 0 var(--pz-space-xs);
+    font-family: var(--pz-display);
+    font-style: italic;
+    font-size: var(--pz-text-h3);
+    color: var(--pz-ink);
+  }
+
+  p {
+    margin: 0 0 var(--pz-space-s);
+  }
+
+  a {
+    color: var(--pz-ink);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+}
+
+.pz-article__standfirst {
+  font-size: var(--pz-text-lead);
+}

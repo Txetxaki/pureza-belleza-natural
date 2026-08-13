@@ -31,7 +31,7 @@ describe('filterNavEntries', () => {
     expect(result.some((entry) => entry.path === 'coloracion-vegetal-aveda')).toBe(false);
   });
 
-  it("today's real NAV_ROUTES yields the brand link, all five live service routes (Slices 4+5), /el-salon (Slice 6a — inNav: true; /virginia stays out, inNav: false), /precios and /reservar (Slice 6b) and /contacto (footer's flat projection grows automatically, zero further edits — D7)", () => {
+  it("today's real NAV_ROUTES yields the brand link, all five live service routes (Slices 4+5), /el-salon (Slice 6a — inNav: true; /virginia stays out, inNav: false), /precios and /reservar (Slice 6b), /contacto, and /diario (Slice 8 — footer's flat projection grows automatically, zero further edits — D7)", () => {
     expect(filterNavEntries(NAV_ROUTES).map((entry) => entry.path)).toEqual([
       '',
       'coloracion-vegetal-aveda',
@@ -43,6 +43,7 @@ describe('filterNavEntries', () => {
       'precios',
       'reservar',
       'contacto',
+      'diario',
     ]);
   });
 });
@@ -138,7 +139,7 @@ describe('buildHeaderNav', () => {
     });
   });
 
-  it("today's real ROUTE_SEO_REGISTRY yields all five live service routes in the dropdown (Slices 4+5 complete), /el-salon and /precios in navLeft (Slices 6a+6b) and a live reserveCta (/reservar live, Slice 6b)", () => {
+  it("today's real ROUTE_SEO_REGISTRY yields all five live service routes in the dropdown (Slices 4+5 complete), /el-salon, /precios, /contacto and /diario in navLeft (Slices 6a+6b+8) and a live reserveCta (/reservar live, Slice 6b)", () => {
     const result = buildHeaderNav(ROUTE_SEO_REGISTRY);
     expect(result.dropdownServices.map((entry) => entry.path)).toEqual([
       'coloracion-vegetal-aveda',
@@ -153,6 +154,11 @@ describe('buildHeaderNav', () => {
       status: 'live',
       inNav: true,
     });
-    expect(result.navLeft.map((entry) => entry.path)).toEqual(['el-salon', 'precios', 'contacto']);
+    expect(result.navLeft.map((entry) => entry.path)).toEqual([
+      'el-salon',
+      'precios',
+      'contacto',
+      'diario',
+    ]);
   });
 });

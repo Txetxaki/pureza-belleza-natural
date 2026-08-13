@@ -11,6 +11,9 @@ import { VirginiaPage } from './salon/virginia/virginia-page';
 import { ElSalonPage } from './salon/el-salon/el-salon-page';
 import { PreciosPage } from './salon/precios/precios-page';
 import { ReservarPage } from './booking/reservar/reservar-page';
+import { DiarioPage } from './diario/diario-page/diario-page';
+import { PostPage } from './diario/post-page/post-page';
+import { postSeoResolver } from './diario/domain/post-seo.resolver';
 
 // SEO wiring (design.md §4/§7, PR4's documented pattern, landed here in PR5):
 // `seoRouteData(path)` spreads the matching `route-seo.registry.json` entry
@@ -63,5 +66,19 @@ export const routes: Routes = [
     path: 'reservar',
     component: ReservarPage,
     data: seoRouteData('reservar'),
+  },
+  {
+    path: 'diario',
+    component: DiarioPage,
+    data: seoRouteData('diario'),
+  },
+  {
+    // Registry-less route (design.md D5/D6) — SEO comes from
+    // post-seo.resolver.ts's `resolve`, merged into `route.data.seo`, not
+    // from `seoRouteData()`. Unknown slugs redirect to `/diario` inside the
+    // resolver itself.
+    path: 'diario/:slug',
+    component: PostPage,
+    resolve: { seo: postSeoResolver },
   },
 ];
