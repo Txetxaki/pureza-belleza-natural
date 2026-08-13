@@ -308,22 +308,28 @@ pairing-map table in `service-pages` spec is now fully satisfiable end-to-end fo
 
 ## Slice 6a — `/virginia` + `/el-salon`
 
+**Status: DONE** — all 3 tasks implemented and committed on `content/06a-virginia-el-salon`
+(base `content/05-service-pages-batch-b`, commit `d8fdb81`). 16 new unit tests added (35 spec
+files / 221 tests, all green — 205 baseline + 16). `npm run build` green, 9 prerendered routes,
+sitemap carries 9 URLs. See `sdd/content/apply-progress` (Engram, project "virginia") for exact
+landed shapes.
+
 Branch: `content/06a-virginia-el-salon`. Base: Slice 5.
 
-### 6.1 `src/app/seo/generators/person.schema.ts` (+ `.spec.ts`)
+### 6.1 `src/app/seo/generators/person.schema.ts` (+ `.spec.ts`) — DONE
 Deferred from Slice 1 to its first real consumer. `buildPersonSchema` with stable `@id` (`SCHEMA_ID`,
 1.4), `name`, `worksFor: salonRef()`. Spec: `@id` is a fixed string, not derived per-call (stability is
 literally "the same value on every build", assert by calling twice and comparing).
 Spec: `seo-infrastructure` — "All four generators produce valid JSON-LD"; `virginia-page` — "Person @id is
 stable and referenced" (generator half; the cross-page half lands with 8.2's `BlogPosting` in Slice 8b).
 
-### 6.2 `src/app/salon/virginia/*`
+### 6.2 `src/app/salon/virginia/*` — DONE
 H1 = "Virginia peluquera Ciudad Real"; **no** `[data-planta]` scope anywhere in the subtree; real
 experience/credentials content (not a photo + name); emits `Person` JSON-LD (6.1) + `BreadcrumbList`.
 Registry flip `virginia: 'planned' → 'live'`; routes wiring, `RenderMode.Prerender`.
 Spec: `virginia-page` — "Neutral, no accent scope", "Person @id is stable and referenced", "Live status".
 
-### 6.3 `src/app/salon/el-salon/*` [P — independent of 6.2]
+### 6.3 `src/app/salon/el-salon/*` [P — independent of 6.2] — DONE
 No `primaryKeyword` (registry entry already has `null` — confirm, do not add one; keyword-uniqueness
 validator already exempts null-keyword rows, no script change needed). Uses only `atmosfera-*` botanical
 imagery for non-interior visuals + exactly one `pz-photo-pending` (2.2) slot for the pending interior

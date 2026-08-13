@@ -1,0 +1,128 @@
+:host {
+  display: block;
+}
+
+// ── Hero ──────────────────────────────────────────────────────────────────
+.el-salon-page__hero {
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+  padding-block: var(--pz-space-l) var(--pz-space-m);
+  text-align: center;
+}
+
+.el-salon-page__h1 {
+  margin: var(--pz-space-3xs) auto 0;
+  max-width: var(--pz-wrap);
+  font-family: var(--pz-display);
+  font-size: var(--pz-text-h1);
+  line-height: 1.1;
+  color: var(--pz-ink);
+}
+
+.el-salon-page__lede {
+  margin: var(--pz-space-m) auto 0;
+  max-width: var(--pz-measure);
+  color: var(--pz-ink-soft);
+  font-size: var(--pz-text-lead);
+  line-height: 1.7;
+}
+
+// ── Full-bleed atmospheric imagery ───────────────────────────────────────
+.el-salon-page__atmosphere {
+  margin: 0;
+  width: 100%;
+
+  // pz-picture renders via a real child component, not ng-content
+  // projection, but ::ng-deep is still required to cross its own view
+  // encapsulation boundary — same documented pattern as home-page.scss.
+  // stylelint-disable-next-line
+  ::ng-deep {
+    .pz-picture,
+    .pz-picture__img {
+      width: 100%;
+      height: clamp(220px, 32vw, 420px);
+      object-fit: cover;
+      display: block;
+    }
+  }
+}
+
+// ── Body sections ────────────────────────────────────────────────────────
+.el-salon-page__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pz-space-2xl);
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+  padding-block: var(--pz-space-2xl);
+}
+
+.el-salon-page__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pz-space-l);
+}
+
+.el-salon-page__prose {
+  max-width: var(--pz-measure);
+  margin-inline: auto;
+  color: var(--pz-ink-soft);
+  line-height: 1.7;
+  text-align: center;
+
+  p {
+    margin: 0 0 var(--pz-space-s);
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.el-salon-page__interior {
+  margin: var(--pz-space-m) auto 0;
+  max-width: 40rem;
+  width: 100%;
+
+  // stylelint-disable-next-line
+  ::ng-deep .pz-photo-pending {
+    width: 100%;
+    border-radius: var(--pz-radius);
+    overflow: hidden;
+  }
+}
+
+// ── Closing CTA band ─────────────────────────────────────────────────────
+.el-salon-page__cta-band {
+  text-align: center;
+  padding-block: var(--pz-space-xl);
+  border-top: 1px solid var(--pz-hairline);
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+}
+
+.el-salon-page__cta-band-lede {
+  margin: 0 0 var(--pz-space-m);
+  font-family: var(--pz-display);
+  font-style: italic;
+  font-size: var(--pz-text-h3);
+  color: var(--pz-ink);
+}
+
+.el-salon-page__cta-band-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--pz-space-s);
+}
+
+.el-salon-page__contact-link {
+  display: inline-block;
+  margin-top: var(--pz-space-m);
+  color: var(--pz-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

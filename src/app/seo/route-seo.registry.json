@@ -81,7 +81,7 @@
     "changefreq": "yearly",
     "priority": 0.5,
     "inNav": false,
-    "status": "planned"
+    "status": "live"
   },
   {
     "path": "el-salon",
@@ -93,7 +93,7 @@
     "changefreq": "yearly",
     "priority": 0.5,
     "inNav": true,
-    "status": "planned"
+    "status": "live"
   },
   {
     "path": "precios",

@@ -1,0 +1,102 @@
+<header class="virginia-page__hero">
+  <figure class="virginia-page__portrait">
+    <!-- Real photo (info/virginia.jpeg → public/images/retrato-virginia.jpg).
+         Ships UNTINTED here: the duotone treatment on pz-picture.ts is
+         reserved for the home hero's own use of this same base — "every
+         other pz-picture usage on this page/route ships untinted". -->
+    <pz-picture
+      base="retrato-virginia"
+      alt="Retrato de Virginia, peluquera y propietaria de Pureza"
+      [width]="1504"
+      [height]="2048"
+    />
+  </figure>
+
+  <div class="virginia-page__hero-type">
+    <p class="pz-eyebrow">Virginia</p>
+    <h1 class="virginia-page__h1">
+      Virginia, la peluquera de Ciudad Real que está detrás de Pureza
+    </h1>
+    <p class="virginia-page__lede">
+      Pureza no es una cadena ni una franquicia: es un único salón que abrí para peluquear de otra
+      manera, con calma y sin química agresiva.
+    </p>
+  </div>
+</header>
+
+<div class="virginia-page__body">
+  <section class="virginia-page__section">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">Quién soy</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">Una peluquera, un salón</h2>
+    </div>
+    <div class="virginia-page__prose">
+      <p>
+        Soy Virginia y Pureza es mi salón: lo llevo yo, de principio a fin. Recibo, escucho,
+        coloreo y despido a cada clienta — no hay un equipo detrás repartiendo el trabajo entre
+        varias personas. Cuando reservas una cita en Pureza, sabes exactamente quién te va a
+        atender.
+      </p>
+    </div>
+  </section>
+
+  <section class="virginia-page__section">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">Cómo trabajo</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">Por qué una sola clienta a la vez</h2>
+    </div>
+    <div class="virginia-page__prose">
+      <p>
+        En Pureza no hay citas solapadas ni varias clientas a la vez. Cada sesión ocupa el
+        sillón entero, sin interrupciones ni miradas cruzadas hacia el siguiente turno: mientras
+        estás aquí, soy solo para ti. Es una decisión deliberada sobre cómo quiero trabajar, no
+        una limitación de espacio — prefiero dedicar el tiempo que haga falta a una persona que
+        repartirlo entre varias.
+      </p>
+    </div>
+  </section>
+
+  <section class="virginia-page__section">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">Por qué botánica</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">Por qué elegí la coloración vegetal Aveda</h2>
+    </div>
+    <div class="virginia-page__prose">
+      <p>
+        Trabajo con la línea de coloración vegetal de Aveda porque combina pigmentos de origen
+        botánico con una fórmula sin amoniaco. No es una etiqueta de marketing: es la razón por
+        la que elegí especializarme en este sistema y no en otro, y por la que cada color que
+        sale de Pureza pasa por el mismo proceso, sin atajos ni excepciones.
+      </p>
+    </div>
+  </section>
+
+  <section class="virginia-page__section">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">Lo que dicen</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">La valoración de quienes ya han venido</h2>
+    </div>
+    <div class="virginia-page__prose">
+      <p>
+        En Google, la valoración media de Pureza es de 5,0 sobre 5, a partir de las reseñas
+        dejadas por clientas reales. Es el dato más objetivo que puedo ofrecerte sin haberlo
+        pedido yo directamente.
+      </p>
+    </div>
+  </section>
+</div>
+
+<section class="virginia-page__cta-band">
+  <p class="virginia-page__cta-band-lede">¿Hablamos de tu color?</p>
+  <div class="virginia-page__cta-band-ctas">
+    <pz-cta variant="primary" href="/reservar">Reservar cita</pz-cta>
+    <pz-cta variant="secondary" [href]="whatsappUrl" [external]="true">
+      Escribir por WhatsApp
+    </pz-cta>
+  </div>
+  <a class="virginia-page__salon-link" routerLink="/el-salon">Conoce el salón →</a>
+</section>

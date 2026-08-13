@@ -1,0 +1,118 @@
+:host {
+  display: block;
+}
+
+// ── Hero ──────────────────────────────────────────────────────────────────
+.virginia-page__hero {
+  display: grid;
+  gap: var(--pz-space-l);
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+  padding-block: var(--pz-space-l) var(--pz-space-xl);
+
+  @media (min-width: 720px) {
+    grid-template-columns: minmax(0, 22rem) 1fr;
+    align-items: center;
+  }
+}
+
+.virginia-page__portrait {
+  margin: 0;
+
+  // pz-picture renders via a real child component, not ng-content
+  // projection, but ::ng-deep is still required to cross its own view
+  // encapsulation boundary — same documented pattern as home-page.scss.
+  // stylelint-disable-next-line
+  ::ng-deep {
+    .pz-picture,
+    .pz-picture__img {
+      width: 100%;
+      height: auto;
+      border-radius: var(--pz-radius);
+      display: block;
+    }
+  }
+}
+
+.virginia-page__h1 {
+  margin: var(--pz-space-3xs) 0 0;
+  font-family: var(--pz-display);
+  font-size: var(--pz-text-h1);
+  line-height: 1.1;
+  color: var(--pz-ink);
+}
+
+.virginia-page__lede {
+  margin: var(--pz-space-m) 0 0;
+  max-width: var(--pz-measure);
+  color: var(--pz-ink-soft);
+  font-size: var(--pz-text-lead);
+  line-height: 1.7;
+}
+
+// ── Body sections ────────────────────────────────────────────────────────
+.virginia-page__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pz-space-2xl);
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+  padding-block: var(--pz-space-2xl) var(--pz-space-xl);
+}
+
+.virginia-page__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--pz-space-l);
+}
+
+.virginia-page__prose {
+  max-width: var(--pz-measure);
+  margin-inline: auto;
+  color: var(--pz-ink-soft);
+  line-height: 1.7;
+  text-align: center;
+
+  p {
+    margin: 0 0 var(--pz-space-s);
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// ── Closing CTA band ─────────────────────────────────────────────────────
+.virginia-page__cta-band {
+  text-align: center;
+  padding-block: var(--pz-space-xl);
+  border-top: 1px solid var(--pz-hairline);
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-space-m);
+}
+
+.virginia-page__cta-band-lede {
+  margin: 0 0 var(--pz-space-m);
+  font-family: var(--pz-display);
+  font-style: italic;
+  font-size: var(--pz-text-h3);
+  color: var(--pz-ink);
+}
+
+.virginia-page__cta-band-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--pz-space-s);
+}
+
+.virginia-page__salon-link {
+  display: inline-block;
+  margin-top: var(--pz-space-m);
+  color: var(--pz-ink);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

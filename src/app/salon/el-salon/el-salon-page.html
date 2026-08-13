@@ -1,0 +1,99 @@
+<header class="el-salon-page__hero">
+  <p class="pz-eyebrow">El salón</p>
+  <h1 class="el-salon-page__h1">El espacio de Pureza, pensado para ir más despacio</h1>
+  <p class="el-salon-page__lede">
+    Un salón pequeño en el centro de Ciudad Real, con una sola clienta en el sillón a la vez y
+    ningún ruido de fondo mientras esperas tu turno — porque no hay turno.
+  </p>
+</header>
+
+<!-- Non-interior atmospheric visual (BRIEF §4): existing atmosfera-* asset,
+     never a fabricated interior. -->
+<figure class="el-salon-page__atmosphere">
+  <pz-picture
+    base="atmosfera-romero"
+    alt="Ramas de romero, atmósfera botánica del salón Pureza"
+    [width]="1400"
+    [height]="560"
+  />
+</figure>
+
+<div class="el-salon-page__body">
+  <section class="el-salon-page__section">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">El ambiente</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">Materiales naturales, ritmo tranquilo</h2>
+    </div>
+    <div class="el-salon-page__prose">
+      <p>
+        Elegí materiales naturales para que el espacio respire lo mismo que los productos que
+        uso: nada sintético, nada que huela a peluquería tradicional. La luz entra directa, sin
+        fluorescentes agresivos, y el ritmo del día lo marca una sola cita cada vez, nunca dos en
+        paralelo.
+      </p>
+    </div>
+  </section>
+
+  <section class="el-salon-page__section">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">Cómo trabajamos</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">Una clienta a la vez, nunca dos en paralelo</h2>
+    </div>
+    <div class="el-salon-page__prose">
+      <p>
+        No hay varios sillones ocupados a la vez ni clientas cruzándose en la puerta. Cada visita
+        ocupa el salón entero: mientras estás aquí, no hay nadie más esperando ni un secador
+        sonando al lado. Es una decisión sobre cómo quiero trabajar, no una limitación del
+        espacio.
+      </p>
+    </div>
+  </section>
+
+  <section class="el-salon-page__section">
+    <div class="pz-section-head">
+      <p class="pz-eyebrow">Interior</p>
+      <hr class="pz-section-head__rule" />
+      <h2 class="pz-section-head__title">El reportaje fotográfico está en camino</h2>
+    </div>
+    <div class="el-salon-page__prose">
+      <p>
+        Estamos preparando fotos reales del interior para enseñarte el espacio tal y como es —
+        nunca imágenes genéricas ni fotos de stock. De momento, este es su hueco reservado.
+      </p>
+    </div>
+    <figure class="el-salon-page__interior">
+      <pz-photo-pending
+        base="salon-interior-1"
+        alt="Interior del salón Pureza, en Ciudad Real"
+        [width]="1200"
+        [height]="800"
+      />
+    </figure>
+  </section>
+</div>
+
+<figure class="el-salon-page__atmosphere">
+  <pz-picture
+    base="atmosfera-olivo"
+    alt="Ramas de olivo, atmósfera botánica del salón Pureza"
+    [width]="1400"
+    [height]="560"
+  />
+</figure>
+
+<section class="el-salon-page__cta-band">
+  <p class="el-salon-page__cta-band-lede">¿Quieres conocerlo en persona?</p>
+  <div class="el-salon-page__cta-band-ctas">
+    <pz-cta variant="primary" href="/reservar">Reservar cita</pz-cta>
+    <pz-cta variant="secondary" [href]="whatsappUrl" [external]="true">
+      Escribir por WhatsApp
+    </pz-cta>
+  </div>
+  <!-- Anti-cannibalization: NAP/hours/map live on /contacto only — link
+       there instead of repeating them (BRIEF hard constraint). -->
+  <a class="el-salon-page__contact-link" routerLink="/contacto">
+    Ver horario, dirección y cómo llegar →
+  </a>
+</section>

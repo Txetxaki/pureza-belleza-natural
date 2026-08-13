@@ -29,4 +29,12 @@ export const serverRoutes: ServerRoute[] = [
     path: 'tratamientos-capilares',
     renderMode: RenderMode.Prerender,
   },
+  {
+    path: 'virginia',
+    renderMode: RenderMode.Prerender,
+  },
+  {
+    path: 'el-salon',
+    renderMode: RenderMode.Prerender,
+  },
 ];
