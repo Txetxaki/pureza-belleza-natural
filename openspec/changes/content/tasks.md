@@ -96,9 +96,14 @@ Spec: `seo-infrastructure` — "HairSalon schema on home", "@id stable and refer
 
 ## Slice 2a — Service-page & design-system primitives (no visible UI)
 
+**Status: DONE** — all 6 tasks implemented and committed on `content/02a-service-infra-primitives`
+(base `content/01-domain-schema`). 19 new unit tests added (132/132 full suite passing), `npm run
+build` green. See `sdd/content/apply-progress` (Engram, project "virginia") for exact landed
+component selectors/inputs.
+
 Branch: `content/02a-service-infra-primitives`. Base: Slice 1.
 
-### 2.1 `src/app/shared/ui/pz-specimen/*` (+ `.spec.ts`)
+### 2.1 `src/app/shared/ui/pz-specimen/*` (+ `.spec.ts`) — DONE
 Extract the five inline botanical SVGs currently duplicated in `home-page.html` (lines 80–183) into one
 component: `planta` input (`Planta` union from `route-seo.ts`), `@switch` over the five, `aria-hidden`,
 `stroke="currentColor"`. **Does not touch `home-page.html` in this slice** — that swap happens in Slice 7
@@ -107,14 +112,14 @@ each `aria-hidden="true"`.
 Design: D3 ("needed in four places" — frieze, `/precios`, service pages, home carta; this slice ships the
 component itself).
 
-### 2.2 `src/app/shared/ui/pz-photo-pending/*` (+ `.spec.ts`) — sequential, depends on 2.3
+### 2.2 `src/app/shared/ui/pz-photo-pending/*` (+ `.spec.ts`) — sequential, depends on 2.3 — DONE
 `base`/`alt`/`width`/`height` inputs, same contract shape as `pz-picture`. Renders the styled "foto
 pendiente de la sesión" label (correct final `width`/`height`/`aspect-ratio`, not a broken-image state)
 when `base` is absent from `available-photos.generated.ts` (2.3); renders `pz-picture` once present.
 Spec: `service-pages` — "No fabricated hair photography", "Placeholder reads as pending, not broken";
 `salon-page` — "One honest placeholder, no fabricated interior".
 
-### 2.3 `scripts/generate-image-variants.mjs` (Modify) + `src/app/shared/ui/pz-photo-pending/available-photos.generated.ts` (Create, committed) + sync-guard spec [P]
+### 2.3 `scripts/generate-image-variants.mjs` (Modify) + `src/app/shared/ui/pz-photo-pending/available-photos.generated.ts` (Create, committed) + sync-guard spec [P] — DONE
 Script emits the generated file (list of `base` names actually present under `public/images/`) as its
 last step. Commit the current output (today: the seven existing `atmosfera-*`/`manos-pigmento`/
 `textura-lino`/`retrato-virginia` bases — none of the pending service-photo bases). Add a spec **under
@@ -124,7 +129,7 @@ never runs, per that script's own header comment) asserting the generated file's
 Design: D9 ("makes the swap a genuine file drop... a spec asserts the generated file matches the
 directory").
 
-### 2.4 `src/app/shared/ui/pz-cta/pz-cta.ts` (+ `.html`, `.spec.ts` update)
+### 2.4 `src/app/shared/ui/pz-cta/pz-cta.ts` (+ `.html`, `.spec.ts` update) — DONE
 Add `accent` boolean input. When `true`, rebind the internal `--pz-cta-ink` custom property to
 `var(--pz-accent-text)` — **not** `--pz-accent-live` (Engram #2311: `#3D8B6B` under white is ~3.4:1,
 fails AA; `--pz-accent-text` is ~6:1). Applies to both filled and outlined variants via one flag.
@@ -134,11 +139,11 @@ decision #2289 for service routes only).
 
 ### 2.5 `src/styles/_tokens.scss` (`--pz-space-2xl: 144px`, additive), `src/styles/_sections.scss`
 (Create, `.pz-section-head`: centred `.pz-eyebrow` over a 1px `--pz-hairline` rule over an italic
-`--pz-display` title), `src/styles/_typography.scss` (`.pz-eyebrow--accent { color: var(--pz-accent-text) }`) [P]
+`--pz-display` title), `src/styles/_typography.scss` (`.pz-eyebrow--accent { color: var(--pz-accent-text) }`) [P] — DONE
 Purely additive — no existing rule touched, `#FFFFFF`/hairline/radius/no-shadow invariants untouched.
 Design: "Closing the four Stitch gaps" table, row "Section rhythm".
 
-### 2.6 `src/app/shared/ui/tokens.contrast.spec.ts` (Create)
+### 2.6 `src/styles/tokens.contrast.spec.ts` (Extend — file already existed from `foundation`) — DONE
 Assert all five `--pz-*-text` values (hex-duplicated in the spec per the existing pattern noted in
 `generate-image-variants.mjs`'s header comment — a `.spec.ts` can't `getComputedStyle` a `.scss` file) meet
 ≥4.5:1 against `#FFFFFF` at 11px/700 (`.pz-eyebrow--accent`'s actual size/weight — not large text, needs

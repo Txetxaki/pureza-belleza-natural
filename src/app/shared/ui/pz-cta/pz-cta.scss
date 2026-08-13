@@ -1,13 +1,18 @@
 .pz-cta {
+  // Default = brand-neutral ink (#2289). `.pz-cta--accent` (design.md D8)
+  // is the only thing that ever rebinds this — always to `--pz-accent-text`,
+  // never `--pz-accent-live` (fails AA under white). See pz-cta.ts.
+  --pz-cta-ink: var(--pz-ink);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--pz-space-2xs);
   padding-block: var(--pz-space-xs);
   padding-inline: var(--pz-space-s);
-  border: 1px solid var(--pz-ink);
+  border: 1px solid var(--pz-cta-ink);
   border-radius: var(--pz-radius);
-  background: var(--pz-ink);
+  background: var(--pz-cta-ink);
   color: var(--pz-surface);
   font-family: var(--pz-body);
   font-size: var(--pz-text-body);
@@ -20,16 +25,23 @@
     color 0.15s ease;
 
   &:hover {
-    background: color-mix(in srgb, var(--pz-ink) 85%, var(--pz-surface));
+    background: color-mix(in srgb, var(--pz-cta-ink) 85%, var(--pz-surface));
   }
 }
 
 .pz-cta--secondary {
   background: transparent;
-  color: var(--pz-ink);
+  color: var(--pz-cta-ink);
 
   &:hover {
-    background: var(--pz-ink);
+    background: var(--pz-cta-ink);
     color: var(--pz-surface);
   }
+}
+
+// Service-route-only accent (design.md D8, Engram #2311). Applies to both
+// the filled (primary) and outlined (secondary) variants via this one flag,
+// since both already read --pz-cta-ink.
+.pz-cta--accent {
+  --pz-cta-ink: var(--pz-accent-text);
 }

@@ -1,0 +1,6 @@
+// No host box of its own — the rendered <svg> behaves exactly as if it were
+// still inline at the call site (pz-plate's `.pz-plate__specimen ::ng-deep
+// svg` sizing rule, the frieze/precios layout in later slices, etc.).
+:host {
+  display: contents;
+}

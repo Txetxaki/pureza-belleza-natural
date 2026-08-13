@@ -12,16 +12,33 @@
 
 @if (href(); as link) {
   @if (external()) {
-    <a class="pz-cta" [class.pz-cta--secondary]="variant() === 'secondary'" [href]="link" target="_blank" rel="noopener">
+    <a
+      class="pz-cta"
+      [class.pz-cta--secondary]="variant() === 'secondary'"
+      [class.pz-cta--accent]="accent()"
+      [href]="link"
+      target="_blank"
+      rel="noopener"
+    >
       <ng-container [ngTemplateOutlet]="ctaContent" />
     </a>
   } @else {
-    <a class="pz-cta" [class.pz-cta--secondary]="variant() === 'secondary'" [routerLink]="link">
+    <a
+      class="pz-cta"
+      [class.pz-cta--secondary]="variant() === 'secondary'"
+      [class.pz-cta--accent]="accent()"
+      [routerLink]="link"
+    >
       <ng-container [ngTemplateOutlet]="ctaContent" />
     </a>
   }
 } @else {
-  <button type="button" class="pz-cta" [class.pz-cta--secondary]="variant() === 'secondary'">
+  <button
+    type="button"
+    class="pz-cta"
+    [class.pz-cta--secondary]="variant() === 'secondary'"
+    [class.pz-cta--accent]="accent()"
+  >
     <ng-container [ngTemplateOutlet]="ctaContent" />
   </button>
 }

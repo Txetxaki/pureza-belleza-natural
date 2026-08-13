@@ -1,0 +1,39 @@
+// Section-opening rhythm utility (design.md "Closing the four Stitch gaps" —
+// row "Section rhythm"). Purely additive: no existing rule touched, no new
+// colour, no raw hex, `--pz-surface`/hairline/radius/no-shadow invariants
+// untouched.
+//
+// Markup shape a caller composes inside `.pz-section-head`:
+//   <p class="pz-eyebrow">…</p>
+//   <hr class="pz-section-head__rule" />
+//   <h2 class="pz-section-head__title">…</h2>
+// — a centred `.pz-eyebrow` over a 1px `--pz-hairline` rule over an italic
+// `--pz-display` title, the "section opener" idiom used throughout the
+// Stitch mockups. First real consumers land in later slices (service pages,
+// home page rhythm) — this slice ships the utility only.
+
+.pz-section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--pz-space-xs);
+  margin-inline: auto;
+  max-width: var(--pz-measure);
+  text-align: center;
+}
+
+.pz-section-head__rule {
+  width: 2.5rem;
+  height: 0;
+  margin: 0;
+  border: none;
+  border-top: 1px solid var(--pz-hairline);
+}
+
+.pz-section-head__title {
+  margin: 0;
+  font-family: var(--pz-display);
+  font-style: italic;
+  font-size: var(--pz-text-h2);
+  color: var(--pz-ink);
+}

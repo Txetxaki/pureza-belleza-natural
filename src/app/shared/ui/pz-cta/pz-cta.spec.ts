@@ -18,11 +18,11 @@ import { PzCta } from './pz-cta';
   selector: 'test-host',
   imports: [PzCta],
   template: `
-    <pz-cta variant="primary" href="https://wa.me/34633101155" [external]="true">
-      WhatsApp
-    </pz-cta>
+    <pz-cta variant="primary" href="https://wa.me/34633101155" [external]="true"> WhatsApp </pz-cta>
     <pz-cta variant="secondary" href="/contacto">Ir a contacto</pz-cta>
     <pz-cta variant="secondary">Sin destino</pz-cta>
+    <pz-cta variant="primary" href="/reservar" [accent]="true">Reservar esta cita</pz-cta>
+    <pz-cta variant="secondary" href="/reservar" [accent]="true">Reservar</pz-cta>
   `,
 })
 class TestHost {}
@@ -43,7 +43,9 @@ describe('PzCta — content projection (regression: multiple <ng-content> silent
   it('projects text content into the external (<a target="_blank">) branch', async () => {
     const el = await render();
     const anchors = el.querySelectorAll('a.pz-cta');
-    const external = Array.from(anchors).find((a) => a.getAttribute('href')?.startsWith('https://wa.me'));
+    const external = Array.from(anchors).find((a) =>
+      a.getAttribute('href')?.startsWith('https://wa.me'),
+    );
     expect(external?.textContent?.trim()).toBe('WhatsApp');
     expect(external?.getAttribute('target')).toBe('_blank');
     expect(external?.getAttribute('rel')).toBe('noopener');
@@ -73,5 +75,25 @@ describe('PzCta — content projection (regression: multiple <ng-content> silent
     expect(secondary?.className).toContain('pz-cta--secondary');
     expect(primary?.className).not.toContain('pz-cta--secondary');
   });
-});
 
+  it('applies pz-cta--accent (design.md D8) to the filled variant only when accent=true', async () => {
+    const el = await render();
+    const anchors = Array.from(el.querySelectorAll('a.pz-cta'));
+    const accentFilled = anchors.find((a) => a.textContent?.includes('Reservar esta cita'));
+    const plainFilled = anchors.find((a) => a.textContent?.includes('Ir a contacto'));
+
+    expect(accentFilled?.className).toContain('pz-cta--accent');
+    expect(plainFilled?.className).not.toContain('pz-cta--accent');
+  });
+
+  it('applies pz-cta--accent to the outlined (secondary) variant too — one flag covers both', async () => {
+    const el = await render();
+    const anchors = Array.from(el.querySelectorAll('a.pz-cta'));
+    const accentOutlined = anchors.find(
+      (a) => a.textContent?.trim() === 'Reservar' && a.className.includes('pz-cta--secondary'),
+    );
+
+    expect(accentOutlined?.className).toContain('pz-cta--accent');
+    expect(accentOutlined?.className).toContain('pz-cta--secondary');
+  });
+});

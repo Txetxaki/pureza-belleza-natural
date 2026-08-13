@@ -1,0 +1,16 @@
+.pz-photo-pending {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--pz-space-s);
+  border: 1px solid var(--pz-hairline);
+  border-radius: var(--pz-radius);
+  background: var(--pz-surface);
+  box-shadow: none; // no elevation, ever
+  text-align: center;
+}
+
+.pz-photo-pending__label {
+  margin: 0;
+}

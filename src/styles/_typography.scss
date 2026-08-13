@@ -74,3 +74,13 @@ $pz-unicode-range-latin: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-2
   letter-spacing: var(--pz-track-label);
   color: var(--pz-ink-soft);
 }
+
+// Accent variant — service routes only (design.md "Closing the four Stitch
+// gaps" table, row "Section rhythm"; D8's same `--pz-accent-text` rule
+// applies here, never `--pz-accent-live`). At 11px/700 this is NOT "large
+// text" per WCAG 2.2 — it needs the full 4.5:1 floor, verified for all five
+// plants by src/styles/tokens.contrast.spec.ts. Outside a `[data-planta]`
+// scope, --pz-accent-text degrades to --pz-ink-soft, same as .pz-eyebrow.
+.pz-eyebrow--accent {
+  color: var(--pz-accent-text);
+}

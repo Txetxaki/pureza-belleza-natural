@@ -65,14 +65,52 @@ function contrastRatio(hexA: string, hexB: string): number {
 }
 
 describe('design tokens — plant accent -text variants vs --pz-surface', () => {
-  it.each(Object.entries(TEXT_TOKENS))('%s meets WCAG AA (>= 4.5:1) against #FFFFFF', (_tokenName, hex) => {
-    const ratio = contrastRatio(hex, PZ_SURFACE);
-    expect(ratio).toBeGreaterThanOrEqual(WCAG_AA_NORMAL_TEXT);
-  });
+  it.each(Object.entries(TEXT_TOKENS))(
+    '%s meets WCAG AA (>= 4.5:1) against #FFFFFF',
+    (_tokenName, hex) => {
+      const ratio = contrastRatio(hex, PZ_SURFACE);
+      expect(ratio).toBeGreaterThanOrEqual(WCAG_AA_NORMAL_TEXT);
+    },
+  );
 
-  it.each(Object.entries(TEXT_TOKENS))('%s ratio matches the value verified in design.md', (tokenName, hex) => {
-    const ratio = contrastRatio(hex, PZ_SURFACE);
-    const expected = EXPECTED_RATIOS[tokenName as keyof typeof TEXT_TOKENS];
-    expect(ratio).toBeCloseTo(expected, 1);
+  it.each(Object.entries(TEXT_TOKENS))(
+    '%s ratio matches the value verified in design.md',
+    (tokenName, hex) => {
+      const ratio = contrastRatio(hex, PZ_SURFACE);
+      const expected = EXPECTED_RATIOS[tokenName as keyof typeof TEXT_TOKENS];
+      expect(ratio).toBeCloseTo(expected, 1);
+    },
+  );
+});
+
+/**
+ * tasks.md 2.6 / design.md Open Questions (resolved): `.pz-eyebrow--accent`
+ * renders at 11px/700 (`--pz-text-label` + `font-weight: 700`, see
+ * `_typography.scss`'s `.pz-eyebrow`) — WCAG 2.2 §1.4.3 only lowers the bar
+ * to 3:1 for text at >=18.66px/700 or >=24px/400 ("large text"). 11px/700 is
+ * far below that threshold, so it needs the FULL 4.5:1 floor, not 3:1. This
+ * is deliberately the same computation as the block above (same tokens, same
+ * background) — the assertions are duplicated so a future engineer skimming
+ * only this describe block still sees the eyebrow-role floor proven directly,
+ * not inferred from a differently-named test elsewhere.
+ */
+describe('.pz-eyebrow--accent — 11px/700 is normal-size text (WCAG 2.2 §1.4.3), needs 4.5:1 not 3:1', () => {
+  it.each(Object.entries(TEXT_TOKENS))(
+    '%s clears the eyebrow-role floor of 4.5:1 against #FFFFFF',
+    (_tokenName, hex) => {
+      const ratio = contrastRatio(hex, PZ_SURFACE);
+      expect(ratio).toBeGreaterThanOrEqual(WCAG_AA_NORMAL_TEXT);
+    },
+  );
+
+  it('all five plants pass today — the --pz-ink-soft fallback stays documented, not implemented (design.md Open Questions)', () => {
+    // Design's resolution: "if all five already pass, assert that and leave
+    // the fallback path documented, not implemented speculatively." If this
+    // ever flips false, the failing plant's `.pz-eyebrow--accent` usage MUST
+    // fall back to `--pz-ink-soft` instead — do not silently relax this test.
+    const allPass = Object.values(TEXT_TOKENS).every(
+      (hex) => contrastRatio(hex, PZ_SURFACE) >= WCAG_AA_NORMAL_TEXT,
+    );
+    expect(allPass).toBe(true);
   });
 });
