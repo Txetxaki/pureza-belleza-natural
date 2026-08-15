@@ -8,8 +8,54 @@ import { routes } from '../../app.routes';
 import { serverRoutes } from '../../app.routes.server';
 import { JsonLdPort, MetadataPort } from '../../seo/domain/ports';
 import { canonicalUrl, getRouteSeo } from '../../seo/domain/route-seo';
+import { SITE } from '../../seo/domain/site';
 import { AngularMetadataAdapter } from '../../seo/infrastructure/angular-metadata.adapter';
 import { JsonLdAdapter } from '../../seo/infrastructure/json-ld.adapter';
+import { EMBED_MAX_HEIGHT, EMBED_MIN_HEIGHT, embedHeightFromMessage } from './reservar-page';
+
+const RESERVE_ORIGIN = new URL(SITE.bookingUrl).origin;
+const heightMsg = (height: number) => ({
+  type: 'reserve-embed:height',
+  height,
+});
+
+describe('embedHeightFromMessage', () => {
+  it('accepts a valid height from the booking origin', () => {
+    expect(
+      embedHeightFromMessage({ origin: RESERVE_ORIGIN, data: heightMsg(900) }, RESERVE_ORIGIN),
+    ).toBe(900);
+  });
+
+  it('ignores a height from any other origin (the security check)', () => {
+    expect(
+      embedHeightFromMessage(
+        { origin: 'https://evil.example', data: heightMsg(900) },
+        RESERVE_ORIGIN,
+      ),
+    ).toBeNull();
+  });
+
+  it('ignores a message of the wrong type or a non-numeric height', () => {
+    expect(
+      embedHeightFromMessage(
+        { origin: RESERVE_ORIGIN, data: { type: 'other', height: 900 } },
+        RESERVE_ORIGIN,
+      ),
+    ).toBeNull();
+    expect(
+      embedHeightFromMessage({ origin: RESERVE_ORIGIN, data: heightMsg(NaN) }, RESERVE_ORIGIN),
+    ).toBeNull();
+  });
+
+  it('clamps to the allowed band', () => {
+    expect(
+      embedHeightFromMessage({ origin: RESERVE_ORIGIN, data: heightMsg(99999) }, RESERVE_ORIGIN),
+    ).toBe(EMBED_MAX_HEIGHT);
+    expect(
+      embedHeightFromMessage({ origin: RESERVE_ORIGIN, data: heightMsg(10) }, RESERVE_ORIGIN),
+    ).toBe(EMBED_MIN_HEIGHT);
+  });
+});
 
 function configure() {
   TestBed.configureTestingModule({
@@ -71,7 +117,7 @@ describe('ReservarPage (/reservar) — reservar-page spec', () => {
     expect(h1).not.toBe(seo.primaryKeyword);
   });
 
-  it("shares no common keyword phrase with /contacto's H1 (\"H1s do not overlap\")", async () => {
+  it('shares no common keyword phrase with /contacto\'s H1 ("H1s do not overlap")', async () => {
     configure();
     const harness = await RouterTestingHarness.create('/reservar');
     harness.detectChanges();
@@ -98,8 +144,11 @@ describe('ReservarPage (/reservar) — reservar-page spec', () => {
     const el = harness.routeNativeElement as HTMLElement;
     expect(el.querySelector('address')).toBeNull();
     expect(el.querySelector('table')).toBeNull();
-    expect(el.querySelector('iframe')).toBeNull();
     expect(el.querySelector('.pz-static-map')).toBeNull();
+    // The booking iframe is fine here — what this rule forbids is duplicating
+    // /contacto's MAP, so only a maps iframe is disallowed.
+    const iframes = Array.from(el.querySelectorAll('iframe'));
+    expect(iframes.some((f) => /maps|google/i.test(f.getAttribute('src') ?? ''))).toBe(false);
 
     const contactLink = Array.from(el.querySelectorAll('a')).find(
       (a) => a.getAttribute('href') === '/contacto',
@@ -107,25 +156,42 @@ describe('ReservarPage (/reservar) — reservar-page spec', () => {
     expect(contactLink).toBeTruthy();
   });
 
-  it('presents no calendar/scheduling widget or iframe ("No calendar widget")', async () => {
+  // INVERTED: the old "No calendar widget" rule predated the booking system.
+  // The owner explicitly asked for the calendar integrated, so the page now
+  // embeds Boty Reserve's booking flow. The embed points at SITE.bookingUrl
+  // and reserve's own frame-ancestors restricts who may frame it.
+  it('embeds the booking calendar, pointed at the tenant booking URL', async () => {
     configure();
     const harness = await RouterTestingHarness.create('/reservar');
     harness.detectChanges();
 
     const el = harness.routeNativeElement as HTMLElement;
-    expect(el.querySelector('iframe')).toBeNull();
-    expect(el.querySelectorAll('[class*="calendar"]')).toHaveLength(0);
+    const frame = el.querySelector('iframe');
+    expect(frame).not.toBeNull();
+    // Angular renders the sanitized SafeResourceUrl into the real src.
+    expect(frame?.getAttribute('src')).toBe(SITE.bookingUrl);
+    expect(frame?.getAttribute('title')).toContain('Pureza');
   });
 
-  it('renders WhatsApp and tel: CTAs as the booking mechanism', async () => {
+  it('keeps WhatsApp and tel: as the conversational alternative', async () => {
     configure();
     const harness = await RouterTestingHarness.create('/reservar');
     harness.detectChanges();
 
     const el = harness.routeNativeElement as HTMLElement;
     const anchors = Array.from(el.querySelectorAll('a.pz-cta'));
+
     expect(anchors.some((a) => a.getAttribute('href')?.startsWith('https://wa.me'))).toBe(true);
     expect(anchors.some((a) => a.getAttribute('href')?.startsWith('tel:'))).toBe(true);
+  });
+
+  it('never claims booking is WhatsApp-only, now that the booking page exists', async () => {
+    configure();
+    const harness = await RouterTestingHarness.create('/reservar');
+    harness.detectChanges();
+
+    const text = (harness.routeNativeElement as HTMLElement).textContent ?? '';
+    expect(text).not.toMatch(/no hay un calendario online/i);
   });
 
   it('declares RenderMode.Prerender for "reservar" in app.routes.server.ts, not Server ("Prerender render mode")', () => {

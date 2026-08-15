@@ -28,59 +28,37 @@
   line-height: 1.7;
 }
 
-.reservar-page__hero-ctas {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--pz-space-s);
-  margin-top: var(--pz-space-l);
-}
-
-// ── Body sections ────────────────────────────────────────────────────────
-.reservar-page__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--pz-space-2xl);
-  max-width: var(--pz-wrap);
+// ── Embedded booking widget ────────────────────────────────────────────────
+.reservar-page__widget {
+  position: relative;
+  max-width: 40rem;
   margin-inline: auto;
   padding-inline: var(--pz-space-m);
-  padding-block: var(--pz-space-2xl);
+  padding-block: var(--pz-space-m) var(--pz-space-l);
 }
 
-.reservar-page__section {
-  display: flex;
-  flex-direction: column;
-  gap: var(--pz-space-l);
-}
-
-.reservar-page__steps,
-.reservar-page__checklist {
-  max-width: var(--pz-measure);
-  margin: 0 auto;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--pz-space-s);
+.reservar-page__widget-loading {
+  position: absolute;
+  inset-inline: 0;
+  top: calc(var(--pz-space-m) + 2rem);
+  text-align: center;
   color: var(--pz-ink-soft);
-  line-height: 1.7;
+  font-size: var(--pz-text-lead);
+  margin: 0;
 }
 
-.reservar-page__steps {
-  list-style: decimal;
-  padding-inline-start: 1.25em;
+.reservar-page__frame {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--pz-hairline);
+  border-radius: var(--pz-radius, 8px);
+  background: var(--pz-surface);
+  // The height is driven by the booking app via postMessage; this transition
+  // makes the step-to-step growth feel deliberate rather than jumpy.
+  transition: height 0.2s ease;
 }
 
-.reservar-page__checklist {
-  list-style: disc;
-  padding-inline-start: 1.25em;
-}
-
-.reservar-page__steps strong,
-.reservar-page__checklist strong {
-  color: var(--pz-ink);
-}
-
-// ── Closing CTA band ─────────────────────────────────────────────────────
+// ── Closing CTA band (the conversational alternative) ──────────────────────
 .reservar-page__cta-band {
   text-align: center;
   padding-block: var(--pz-space-xl);
@@ -111,4 +89,10 @@
   color: var(--pz-ink);
   text-decoration: underline;
   text-underline-offset: 0.2em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reservar-page__frame {
+    transition: none;
+  }
 }

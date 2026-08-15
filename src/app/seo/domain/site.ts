@@ -16,6 +16,13 @@ export interface Site {
   readonly telephone: string; // E.164, used for tel: and wa.me links
   readonly telephoneDisplay: string; // human-readable, for visible text
   readonly url: string;
+  /**
+   * Virginia's own booking page, hosted by Boty Reserve. Lives here because it
+   * is site identity (like `url` and `telephone`), not page content: /reservar
+   * links to it today and the footer or a campaign may link to it tomorrow.
+   * A LINK, never an embed — /reservar's "No calendar widget" rule stands.
+   */
+  readonly bookingUrl: string;
 }
 
 export const SITE: Site = {
@@ -28,4 +35,5 @@ export const SITE: Site = {
   telephone: '+34633101155',
   telephoneDisplay: '633 101 155',
   url: 'https://purezabellezanatural.es',
+  bookingUrl: 'https://reserve.boty.agency/r/pureza',
 };

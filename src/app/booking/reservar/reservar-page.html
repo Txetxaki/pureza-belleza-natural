@@ -1,59 +1,30 @@
 <header class="reservar-page__hero">
   <p class="pz-eyebrow">Reservar</p>
-  <h1 class="reservar-page__h1">Cómo pedir cita en la peluquería de Ciudad Real, paso a paso</h1>
+  <h1 class="reservar-page__h1">Reserva tu cita en la peluquería de Ciudad Real</h1>
   <p class="reservar-page__lede">
-    En Pureza no hay un calendario online: reservas hablando directamente conmigo, por WhatsApp o
-    por teléfono, y te confirmo el hueco que mejor encaja con tu servicio.
+    Elige servicio, día y hora aquí mismo. Verás solo los huecos que tengo libres de verdad y te
+    llega la confirmación al momento. ¿Prefieres contármelo antes? Me escribes por WhatsApp o me
+    llamas y lo vemos juntas.
   </p>
-  <div class="reservar-page__hero-ctas">
-    <pz-cta variant="primary" [href]="whatsappUrl" [external]="true">
-      Escribir por WhatsApp
-    </pz-cta>
-    <pz-cta variant="secondary" [href]="telUrl" [external]="true">
-      Llamar · {{ site.telephoneDisplay }}
-    </pz-cta>
-  </div>
 </header>
 
-<div class="reservar-page__body">
-  <section class="reservar-page__section">
-    <div class="pz-section-head">
-      <p class="pz-eyebrow">Cómo funciona</p>
-      <hr class="pz-section-head__rule" />
-      <h2 class="pz-section-head__title">Tres pasos, sin apps ni esperas</h2>
-    </div>
-    <ol class="reservar-page__steps">
-      <li>
-        <strong>Escríbeme o llama.</strong> Cuéntame qué servicio buscas y, si puedes, mándame una
-        foto de tu pelo actual — me ayuda a hacerme una idea antes de vernos.
-      </li>
-      <li>
-        <strong>Te propongo horario.</strong> Reviso mi agenda y te confirmo el día y la hora que
-        mejor encajan, según la duración prevista del servicio.
-      </li>
-      <li>
-        <strong>Quedamos.</strong> Sin señal ni pago por adelantado: la cita queda reservada con tu
-        confirmación por WhatsApp o teléfono.
-      </li>
-    </ol>
-  </section>
-
-  <section class="reservar-page__section">
-    <div class="pz-section-head">
-      <p class="pz-eyebrow">Qué contarme</p>
-      <hr class="pz-section-head__rule" />
-      <h2 class="pz-section-head__title">Para darte una cita ajustada a tu pelo</h2>
-    </div>
-    <ul class="reservar-page__checklist">
-      <li>El servicio que te interesa (coloración, mechas, rastas, extensiones, tratamiento…).</li>
-      <li>Una idea de la longitud y densidad de tu melena, o una foto reciente.</li>
-      <li>Los días y franjas que mejor te vienen, por si tengo que ajustar el hueco.</li>
-    </ul>
-  </section>
-</div>
+<section class="reservar-page__widget" aria-label="Reserva de cita online">
+  @if (!frameLoaded()) {
+    <p class="reservar-page__widget-loading">Cargando el calendario de reservas…</p>
+  }
+  <iframe
+    class="reservar-page__frame"
+    [src]="bookingUrl"
+    [style.height.px]="frameHeight()"
+    title="Reserva de cita en Pureza Belleza Natural"
+    loading="lazy"
+    referrerpolicy="strict-origin"
+    (load)="onFrameLoad()"
+  ></iframe>
+</section>
 
 <section class="reservar-page__cta-band">
-  <p class="reservar-page__cta-band-lede">¿Hablamos ahora mismo?</p>
+  <p class="reservar-page__cta-band-lede">¿Prefieres que hablemos antes?</p>
   <div class="reservar-page__cta-band-ctas">
     <pz-cta variant="primary" [href]="whatsappUrl" [external]="true">
       Escribir por WhatsApp
