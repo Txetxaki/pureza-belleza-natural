@@ -35,5 +35,5 @@ export const SITE: Site = {
   telephone: '+34633101155',
   telephoneDisplay: '633 101 155',
   url: 'https://purezabellezanatural.es',
-  bookingUrl: 'https://reserve.boty.agency/r/pureza',
+  bookingUrl: 'https://reserve.boty.agency/r/pureza?theme=light',
 };
