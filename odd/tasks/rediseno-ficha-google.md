@@ -11,6 +11,8 @@ Rama: `feat/redesign-gbp` · Entrega: una PR · Tests: `npx ng test --watch=fals
 - S4 «analizando toda imagen que no funcione y o generandola o buscate la vida para poner una coherente con el tono de las fotos que has visto.»
 - S5 «Pon los servicios que hay en la web tambien en reserve. No quiere que se ponga precio» — hecho en Reserve (13 servicios, precio 0 = oculto). En la web, ningún precio visible.
 - S6 «adapta tb horarios, y otra informacion que encuentres de ella en internet»
+- S7 «mira el correo ultimo que me ha mandado Virginia fotos y cosas, echale un ojo y mira a ver si puedes entrarr en drive que manda» + «haz lo que veas conveniente, pero dajala perfect y lo más elegante posible»
+- S8 «ponle un hecho por boty agency abajo o algo así con enlace a la pagina de diseño web» · «onle favicon en condiciones»
 
 ## Tasks
 
@@ -18,6 +20,9 @@ Rama: `feat/redesign-gbp` · Entrega: una PR · Tests: `npx ng test --watch=fals
 - T2 (S1, S4) Imágenes: fotos reales y recortes en todas las rutas — delegado (escritor) ✅ 691377e
 - T3 (S2, S3) Diseño: crema + dorado, 1240 px, cabecera fija con «Reservar cita», logo real — delegado (escritor) ✅ 82ee603, 373a345
 - T4 (S6) Datos: horario de Google en pie, contacto y JSON-LD; Instagram; «5,0 en Google · 36 reseñas» sin marcado de reseñas — delegado (escritor) ✅ 6855d8f
+
+- T5 (S8) Pie con crédito de Boty Agency y favicon propio — inline ✅
+- T6 (S7) Sesión de Carole Alfarah: 15 fotos nuevas en sus huecos, textos alternativos, crédito fotográfico; h1 de /reservar con la palabra clave (test en rojo desde main) — inline ✅
 
 ## Log
 
@@ -27,3 +32,6 @@ Rama: `feat/redesign-gbp` · Entrega: una PR · Tests: `npx ng test --watch=fals
 - L4 Fotos: 13 en la ficha. Sesión profesional en 5,5k (hi01 Virginia con tijeras en la mesa, hi02 interior completo, hi03 Virginia con monstera, hi10 Virginia sentada en el salón, hi11 Virginia con tablet, hi12 y hi13 mesa de producto Aveda). Excluidas: niños (g05, g07, g08), selfie de clienta (g04), clienta de espaldas (g06). Logo real: caligrafía dorada «pureza / BELLEZA NATURAL» sobre acuarela rosa y gris; dorado ~#756622.
 - L5 La generación de imágenes de Boty devuelve 500 y ComfyUI no está instalado en este PC: se usan recortes de las fotos reales.
 - L6 Escritor (29 oct 2026): 4 commits, 340/341 tests (el fallo «pedir» ya estaba en main), build OK, capturas a 2560/1280/390 sin imágenes rotas ni scroll horizontal. Se retiró la sección «Resultados reales» de las páginas de servicio: eran personas generadas por IA; vuelve sola al dejar fotos reales `antes-despues-{planta}-N.jpg`. Pendiente de decisión de Sergi. e2e de capturas sin actualizar.
+- L7 (29 oct 2026, Sergi): S7 y S8 tal cual arriba.
+- L8 Sesión de Carole Alfarah (13 sep 2026, carpeta pública de Drive `19TO59Ra5IwQyfAC4ypMLbO0fd6zX8BAF`): 124 fotos en Espacio (28), Retratos/Virginia (68), Con Carla (14) y Las Chicas (14). Excluidas Con Carla y Las Chicas: sale Carla, menor, y Carole las dio como regalo familiar. Elegidas 15 de Espacio y Virginia, recortadas desde 5,5k a los mismos nombres base (cero cambios de plantilla) y sin metadatos. Descartadas tras revisar el recorte: V_0029 (gesto con la lengua) y la pegatina de la franja. Crédito «Fotografía de Carole Alfarah» en el pie.
+- L9 Verificación: 343/343 tests (el rojo de /reservar se arregla con el h1 «Pedir cita en tu peluquería de Ciudad Real»), `npm run build` correcto, capturas a 1280 y 390 revisadas.
