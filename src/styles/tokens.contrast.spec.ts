@@ -14,7 +14,9 @@ import { describe, expect, it } from 'vitest';
  * token MUST reach WCAG 2.2 AA (>= 4.5:1) against the background token.
  */
 
-const PZ_SURFACE = '#FFFFFF';
+// The warm cream ground (`--pz-surface`) — the salon's plaster, replacing the
+// pure white the palette was first verified against.
+const PZ_SURFACE = '#F8F3EA';
 
 const TEXT_TOKENS = {
   '--pz-romero-text': '#2C6A4F',
@@ -28,11 +30,11 @@ const TEXT_TOKENS = {
 // below and asserted to match, so a hex edit that quietly weakens contrast
 // fails this test even if it stays above the 4.5:1 floor.
 const EXPECTED_RATIOS: Record<keyof typeof TEXT_TOKENS, number> = {
-  '--pz-romero-text': 6.4,
-  '--pz-espliego-text': 7.1,
-  '--pz-esparto-text': 6.3,
-  '--pz-vid-text': 8.0,
-  '--pz-olivo-text': 7.5,
+  '--pz-romero-text': 5.8,
+  '--pz-espliego-text': 6.5,
+  '--pz-esparto-text': 5.7,
+  '--pz-vid-text': 7.2,
+  '--pz-olivo-text': 6.8,
 };
 
 const WCAG_AA_NORMAL_TEXT = 4.5;
@@ -66,7 +68,7 @@ function contrastRatio(hexA: string, hexB: string): number {
 
 describe('design tokens — plant accent -text variants vs --pz-surface', () => {
   it.each(Object.entries(TEXT_TOKENS))(
-    '%s meets WCAG AA (>= 4.5:1) against #FFFFFF',
+    '%s meets WCAG AA (>= 4.5:1) against the cream --pz-surface',
     (_tokenName, hex) => {
       const ratio = contrastRatio(hex, PZ_SURFACE);
       expect(ratio).toBeGreaterThanOrEqual(WCAG_AA_NORMAL_TEXT);
@@ -149,7 +151,7 @@ describe('--pz-accent-wash — a tinted section is still a readable one', () => 
 
 describe('.pz-eyebrow--accent — 11px/700 is normal-size text (WCAG 2.2 §1.4.3), needs 4.5:1 not 3:1', () => {
   it.each(Object.entries(TEXT_TOKENS))(
-    '%s clears the eyebrow-role floor of 4.5:1 against #FFFFFF',
+    '%s clears the eyebrow-role floor of 4.5:1 against the cream --pz-surface',
     (_tokenName, hex) => {
       const ratio = contrastRatio(hex, PZ_SURFACE);
       expect(ratio).toBeGreaterThanOrEqual(WCAG_AA_NORMAL_TEXT);
@@ -165,5 +167,47 @@ describe('.pz-eyebrow--accent — 11px/700 is normal-size text (WCAG 2.2 §1.4.3
       (hex) => contrastRatio(hex, PZ_SURFACE) >= WCAG_AA_NORMAL_TEXT,
     );
     expect(allPass).toBe(true);
+  });
+});
+
+/**
+ * The house tokens added with the cream redesign (`_tokens.scss`, "House
+ * accents"). Every pair below is one the stylesheets actually draw: gold
+ * labels on cream and sand, the ink header button with cream text, the gold
+ * hover state, and the beam-coloured booking band with its cream and lifted
+ * gold text.
+ */
+const HOUSE = {
+  ink: '#1C221C',
+  inkSoft: '#4F574F',
+  sand: '#EFE6D6',
+  raised: '#FFFDF9',
+  gold: '#756622',
+  beam: '#2A231C',
+  onBeam: '#F8F3EA',
+  onBeamSoft: '#CFC3B0',
+  goldOnBeam: '#C9B46A',
+} as const;
+
+describe('house palette — cream ground, logo gold, beam band', () => {
+  it.each([
+    ['ink on cream', HOUSE.ink, PZ_SURFACE],
+    ['ink-soft on cream', HOUSE.inkSoft, PZ_SURFACE],
+    ['ink-soft on sand (footer)', HOUSE.inkSoft, HOUSE.sand],
+    ['ink-soft on raised cream', HOUSE.inkSoft, HOUSE.raised],
+    ['gold label on cream', HOUSE.gold, PZ_SURFACE],
+    ['gold label on sand (footer headings)', HOUSE.gold, HOUSE.sand],
+    ['cream text on ink button', PZ_SURFACE, HOUSE.ink],
+    ['cream text on gold hover', PZ_SURFACE, HOUSE.gold],
+    ['cream text on beam band', HOUSE.onBeam, HOUSE.beam],
+    ['soft cream on beam band', HOUSE.onBeamSoft, HOUSE.beam],
+    ['lifted gold on beam band', HOUSE.goldOnBeam, HOUSE.beam],
+    ['ink on lifted-gold button hover', HOUSE.ink, HOUSE.goldOnBeam],
+  ])('%s clears 4.5:1', (_pair, fg, bg) => {
+    expect(contrastRatio(fg, bg)).toBeGreaterThanOrEqual(WCAG_AA_NORMAL_TEXT);
+  });
+
+  it('the logo gold is the house accent the brief names (#756622) and is text-safe on cream', () => {
+    expect(contrastRatio(HOUSE.gold, PZ_SURFACE)).toBeCloseTo(5.2, 1);
   });
 });

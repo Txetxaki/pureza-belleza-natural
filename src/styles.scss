@@ -3,3 +3,33 @@
 @use 'styles/tokens';
 @use 'styles/typography';
 @use 'styles/sections';
+
+// Document base. Before this the body had no font-family of its own, so every
+// paragraph that did not set one explicitly (hero lede, Aveda block, footer
+// copy) fell back to the browser's Times New Roman.
+html {
+  background: var(--pz-surface);
+  // The header is sticky; anchors must land below it, not under it.
+  scroll-padding-top: calc(var(--pz-header-height) + var(--pz-space-s));
+}
+
+body {
+  margin: 0;
+  background: var(--pz-surface);
+  color: var(--pz-ink);
+  font-family: var(--pz-body);
+  font-size: var(--pz-text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--pz-gold) 22%, var(--pz-surface));
+  color: var(--pz-ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--pz-gold);
+  outline-offset: 3px;
+}

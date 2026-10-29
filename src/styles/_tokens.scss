@@ -8,11 +8,24 @@
 
 :root {
   /* ── Ground & ink — light only. No dark branch, by decision. ─────────── */
-  --pz-surface: #FFFFFF; /* literal white, every page, every section */
-  --pz-ink: #1C221C; /* ~16:1 — headings and body */
-  --pz-ink-soft: #4F574F; /* ~7:1  — captions, secondary copy, labels */
-  --pz-hairline: #EBEBE7; /* 1px borders ONLY — never box-shadow, never elevation */
-  --pz-radius: 2px; /* the only radius in the system */
+  /* The ground is the salon's own plaster: a warm cream, not paper white
+     (Google Business photos, odd/tasks/rediseno-ficha-google.md L4). Ink stays
+     the same near-black, so every ratio below only moved by a few tenths. */
+  --pz-surface: #F8F3EA; /* warm cream — every page, every section */
+  --pz-surface-raised: #FFFDF9; /* cards, frames and the booking calendar */
+  --pz-sand: #EFE6D6; /* deeper cream for bands, never for long body copy */
+  --pz-ink: #1C221C; /* ~14.7:1 on cream — headings and body */
+  --pz-ink-soft: #4F574F; /* ~6.8:1 on cream, ~6.0:1 on sand — captions, labels */
+  --pz-hairline: #E3D9C8; /* 1px borders ONLY — never box-shadow, never elevation */
+  --pz-radius: 2px; /* controls, tags, small chrome */
+  --pz-radius-media: 6px; /* photographs and the booking frame */
+
+  /* ── House accents, taken from the salon itself ─────────────────────── */
+  --pz-gold: #756622; /* the logo's antique gold — ~5.2:1 on cream, text-safe */
+  --pz-beam: #2A231C; /* the dark ceiling beams — the footer ground */
+  --pz-on-beam: #F8F3EA; /* ~14:1 on beam */
+  --pz-on-beam-soft: #CFC3B0; /* ~8.9:1 on beam */
+  --pz-gold-on-beam: #C9B46A; /* ~7.5:1 on beam — the gold, lifted for the dark ground */
 
   /* ── Five plant accents. Each owns exactly one service route. ─────────── */
   --pz-romero-live: #3D8B6B;
@@ -70,7 +83,12 @@
   --pz-space-xl: 96px;
   --pz-space-2xl: 144px; /* section rhythm — Stitch's more generous vertical air between major sections */
   --pz-measure: 33rem;
-  --pz-wrap: 1120px;
+  /* Nothing on the site runs edge to edge: header, footer, bands and photos
+     all sit inside this width, so a 2560px screen shows a composed page
+     instead of a stretched one. */
+  --pz-wrap: 1240px;
+  --pz-gutter: clamp(16px, 4vw, 40px);
+  --pz-header-height: 72px;
 }
 
 /* One scope rule binds a plant to a subtree. Never nested — siblings only.
