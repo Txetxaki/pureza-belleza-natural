@@ -194,3 +194,22 @@
   text-transform: uppercase;
   letter-spacing: var(--pz-track-label);
 }
+
+// Agency credit: quieter than the copyright line it sits under, so it never
+// competes with the salon's own name.
+.site-footer__credit {
+  margin: calc(-1 * var(--pz-space-s)) 0 0;
+  font-size: var(--pz-text-label);
+  color: var(--pz-ink-soft);
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+
+    &:hover,
+    &:focus-visible {
+      color: var(--pz-ink);
+    }
+  }
+}
