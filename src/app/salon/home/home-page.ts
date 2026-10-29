@@ -11,6 +11,8 @@ import { buildBreadcrumbListSchema } from '../../seo/generators/breadcrumb-list.
 import type { Planta } from '../../seo/domain/route-seo';
 import { SERVICE_INDEX, type ServicePath } from '../../services/domain/service-index';
 import { formatFrom, pricingFor } from '../../services/domain/pricing';
+import { SITE } from '../../seo/domain/site';
+import { buildWhatsAppUrl } from '../../shared/utils/contact-links';
 
 /** Uppercase display label per plant (Stitch reading §3: `ROMERO`/`ESPLIEGO`/
  * `ESPARTO`/`VID`/`OLIVO` beneath each frieze glyph). `.pz-eyebrow` already
@@ -45,6 +47,8 @@ export class HomePage implements OnInit {
    * header dropdown read, so the link set can never drift from the registry. */
   protected readonly serviceIndex = SERVICE_INDEX;
   protected readonly plantaLabel = PLANTA_LABEL;
+  protected readonly site = SITE;
+  protected readonly whatsappUrl = buildWhatsAppUrl(SITE.telephone);
 
   /** Pre-formatted price text for a carta row — same `pricing.ts` module
    * `/precios` reads, so a figure can never diverge across the site. */

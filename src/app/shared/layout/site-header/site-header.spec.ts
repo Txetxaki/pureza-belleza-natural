@@ -119,7 +119,8 @@ describe('SiteHeader', () => {
       inNav: true,
     });
     expect(cta?.getAttribute('href')).toBe('/reservar');
-    expect(cta?.textContent?.trim()).toBe('Reservar');
+    // The registry label stays "Reservar"; the button spells the action out.
+    expect(cta?.textContent?.trim()).toBe('Reservar cita');
   });
 
   // ── Feedback round: the panel must not survive the navigation it caused ──

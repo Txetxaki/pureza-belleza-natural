@@ -1,14 +1,13 @@
 <header class="virginia-page__hero">
   <figure class="virginia-page__portrait">
-    <!-- Real photo (info/virginia.jpeg → public/images/retrato-virginia.jpg).
-         Ships UNTINTED here: the duotone treatment on pz-picture.ts is
-         reserved for the home hero's own use of this same base — "every
-         other pz-picture usage on this page/route ships untinted". -->
+    <!-- Real photo from the salon's Google Business shoot: Virginia among the
+         monstera leaves of her own salon. -->
     <pz-picture
-      base="retrato-virginia"
-      alt="Retrato de Virginia, peluquera y propietaria de Pureza"
-      [width]="1504"
-      [height]="2048"
+      base="virginia-monstera"
+      alt="Virginia, peluquera y propietaria de Pureza, sonriendo con los brazos cruzados en su salón"
+      [width]="1200"
+      [height]="1600"
+      [priority]="true"
     />
   </figure>
 
@@ -74,6 +73,15 @@
     </div>
   </section>
 
+  <figure class="virginia-page__band pz-photo-frame">
+    <pz-picture
+      base="virginia-sonrisa"
+      alt="Virginia riendo mientras hojea una revista en la mesa de madera del salón"
+      [width]="1200"
+      [height]="1617"
+    />
+  </figure>
+
   <section class="virginia-page__section">
     <div class="pz-section-head">
       <p class="pz-eyebrow">Lo que dicen</p>
@@ -82,9 +90,9 @@
     </div>
     <div class="virginia-page__prose">
       <p>
-        En Google, la valoración media de Pureza es de 5,0 sobre 5, a partir de las reseñas
-        dejadas por clientas reales. Es el dato más objetivo que puedo ofrecerte sin haberlo
-        pedido yo directamente.
+        En Google, la valoración media de Pureza es de {{ site.googleRating.value }} sobre 5, a
+        partir de {{ site.googleRating.count }} reseñas dejadas por clientas reales. Es el dato
+        más objetivo que puedo ofrecerte sin haberlo pedido yo directamente.
       </p>
     </div>
   </section>

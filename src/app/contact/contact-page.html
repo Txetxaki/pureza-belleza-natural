@@ -16,6 +16,7 @@
     <pz-cta variant="secondary" [href]="telUrl" [external]="true">
       Llamar · {{ site.telephoneDisplay }}
     </pz-cta>
+    <pz-cta variant="secondary" href="/reservar">Reservar cita online</pz-cta>
   </div>
 
   <div class="contact-page__grid">
@@ -31,6 +32,16 @@
            "Cómo llegar" link while the static map asset (task 4.8) stays
            blocked (STATIC_MAP_ASSET_AVAILABLE = false). -->
       <pz-static-map [address]="mapAddress" />
+
+      <p class="pz-eyebrow contact-page__subhead">En redes y en Google</p>
+      <ul class="contact-page__social">
+        <li>
+          <a [href]="site.instagramUrl" target="_blank" rel="noopener">
+            Instagram · {{ site.instagramHandle }}
+          </a>
+        </li>
+        <li>{{ site.googleRating.value }} en Google · {{ site.googleRating.count }} reseñas</li>
+      </ul>
     </div>
 
     <div class="contact-page__hours">

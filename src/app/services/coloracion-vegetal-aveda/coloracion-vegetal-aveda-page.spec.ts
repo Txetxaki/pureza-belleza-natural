@@ -147,19 +147,18 @@ describe('ColoracionVegetalAvedaPage (/coloracion-vegetal-aveda) — service-pag
     expect(anchors.some((a) => a.getAttribute('href')?.startsWith('https://wa.me'))).toBe(true);
   });
 
-  it('renders the result and before/after slots as honest placeholders — no fabricated hair photography', async () => {
+  it('renders a real salon photograph in the result slot and omits before/after until real client photos exist — no fabricated hair photography', async () => {
     configure();
     const harness = await RouterTestingHarness.create('/coloracion-vegetal-aveda');
     harness.detectChanges();
 
     const el = harness.routeNativeElement as HTMLElement;
-    // Every slot now ships a real file (scripts/generate-photos-comfyui.mjs),
-    // so pz-photo-pending resolves to a genuine <picture> — the file-drop swap
-    // it was built for, asserted from the outside.
+    // The result slot ships a real photograph of the salon (its own Google
+    // Business shoot), so pz-photo-pending resolves to a genuine <picture>.
     expect(el.querySelector('.pz-service-page__result-photo picture.pz-picture')).toBeTruthy();
-    expect(
-      el.querySelectorAll('.pz-service-page__before-after picture.pz-picture'),
-    ).toHaveLength(3);
+    // No real client before/after photos exist yet, so the section is not
+    // rendered at all — never generated people under "Resultados reales".
+    expect(el.querySelector('.pz-service-page__before-after')).toBeNull();
     expect(el.querySelector('.pz-service-page__result-photo .pz-photo-pending')).toBeNull();
   });
 

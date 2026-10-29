@@ -13,7 +13,7 @@
 .home-cta-band {
   max-width: var(--pz-wrap);
   margin-inline: auto;
-  padding-inline: var(--pz-space-m);
+  padding-inline: var(--pz-gutter);
 }
 
 // ── Hero ─────────────────────────────────────────────────────────────────
@@ -24,7 +24,8 @@
   padding-block: var(--pz-space-l) var(--pz-space-xl);
 
   @media (min-width: 920px) {
-    grid-template-columns: 0.78fr 1fr;
+    grid-template-columns: minmax(0, 0.85fr) 1fr;
+    column-gap: clamp(var(--pz-space-l), 6vw, var(--pz-space-xl));
   }
 }
 
@@ -32,8 +33,10 @@
   position: relative;
   margin: 0;
   aspect-ratio: 3 / 4;
+  max-height: 82vh;
   overflow: hidden;
-  border-radius: var(--pz-radius);
+  border-radius: var(--pz-radius-media);
+  background: var(--pz-sand);
 
   ::ng-deep .pz-picture,
   ::ng-deep .pz-picture__img {
@@ -48,7 +51,7 @@
   left: var(--pz-space-xs);
   bottom: var(--pz-space-xs);
   padding: var(--pz-space-3xs) var(--pz-space-xs);
-  background: var(--pz-surface);
+  background: var(--pz-surface-raised);
   color: var(--pz-ink-soft);
   font-size: var(--pz-text-label);
   letter-spacing: var(--pz-track-label);
@@ -86,9 +89,31 @@
   max-width: 27rem;
 }
 
-.home-hero__type pz-cta {
-  display: inline-block;
+.home-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--pz-space-xs) var(--pz-space-s);
   margin-top: var(--pz-space-m);
+}
+
+.home-hero__secondary {
+  color: var(--pz-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--pz-gold);
+  text-underline-offset: 0.25em;
+}
+
+.home-hero__rating {
+  margin: var(--pz-space-s) 0 0;
+  font-size: var(--pz-text-small);
+  color: var(--pz-ink-soft);
+}
+
+.home-hero__stars {
+  margin-right: var(--pz-space-3xs);
+  color: var(--pz-gold);
+  letter-spacing: 0.08em;
 }
 
 // ── Hero frieze (five-plant mini service index) ─────────────────────────
@@ -215,27 +240,50 @@ app-home-page pz-plate {
   display: block;
 }
 
-// ── Salon strip ──────────────────────────────────────────────────────────
-.home-salon-strip {
-  position: relative;
-  width: 100%;
+.home-carta__cortes {
+  margin: var(--pz-space-m) 0 0;
+  text-align: center;
+  color: var(--pz-ink-soft);
 
-  ::ng-deep .pz-picture,
-  ::ng-deep .pz-picture__img {
-    width: 100%;
-    height: clamp(120px, 22vw, 220px);
-    object-fit: cover;
+  a {
+    margin-left: var(--pz-space-3xs);
+    color: var(--pz-ink);
+    text-decoration: underline;
+    text-decoration-color: var(--pz-gold);
+    text-underline-offset: 0.25em;
+    white-space: nowrap;
   }
 }
 
-.home-salon-strip__caption {
-  position: absolute;
-  left: var(--pz-space-m);
-  bottom: var(--pz-space-s);
-  color: var(--pz-surface);
-  background: color-mix(in srgb, var(--pz-ink) 60%, transparent);
-  padding: var(--pz-space-3xs) var(--pz-space-xs);
-  border-radius: var(--pz-radius);
+// ── Salon band ───────────────────────────────────────────────────────────
+// Framed inside the page width, never full-bleed: on a 2560px screen the old
+// edge-to-edge strip was a thin slice of a 1200px file stretched across.
+.home-salon {
+  padding-block: var(--pz-space-l) 0;
+}
+
+.home-salon__frame {
+  aspect-ratio: 4 / 3;
+
+  @media (min-width: 720px) {
+    aspect-ratio: 1200 / 408;
+  }
+}
+
+.home-salon__caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--pz-space-2xs) var(--pz-space-m);
+  margin-top: var(--pz-space-s);
+}
+
+.home-salon__link {
+  color: var(--pz-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--pz-gold);
+  text-underline-offset: 0.25em;
 }
 
 // ── Quote ────────────────────────────────────────────────────────────────
@@ -246,13 +294,14 @@ app-home-page pz-plate {
   padding-block: var(--pz-space-xl);
 
   @media (min-width: 720px) {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 0.8fr) 1fr;
+    column-gap: clamp(var(--pz-space-l), 6vw, var(--pz-space-xl));
   }
+}
 
-  ::ng-deep .pz-picture {
-    border-radius: var(--pz-radius);
-    overflow: hidden;
-  }
+.home-quote__photo {
+  aspect-ratio: 4 / 5;
+  max-height: 80vh;
 }
 
 .home-quote__figure {
@@ -263,9 +312,18 @@ app-home-page pz-plate {
   margin: 0;
   font-family: var(--pz-display);
   font-style: italic;
-  font-size: var(--pz-text-h3);
-  line-height: 1.5;
+  font-size: var(--pz-text-h2);
+  line-height: 1.25;
   color: var(--pz-ink);
+
+  &::before {
+    content: '“';
+    display: block;
+    margin-bottom: var(--pz-space-2xs);
+    font-size: 3em;
+    line-height: 0.6;
+    color: var(--pz-gold);
+  }
 }
 
 .home-quote__caption {
@@ -281,24 +339,76 @@ app-home-page pz-plate {
 }
 
 // ── CTA band ─────────────────────────────────────────────────────────────
-// The one large colour field on the page. It closes the scroll, so it can
-// carry weight the sections above it should not.
+// The one dark field on the page, in the colour of the salon's beams. It
+// closes the scroll with the booking invitation.
 .home-cta-band {
+  padding-block: 0 var(--pz-space-l);
+}
+
+.home-cta-band__inner {
+  padding: clamp(var(--pz-space-l), 7vw, var(--pz-space-2xl)) var(--pz-gutter);
+  border-radius: var(--pz-radius-media);
+  background: var(--pz-beam);
+  color: var(--pz-on-beam);
   text-align: center;
-  padding-block: var(--pz-space-xl);
-  border-top: 1px solid var(--pz-accent-rule);
-  background: var(--pz-accent-wash);
-  border-radius: var(--pz-radius);
+}
+
+.home-cta-band__eyebrow {
+  margin: 0;
+  font-size: var(--pz-text-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--pz-track-label);
+  color: var(--pz-gold-on-beam);
 }
 
 .home-cta-band__title {
+  margin: var(--pz-space-xs) 0 0;
   font-family: var(--pz-display);
   font-size: var(--pz-text-h2);
-  margin: 0;
-  color: var(--pz-ink);
+  font-weight: 400;
+  color: var(--pz-on-beam);
 }
 
 .home-cta-band__lede {
-  margin: var(--pz-space-xs) 0 var(--pz-space-m);
-  color: var(--pz-ink-soft);
+  margin: var(--pz-space-xs) auto 0;
+  max-width: var(--pz-measure);
+  color: var(--pz-on-beam-soft);
+}
+
+.home-cta-band__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--pz-space-s);
+  margin-top: var(--pz-space-m);
+}
+
+// Cream on beam, ink text: the inverse of the header button.
+.home-cta-band__button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+  padding-inline: var(--pz-space-m);
+  border-radius: var(--pz-radius);
+  background: var(--pz-on-beam);
+  color: var(--pz-ink);
+  font-weight: 700;
+  font-size: var(--pz-text-small);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--pz-gold-on-beam);
+  }
+}
+
+.home-cta-band__link {
+  color: var(--pz-on-beam);
+  text-decoration: underline;
+  text-decoration-color: var(--pz-gold-on-beam);
+  text-underline-offset: 0.25em;
 }

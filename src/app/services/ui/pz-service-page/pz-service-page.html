@@ -9,8 +9,9 @@
   <pz-cta variant="primary" [accent]="true" href="/reservar">Reservar esta cita</pz-cta>
 </header>
 
-<!-- Anatomy item 2: real photo of the result. Never fabricated — pz-photo-pending
-     (design.md D9) renders the honest placeholder until the real photoshoot lands. -->
+<!-- Anatomy item 2: a real photograph from the salon's own shoot, framed inside
+     the page width. Never generated or stock — pz-photo-pending (design.md D9)
+     renders the honest placeholder if a slot is ever empty. -->
 <figure class="pz-service-page__result-photo">
   <pz-photo-pending
     [base]="content().resultPhoto.base"
@@ -83,25 +84,30 @@
     }
   </section>
 
-  <!-- Anatomy item 6: before/after, minimum three cases — same honest-placeholder
-       contract as item 2, never a fabricated or stock result. -->
-  <section class="pz-service-page__before-after">
-    <div class="pz-section-head">
-      <p class="pz-eyebrow">Antes y después</p>
-      <hr class="pz-section-head__rule" />
-      <h2 class="pz-section-head__title">Resultados reales</h2>
-    </div>
-    <div class="pz-service-page__before-after-grid">
-      @for (photo of content().beforeAfter; track photo.base) {
-        <pz-photo-pending
-          [base]="photo.base"
-          [alt]="photo.alt"
-          [width]="beforeAfterWidth"
-          [height]="beforeAfterHeight"
-        />
-      }
-    </div>
-  </section>
+  <!-- Anatomy item 6: before/after, minimum three cases. Rendered only once a
+       real client photo is on disk: the generated placeholders that filled it
+       showed people who are not clients of the salon, under the heading
+       "Resultados reales". Dropping antes-despues-{planta}-{n}.jpg into
+       public/images brings the section back with no code change. -->
+  @if (hasBeforeAfter()) {
+    <section class="pz-service-page__before-after">
+      <div class="pz-section-head">
+        <p class="pz-eyebrow">Antes y después</p>
+        <hr class="pz-section-head__rule" />
+        <h2 class="pz-section-head__title">Resultados reales</h2>
+      </div>
+      <div class="pz-service-page__before-after-grid">
+        @for (photo of content().beforeAfter; track photo.base) {
+          <pz-photo-pending
+            [base]="photo.base"
+            [alt]="photo.alt"
+            [width]="beforeAfterWidth"
+            [height]="beforeAfterHeight"
+          />
+        }
+      </div>
+    </section>
+  }
 
   <!-- Anatomy item 7: FAQ, 4-6 real questions. Rendered from the SAME `faq`
        array reference the container passes to buildFaqPageSchema — the
@@ -126,9 +132,12 @@
 <!-- Anatomy item 8: double CTA (reserve + WhatsApp), together in the closing
      band per the Stitch reading, item 10 (tasks.md 2.7). -->
 <section class="pz-service-page__cta-band">
-  <p class="pz-service-page__cta-band-lede">Inicia tu ritual — {{ fromLabel() }}</p>
+  <p class="pz-service-page__cta-band-lede">Inicia tu ritual</p>
+  <p class="pz-service-page__cta-band-body">
+    Elige día y hora en el calendario; si prefieres contármelo antes, escríbeme.
+  </p>
   <div class="pz-service-page__cta-band-ctas">
-    <pz-cta variant="secondary" [accent]="true" href="/reservar">Reservar</pz-cta>
+    <pz-cta variant="primary" [accent]="true" href="/reservar">Reservar cita</pz-cta>
     <pz-cta variant="secondary" [href]="whatsappUrl()" [external]="true">
       Escribir por WhatsApp
     </pz-cta>

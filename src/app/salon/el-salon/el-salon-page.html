@@ -7,81 +7,90 @@
   </p>
 </header>
 
-<!-- Non-interior atmospheric visual (BRIEF §4): existing atmosfera-* asset,
-     never a fabricated interior. -->
-<figure class="el-salon-page__atmosphere">
-  <pz-picture
-    base="atmosfera-romero"
-    alt="Ramas de romero, atmósfera botánica del salón Pureza"
-    [width]="1400"
-    [height]="560"
-  />
+<!-- The salon itself, from its own Google Business shoot: beams, honey wood,
+     monsteras and the street light through the window. Framed inside the
+     page width, never full-bleed. -->
+<figure class="el-salon-page__interior pz-wrap">
+  <div class="pz-photo-frame el-salon-page__interior-frame">
+    <pz-photo-pending
+      base="salon-interior-1"
+      alt="Interior del salón Pureza: vigas oscuras, suelo de madera, mesa y sillas de madera, sillón de cuero y monsteras junto al ventanal"
+      [width]="1200"
+      [height]="800"
+    />
+  </div>
+  <figcaption class="el-salon-page__caption">Calle Pozo Dulce, 1 · Ciudad Real</figcaption>
 </figure>
 
 <div class="el-salon-page__body">
   <section class="el-salon-page__section">
-    <div class="pz-section-head">
+    <figure class="el-salon-page__photo pz-photo-frame">
+      <pz-picture
+        base="salon-monstera"
+        alt="La puerta antigua de madera con clavos de la entrada al salón"
+        [width]="1200"
+        [height]="1746"
+      />
+    </figure>
+    <div class="el-salon-page__text">
       <p class="pz-eyebrow">El ambiente</p>
-      <hr class="pz-section-head__rule" />
-      <h2 class="pz-section-head__title">Materiales naturales, ritmo tranquilo</h2>
-    </div>
-    <div class="el-salon-page__prose">
-      <p>
-        Elegí materiales naturales para que el espacio respire lo mismo que los productos que
-        uso: nada sintético, nada que huela a peluquería tradicional. La luz entra directa, sin
-        fluorescentes agresivos, y el ritmo del día lo marca una sola cita cada vez, nunca dos en
-        paralelo.
-      </p>
-    </div>
-  </section>
-
-  <section class="el-salon-page__section">
-    <div class="pz-section-head">
-      <p class="pz-eyebrow">Cómo trabajamos</p>
-      <hr class="pz-section-head__rule" />
-      <h2 class="pz-section-head__title">Una clienta a la vez, nunca dos en paralelo</h2>
-    </div>
-    <div class="el-salon-page__prose">
-      <p>
-        No hay varios sillones ocupados a la vez ni clientas cruzándose en la puerta. Cada visita
-        ocupa el salón entero: mientras estás aquí, no hay nadie más esperando ni un secador
-        sonando al lado. Es una decisión sobre cómo quiero trabajar, no una limitación del
-        espacio.
-      </p>
+      <h2 class="el-salon-page__h2">Materiales naturales, ritmo tranquilo</h2>
+      <div class="el-salon-page__prose">
+        <p>
+          Elegí materiales naturales para que el espacio respire lo mismo que los productos que
+          uso: nada sintético, nada que huela a peluquería tradicional. La luz entra directa, sin
+          fluorescentes agresivos, y el ritmo del día lo marca una sola cita cada vez, nunca dos
+          en paralelo.
+        </p>
+      </div>
     </div>
   </section>
 
-  <section class="el-salon-page__section">
-    <div class="pz-section-head">
-      <p class="pz-eyebrow">Interior</p>
-      <hr class="pz-section-head__rule" />
-      <h2 class="pz-section-head__title">El reportaje fotográfico está en camino</h2>
-    </div>
-    <div class="el-salon-page__prose">
-      <p>
-        Estamos preparando fotos reales del interior para enseñarte el espacio tal y como es —
-        nunca imágenes genéricas ni fotos de stock. De momento, este es su hueco reservado.
-      </p>
-    </div>
-    <figure class="el-salon-page__interior">
-      <pz-photo-pending
-        base="salon-interior-1"
-        alt="Interior del salón Pureza, en Ciudad Real"
+  <section class="el-salon-page__section el-salon-page__section--reverse">
+    <figure class="el-salon-page__photo pz-photo-frame">
+      <pz-picture
+        base="salon-herramientas"
+        alt="El único sillón de corte del salón junto al lavacabezas, ante el papel pintado de flores"
         [width]="1200"
         [height]="800"
       />
     </figure>
+    <div class="el-salon-page__text">
+      <p class="pz-eyebrow">Cómo trabajamos</p>
+      <h2 class="el-salon-page__h2">Una clienta a la vez, nunca dos en paralelo</h2>
+      <div class="el-salon-page__prose">
+        <p>
+          No hay varios sillones ocupados a la vez ni clientas cruzándose en la puerta. Cada
+          visita ocupa el salón entero: mientras estás aquí, no hay nadie más esperando ni un
+          secador sonando al lado. Es una decisión sobre cómo quiero trabajar, no una limitación
+          del espacio.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="el-salon-page__section">
+    <figure class="el-salon-page__photo pz-photo-frame">
+      <pz-picture
+        base="salon-ventana"
+        alt="El escaparate de Pureza en la calle Pozo Dulce, con plantas y la mesa de madera al fondo"
+        [width]="1200"
+        [height]="1200"
+      />
+    </figure>
+    <div class="el-salon-page__text">
+      <p class="pz-eyebrow">La luz</p>
+      <h2 class="el-salon-page__h2">Un ventanal a la calle, plantas por todas partes</h2>
+      <div class="el-salon-page__prose">
+        <p>
+          El salón da a la calle Pozo Dulce, a un paso de la Plaza Mayor. La luz natural entra
+          por el ventanal y es la que uso para mirar el color de verdad, no el de una bombilla.
+          Las monsteras y la madera hacen el resto: aquí se viene a estar tranquila.
+        </p>
+      </div>
+    </div>
   </section>
 </div>
-
-<figure class="el-salon-page__atmosphere">
-  <pz-picture
-    base="atmosfera-olivo"
-    alt="Ramas de olivo, atmósfera botánica del salón Pureza"
-    [width]="1400"
-    [height]="560"
-  />
-</figure>
 
 <section class="el-salon-page__cta-band">
   <p class="el-salon-page__cta-band-lede">¿Quieres conocerlo en persona?</p>

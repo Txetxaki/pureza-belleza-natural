@@ -22,7 +22,7 @@ const PRIMARY_KEYWORD = REGISTRY.primaryKeyword;
 
 const RESULT_PHOTO: ServicePhoto = {
   base: 'resultado-espliego',
-  alt: 'Resultado de babylights con efecto de luz natural, planta espliego',
+  alt: 'Virginia preparando productos Aveda junto al espejo redondo del salón',
 };
 
 const BEFORE_AFTER: readonly [ServicePhoto, ServicePhoto, ServicePhoto] = [

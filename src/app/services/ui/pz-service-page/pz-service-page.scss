@@ -10,7 +10,7 @@
 .pz-service-page__cross-links {
   max-width: var(--pz-wrap);
   margin-inline: auto;
-  padding-inline: var(--pz-space-m);
+  padding-inline: var(--pz-gutter);
 }
 
 // ── Item 1: hero ──────────────────────────────────────────────────────────
@@ -47,10 +47,12 @@
   margin-top: var(--pz-space-m);
 }
 
-// ── Item 2: result photo — full-bleed, no gutter ────────────────────────
+// ── Item 2: result photo — framed inside the page width ─────────────────
+// It was full-bleed; at 2560px that stretched a 1200px file into a thin band.
 .pz-service-page__result-photo {
-  margin: 0;
-  width: 100%;
+  max-width: var(--pz-wrap);
+  margin: 0 auto;
+  padding-inline: var(--pz-gutter);
 
   // pz-photo-pending/pz-picture render via a real child component, not
   // ng-content projection, but ::ng-deep is still required to cross their
@@ -61,9 +63,14 @@
     .pz-picture__img,
     .pz-photo-pending {
       width: 100%;
-      height: clamp(280px, 42vw, 520px);
+      aspect-ratio: 2 / 1;
+      height: auto;
+      min-height: 220px;
+      max-height: 70vh;
       object-fit: cover;
       display: block;
+      border-radius: var(--pz-radius-media);
+      overflow: hidden;
     }
   }
 }
@@ -207,15 +214,24 @@
 .pz-service-page__cta-band {
   text-align: center;
   padding-block: var(--pz-space-xl);
-  border-top: 1px solid var(--pz-hairline);
+  border-top: 1px solid var(--pz-accent-rule);
+  background: var(--pz-accent-wash);
+  border-radius: var(--pz-radius-media);
+  margin-bottom: var(--pz-space-xl);
 }
 
 .pz-service-page__cta-band-lede {
-  margin: 0 0 var(--pz-space-m);
+  margin: 0;
   font-family: var(--pz-display);
   font-style: italic;
   font-size: var(--pz-text-h3);
   color: var(--pz-ink);
+}
+
+.pz-service-page__cta-band-body {
+  margin: var(--pz-space-2xs) auto var(--pz-space-m);
+  max-width: var(--pz-measure);
+  color: var(--pz-ink-soft);
 }
 
 .pz-service-page__cta-band-ctas {

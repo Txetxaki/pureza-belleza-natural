@@ -8,7 +8,7 @@
   gap: var(--pz-space-l);
   max-width: var(--pz-wrap);
   margin-inline: auto;
-  padding-inline: var(--pz-space-m);
+  padding-inline: var(--pz-gutter);
   padding-block: var(--pz-space-l) var(--pz-space-xl);
 
   @media (min-width: 720px) {
@@ -29,7 +29,7 @@
     .pz-picture__img {
       width: 100%;
       height: auto;
-      border-radius: var(--pz-radius);
+      border-radius: var(--pz-radius-media);
       display: block;
     }
   }
@@ -58,7 +58,7 @@
   gap: var(--pz-space-2xl);
   max-width: var(--pz-wrap);
   margin-inline: auto;
-  padding-inline: var(--pz-space-m);
+  padding-inline: var(--pz-gutter);
   padding-block: var(--pz-space-2xl) var(--pz-space-xl);
 }
 
@@ -91,7 +91,7 @@
   border-top: 1px solid var(--pz-hairline);
   max-width: var(--pz-wrap);
   margin-inline: auto;
-  padding-inline: var(--pz-space-m);
+  padding-inline: var(--pz-gutter);
 }
 
 .virginia-page__cta-band-lede {
@@ -115,4 +115,12 @@
   color: var(--pz-ink);
   text-decoration: underline;
   text-underline-offset: 0.2em;
+}
+
+// A single portrait between the sections, centred and capped so it reads as a
+// pause in the text rather than a banner.
+.virginia-page__band {
+  width: min(100%, 26rem);
+  margin-inline: auto;
+  aspect-ratio: 3 / 4;
 }

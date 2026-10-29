@@ -1,17 +1,16 @@
 <section class="home-hero">
   <figure class="home-hero__portrait">
-    <!-- EXCEPTION (design.md §6, task 4.9): the ONLY duotone image in this
-         change. Sourced from info/virginia.jpeg, copied verbatim to
-         public/images/retrato-virginia.jpg — every other pz-picture usage on
-         this page/route ships untinted. This is the LCP element: priority +
-         no lazy loading. -->
+    <!-- Real photograph from the salon's own Google Business shoot: Virginia at
+         the honey-wood table, scissors and tool roll, monstera behind. It
+         replaces the grey duotone of an Aveda advert — the warm original IS
+         the house palette now, so it ships untinted. This is the LCP element:
+         priority + no lazy loading. -->
     <pz-picture
       base="retrato-virginia"
-      alt="Virginia, peluquera y propietaria de Pureza, en su salón de Ciudad Real"
-      [width]="1504"
-      [height]="2048"
+      alt="Retrato de Virginia, peluquera y propietaria de Pureza, sonriendo de perfil"
+      [width]="1200"
+      [height]="1600"
       [priority]="true"
-      [duotone]="true"
     />
     <figcaption class="home-hero__caption">Virginia · Pozo Dulce, 1</figcaption>
   </figure>
@@ -27,7 +26,17 @@
       Soy Virginia. Pureza es mi manera de entender la peluquería: coloración vegetal Aveda, el
       tiempo que haga falta y una sola clienta cada vez.
     </p>
-    <pz-cta href="/contacto">Pedir cita</pz-cta>
+    <div class="home-hero__ctas">
+      <pz-cta href="/reservar">Reservar cita</pz-cta>
+      <a class="home-hero__secondary" [href]="whatsappUrl" target="_blank" rel="noopener">
+        o escríbeme por WhatsApp
+      </a>
+    </div>
+    <!-- Plain-text social proof — never aggregateRating markup (SITE.googleRating). -->
+    <p class="home-hero__rating">
+      <span class="home-hero__stars" aria-hidden="true">★★★★★</span>
+      {{ site.googleRating.value }} en Google · {{ site.googleRating.count }} reseñas
+    </p>
 
     <!-- The five-plant hero frieze (BRIEF §3, design.md "Closing the four
          Stitch gaps"): a mini service index reading straight off
@@ -128,7 +137,7 @@
     </svg>
   </ng-template>
   <ng-template #romeroPhoto>
-    <pz-picture base="atmosfera-romero" alt="Ramas de romero, atmósfera del servicio de coloración vegetal" [width]="560" [height]="560" />
+    <pz-picture base="atmosfera-romero" alt="Productos Aveda alineados ante el papel pintado de flores del salón" [width]="560" [height]="560" />
   </ng-template>
 
   <pz-plate
@@ -155,7 +164,7 @@
     </svg>
   </ng-template>
   <ng-template #espliegoPhoto>
-    <pz-picture base="atmosfera-espliego" alt="Flores de espliego, atmósfera del servicio de mechas de autor" [width]="560" [height]="560" />
+    <pz-picture base="atmosfera-espliego" alt="Las manos de Virginia sobre su estuche de tijeras y peines" [width]="560" [height]="560" />
   </ng-template>
 
   <pz-plate
@@ -177,7 +186,7 @@
     </svg>
   </ng-template>
   <ng-template #espartoPhoto>
-    <pz-picture base="atmosfera-esparto" alt="Fibra de esparto, atmósfera del servicio de rastas" [width]="560" [height]="560" />
+    <pz-picture base="atmosfera-esparto" alt="Sillón de cuero y madera del salón Pureza" [width]="560" [height]="560" />
   </ng-template>
 
   <pz-plate
@@ -198,7 +207,7 @@
     </svg>
   </ng-template>
   <ng-template #vidPhoto>
-    <pz-picture base="atmosfera-vid" alt="Hojas de vid, atmósfera del servicio de extensiones naturales" [width]="560" [height]="560" />
+    <pz-picture base="atmosfera-vid" alt="Ramo de flores blancas en el salón Pureza" [width]="560" [height]="560" />
   </ng-template>
 
   <pz-plate
@@ -225,17 +234,41 @@
     </svg>
   </ng-template>
   <ng-template #olivoPhoto>
-    <pz-picture base="atmosfera-olivo" alt="Ramas de olivo, atmósfera del servicio de rituales capilares" [width]="560" [height]="560" />
+    <pz-picture base="atmosfera-olivo" alt="Hojas de monstera en el salón Pureza" [width]="560" [height]="560" />
   </ng-template>
+
+  <!-- Cuts are bookable in Reserve but have no page of their own: a mention,
+       not a sixth plate, so the five-plant system stays intact. -->
+  <p class="home-carta__cortes">
+    Y, por supuesto, cortes de mujer, caballero e infantil.
+    <a routerLink="/reservar">Resérvalos en el calendario →</a>
+  </p>
 </section>
 
-<section class="home-salon-strip">
-  <pz-picture base="textura-lino" alt="" [width]="1400" [height]="340" />
-  <p class="home-salon-strip__caption pz-eyebrow">El salón · Calle Pozo Dulce, 1 · Ciudad Real</p>
+<section class="home-salon pz-wrap">
+  <figure class="home-salon__frame pz-photo-frame">
+    <pz-picture
+      base="salon-banda"
+      alt="El salón Pureza visto desde la calle a través del escaparate: la mesa de madera, flores blancas y monsteras"
+      [width]="1200"
+      [height]="408"
+    />
+  </figure>
+  <div class="home-salon__caption">
+    <p class="pz-eyebrow">El salón · Calle Pozo Dulce, 1 · Ciudad Real</p>
+    <a class="home-salon__link" routerLink="/el-salon">Conoce el salón →</a>
+  </div>
 </section>
 
 <section class="home-quote">
-  <pz-picture base="manos-pigmento" alt="Manos preparando pigmento botánico" [width]="1200" [height]="800" />
+  <figure class="home-quote__photo pz-photo-frame">
+    <pz-picture
+      base="virginia-sentada"
+      alt="Virginia sonriendo en su salón, entre monsteras y flores blancas"
+      [width]="1200"
+      [height]="1500"
+    />
+  </figure>
   <figure class="home-quote__figure">
     <blockquote class="home-quote__text">
       Aquí no eres una clienta más. Solo estamos tú, tu cabello y yo.
@@ -251,8 +284,18 @@
   </figure>
 </section>
 
-<section class="home-cta-band" data-planta="vid">
-  <h2 class="home-cta-band__title">¿Hablamos?</h2>
-  <p class="home-cta-band__lede">Cuéntame qué necesitas y buscamos hueco.</p>
-  <pz-cta href="/contacto">Ir a contacto</pz-cta>
+<!-- The closing band is the booking invitation: the one dark field on the
+     page, in the colour of the salon's ceiling beams. -->
+<section class="home-cta-band" aria-labelledby="home-cta-band-title">
+  <div class="home-cta-band__inner">
+    <p class="home-cta-band__eyebrow">Reserva online</p>
+    <h2 id="home-cta-band-title" class="home-cta-band__title">Elige día y hora, sin esperas</h2>
+    <p class="home-cta-band__lede">
+      Ves los huecos libres de verdad y te llega la confirmación al momento.
+    </p>
+    <div class="home-cta-band__ctas">
+      <a class="home-cta-band__button" routerLink="/reservar">Reservar cita</a>
+      <a class="home-cta-band__link" routerLink="/contacto">o pregúntame antes →</a>
+    </div>
+  </div>
 </section>

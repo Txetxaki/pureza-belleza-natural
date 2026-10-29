@@ -1,50 +1,37 @@
-// Everything scales off one local custom property, so the two lines and the
-// rule between them can never drift apart at different sizes.
 :host {
-  --pz-wordmark-size: var(--pz-text-lead);
-
   display: inline-block;
-  color: var(--pz-ink);
-}
-
-:host([data-size='display']) {
-  --pz-wordmark-size: var(--pz-text-h3);
+  line-height: 0;
 }
 
 .pz-wordmark {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.18em;
-  line-height: 1;
+  display: inline-block;
 }
 
-.pz-wordmark__name {
-  font-family: var(--pz-display);
-  font-style: italic;
-  font-size: var(--pz-wordmark-size);
-  letter-spacing: 0.01em;
-  color: currentcolor;
+// The gold signature on its own, cut out of the watercolour logo: legible at
+// header height, where the full circle would shrink the script to a smudge.
+.pz-wordmark__img--firma {
+  display: block;
+  width: auto;
+  height: clamp(40px, 5.2vw, 54px);
 }
 
-// Set in `em` so it tracks the name's optical width rather than a fixed pixel
-// length that would look right at one size and wrong at the other.
-.pz-wordmark__rule {
-  width: 3.2em;
-  height: 0;
-  border-top: 1px solid var(--pz-hairline);
+// The full watercolour mark, where it has room. Multiply drops the paper-white
+// of the source file into whatever cream ground it sits on, so no white box.
+.pz-wordmark__img--acuarela {
+  display: block;
+  width: clamp(150px, 18vw, 210px);
+  height: auto;
+  mix-blend-mode: multiply;
 }
 
-.pz-wordmark__tagline {
-  font-family: var(--pz-body);
-  // Small enough to read as a supporting line, never as a second title.
-  font-size: calc(var(--pz-wordmark-size) * 0.38);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: var(--pz-track-label);
-  // Cancels the trailing letter-space so the tagline optically centres under
-  // the name instead of sitting one space to the left.
-  text-indent: var(--pz-track-label);
-  color: var(--pz-ink-soft);
+.pz-wordmark__text {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
   white-space: nowrap;
+  border: 0;
 }

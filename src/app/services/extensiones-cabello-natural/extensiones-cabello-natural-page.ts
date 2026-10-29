@@ -22,7 +22,7 @@ const PRIMARY_KEYWORD = REGISTRY.primaryKeyword;
 
 const RESULT_PHOTO: ServicePhoto = {
   base: 'resultado-vid',
-  alt: 'Resultado de extensiones de cabello natural con integración invisible, planta vid',
+  alt: 'Virginia sonriendo junto a una hoja de monstera a la luz de la ventana',
 };
 
 const BEFORE_AFTER: readonly [ServicePhoto, ServicePhoto, ServicePhoto] = [

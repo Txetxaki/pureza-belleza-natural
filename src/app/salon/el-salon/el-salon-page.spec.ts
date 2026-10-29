@@ -71,21 +71,21 @@ describe('ElSalonPage (/el-salon) — salon-page spec', () => {
     expect(el.querySelector('pz-photo-pending picture.pz-picture')).toBeTruthy();
   });
 
-  it('uses only atmosfera-* botanical imagery for its non-interior photography — no fabricated interior/people imagery, no stock', async () => {
+  it('uses only real photographs of the salon (salon-* bases from its own Google Business shoot) — no stock, no generated imagery', async () => {
     configure();
     const harness = await RouterTestingHarness.create('/el-salon');
     harness.detectChanges();
 
     const el = harness.routeNativeElement as HTMLElement;
     // The interior slot is excluded by selector, not by counting: it renders
-    // through pz-photo-pending and is legitimately not an `atmosfera-*` frame.
+    // through pz-photo-pending and is asserted by the test above.
     const pictures = Array.from(el.querySelectorAll('pz-picture')).filter(
       (picture) => picture.closest('pz-photo-pending') === null,
     );
     expect(pictures.length).toBeGreaterThan(0);
     for (const picture of pictures) {
       const src = picture.querySelector('img')?.getAttribute('src') ?? '';
-      expect(src).toContain('atmosfera-');
+      expect(src).toMatch(/images\/salon-[a-z-]+-\d+\.jpg$/);
     }
   });
 

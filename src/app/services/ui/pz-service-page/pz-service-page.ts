@@ -2,17 +2,18 @@ import { Component, computed, input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PzCta } from '../../../shared/ui/pz-cta/pz-cta';
 import { PzPhotoPending } from '../../../shared/ui/pz-photo-pending/pz-photo-pending';
+import { AVAILABLE_PHOTO_BASES } from '../../../shared/ui/pz-photo-pending/available-photos.generated';
 import { PzSpecimen } from '../../../shared/ui/pz-specimen/pz-specimen';
 import { buildWhatsAppUrl } from '../../../shared/utils/contact-links';
 import { SITE } from '../../../seo/domain/site';
 import type { FaqEntry } from '../../../seo/generators/faq-page.schema';
-import { formatDuration, formatFrom, type ServicePricing } from '../../domain/pricing';
+import { formatDuration, type ServicePricing } from '../../domain/pricing';
 import { serviceIndexEntry, type ServicePath } from '../../domain/service-index';
 
 /**
  * One `base`/`alt` pair for `pz-photo-pending` (design.md D9). `width`/
  * `height` are NOT part of this shape — they are structural (design.md's
- * stable placeholder dimensions: `resultado-{planta}` 1200×800,
+ * stable placeholder dimensions: `resultado-{planta}` 1200×600,
  * `antes-despues-{planta}-{n}` 800×800), fixed by the layout itself so every
  * service page ships the identical aspect ratio regardless of caller input.
  */
@@ -53,7 +54,7 @@ export interface ServiceContent {
 
 /** design.md "Stable placeholder filenames" — fixed by the layout, not the caller. */
 const RESULT_PHOTO_WIDTH = 1200;
-const RESULT_PHOTO_HEIGHT = 800;
+const RESULT_PHOTO_HEIGHT = 600;
 const BEFORE_AFTER_WIDTH = 800;
 const BEFORE_AFTER_HEIGHT = 800;
 
@@ -95,8 +96,10 @@ export class PzServicePage {
 
   protected readonly whatsappUrl = computed(() => buildWhatsAppUrl(SITE.telephone));
 
-  /** "Consultar" while pending (pricing.ts) — never a fabricated figure. */
-  protected readonly fromLabel = computed(() => formatFrom(this.content().pricing));
+  /** Before/after renders only when at least one real client photo exists on disk. */
+  protected readonly hasBeforeAfter = computed(() =>
+    this.content().beforeAfter.some((photo) => AVAILABLE_PHOTO_BASES.includes(photo.base)),
+  );
   protected readonly durationLabel = computed(() => formatDuration(this.content().pricing));
 
   protected readonly resultPhotoWidth = RESULT_PHOTO_WIDTH;

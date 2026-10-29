@@ -63,6 +63,36 @@ describe('SiteFooter', () => {
     expect(legal?.parentElement).toBe(footer);
   });
 
+  it('credits Boty Agency below the copyright line, linking to its web design page in a new tab', async () => {
+    const el = await render();
+
+    const legal = el.querySelector('.site-footer__legal');
+    const credit = el.querySelector<HTMLAnchorElement>(
+      '.site-footer__credit a[href="https://boty.agency/diseno-web"]',
+    );
+
+    expect(credit?.textContent?.trim()).toBe('Boty Agency');
+    expect(credit?.getAttribute('href')).toBe('https://boty.agency/diseno-web');
+    expect(credit?.getAttribute('target')).toBe('_blank');
+    expect(credit?.getAttribute('rel')).toBe('noopener');
+    expect(credit?.parentElement?.textContent).toContain('Diseño web por');
+    expect(legal?.compareDocumentPosition(credit!) ?? 0).toBeGreaterThanOrEqual(
+      Node.DOCUMENT_POSITION_FOLLOWING,
+    );
+  });
+
+  it('credits Carole Alfarah for the photography, linking to her site in a new tab', async () => {
+    const el = await render();
+    const photo = el.querySelector<HTMLAnchorElement>(
+      '.site-footer__credit a[href="https://carolealfarah.photoshelter.com/about"]',
+    );
+
+    expect(photo?.textContent?.trim()).toBe('Carole Alfarah');
+    expect(photo?.getAttribute('target')).toBe('_blank');
+    expect(photo?.getAttribute('rel')).toBe('noopener');
+    expect(photo?.parentElement?.textContent).toContain('Fotografía de');
+  });
+
   it("the link row is today's real live NAV_ROUTES minus home — grows automatically as more routes flip live, service routes included (D7 rollback property, unchanged from foundation)", async () => {
     const el = await render();
     const linkHrefs = Array.from(el.querySelectorAll('.site-footer__link')).map((a) =>

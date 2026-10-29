@@ -2,45 +2,81 @@
   display: block;
 }
 
-// ── Hero ──────────────────────────────────────────────────────────────────
+// ── Hero — deliberately short, so the calendar starts above the fold ──────
 .reservar-page__hero {
   max-width: var(--pz-wrap);
   margin-inline: auto;
-  padding-inline: var(--pz-space-m);
+  padding-inline: var(--pz-gutter);
   padding-block: var(--pz-space-l) var(--pz-space-m);
   text-align: center;
 }
 
 .reservar-page__h1 {
   margin: var(--pz-space-3xs) auto 0;
-  max-width: var(--pz-wrap);
+  max-width: 22ch;
   font-family: var(--pz-display);
-  font-size: var(--pz-text-h1);
+  font-size: clamp(2rem, 4.6vw, 3.2rem);
+  font-weight: 400;
   line-height: 1.1;
   color: var(--pz-ink);
 }
 
 .reservar-page__lede {
-  margin: var(--pz-space-m) auto 0;
+  margin: var(--pz-space-s) auto 0;
   max-width: var(--pz-measure);
   color: var(--pz-ink-soft);
   font-size: var(--pz-text-lead);
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
-// ── Embedded booking widget ────────────────────────────────────────────────
+.reservar-page__facts {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--pz-space-2xs) var(--pz-space-m);
+  margin: var(--pz-space-s) 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--pz-text-small);
+  color: var(--pz-ink-soft);
+
+  li::before {
+    content: '';
+    display: inline-block;
+    width: 5px;
+    height: 5px;
+    margin-right: var(--pz-space-2xs);
+    border-radius: 50%;
+    background: var(--pz-gold);
+    vertical-align: middle;
+  }
+
+  li:has(.reservar-page__stars)::before {
+    display: none;
+  }
+}
+
+.reservar-page__stars {
+  margin-right: var(--pz-space-3xs);
+  color: var(--pz-gold);
+  letter-spacing: 0.08em;
+}
+
+// ── Embedded booking widget — the page's main event ─────────────────────
+// A raised cream card within the page width; the calendar itself sets its
+// own height via postMessage.
 .reservar-page__widget {
   position: relative;
-  max-width: 40rem;
+  max-width: 60rem;
   margin-inline: auto;
-  padding-inline: var(--pz-space-m);
-  padding-block: var(--pz-space-m) var(--pz-space-l);
+  padding-inline: var(--pz-gutter);
+  padding-block: 0 var(--pz-space-l);
 }
 
 .reservar-page__widget-loading {
   position: absolute;
   inset-inline: 0;
-  top: calc(var(--pz-space-m) + 2rem);
+  top: var(--pz-space-xl);
   text-align: center;
   color: var(--pz-ink-soft);
   font-size: var(--pz-text-lead);
@@ -51,8 +87,9 @@
   display: block;
   width: 100%;
   border: 1px solid var(--pz-hairline);
-  border-radius: var(--pz-radius, 8px);
-  background: var(--pz-surface);
+  border-top: 3px solid var(--pz-gold);
+  border-radius: var(--pz-radius-media);
+  background: var(--pz-surface-raised);
   // The height is driven by the booking app via postMessage; this transition
   // makes the step-to-step growth feel deliberate rather than jumpy.
   transition: height 0.2s ease;
@@ -65,15 +102,20 @@
   border-top: 1px solid var(--pz-hairline);
   max-width: var(--pz-wrap);
   margin-inline: auto;
-  padding-inline: var(--pz-space-m);
+  padding-inline: var(--pz-gutter);
 }
 
 .reservar-page__cta-band-lede {
-  margin: 0 0 var(--pz-space-m);
+  margin: 0;
   font-family: var(--pz-display);
   font-style: italic;
   font-size: var(--pz-text-h3);
   color: var(--pz-ink);
+}
+
+.reservar-page__cta-band-body {
+  margin: var(--pz-space-2xs) 0 var(--pz-space-m);
+  color: var(--pz-ink-soft);
 }
 
 .reservar-page__cta-band-ctas {

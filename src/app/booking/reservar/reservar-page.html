@@ -1,11 +1,18 @@
 <header class="reservar-page__hero">
   <p class="pz-eyebrow">Reservar</p>
-  <h1 class="reservar-page__h1">Reserva tu cita en la peluquería de Ciudad Real</h1>
+  <h1 class="reservar-page__h1">Pedir cita en tu peluquería de Ciudad Real</h1>
   <p class="reservar-page__lede">
     Elige servicio, día y hora aquí mismo. Verás solo los huecos que tengo libres de verdad y te
-    llega la confirmación al momento. ¿Prefieres contármelo antes? Me escribes por WhatsApp o me
-    llamas y lo vemos juntas.
+    llega la confirmación al momento.
   </p>
+  <ul class="reservar-page__facts">
+    <li>Confirmación al instante</li>
+    <li>Una sola clienta cada vez</li>
+    <li>
+      <span class="reservar-page__stars" aria-hidden="true">★★★★★</span>
+      {{ site.googleRating.value }} en Google · {{ site.googleRating.count }} reseñas
+    </li>
+  </ul>
 </header>
 
 <section class="reservar-page__widget" aria-label="Reserva de cita online">
@@ -17,7 +24,7 @@
     [src]="bookingUrl"
     [style.height.px]="frameHeight()"
     title="Reserva de cita en Pureza Belleza Natural"
-    loading="lazy"
+    loading="eager"
     referrerpolicy="strict-origin"
     (load)="onFrameLoad()"
   ></iframe>
@@ -25,6 +32,9 @@
 
 <section class="reservar-page__cta-band">
   <p class="reservar-page__cta-band-lede">¿Prefieres que hablemos antes?</p>
+  <p class="reservar-page__cta-band-body">
+    Me escribes por WhatsApp o me llamas y lo vemos juntas.
+  </p>
   <div class="reservar-page__cta-band-ctas">
     <pz-cta variant="primary" [href]="whatsappUrl" [external]="true">
       Escribir por WhatsApp
