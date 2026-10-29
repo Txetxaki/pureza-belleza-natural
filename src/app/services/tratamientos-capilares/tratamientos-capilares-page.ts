@@ -22,7 +22,7 @@ const PRIMARY_KEYWORD = REGISTRY.primaryKeyword;
 
 const RESULT_PHOTO: ServicePhoto = {
   base: 'resultado-olivo',
-  alt: 'Virginia sentada en el salón, junto a una monstera y el mueble de madera',
+  alt: 'La zona de lavado del salón, con los lavacabezas y los productos Aveda',
 };
 
 const BEFORE_AFTER: readonly [ServicePhoto, ServicePhoto, ServicePhoto] = [

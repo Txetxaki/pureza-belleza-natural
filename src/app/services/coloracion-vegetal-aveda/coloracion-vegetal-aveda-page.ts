@@ -23,7 +23,7 @@ const PRIMARY_KEYWORD = REGISTRY.primaryKeyword;
 
 const RESULT_PHOTO: ServicePhoto = {
   base: 'resultado-romero',
-  alt: 'Virginia preparando sus herramientas tras la mesa de madera, con la gama de color Aveda delante',
+  alt: 'Virginia eligiendo un producto Aveda ante el papel pintado de flores del salón',
 };
 
 const BEFORE_AFTER: readonly [ServicePhoto, ServicePhoto, ServicePhoto] = [

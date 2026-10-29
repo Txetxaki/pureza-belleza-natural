@@ -22,7 +22,7 @@ const PRIMARY_KEYWORD = REGISTRY.primaryKeyword;
 
 const RESULT_PHOTO: ServicePhoto = {
   base: 'resultado-esparto',
-  alt: 'Virginia con sus tijeras y el estuche de herramientas en la mesa del salón',
+  alt: 'Perfil de Virginia con su corte rapado en un lateral, entre monsteras',
 };
 
 const BEFORE_AFTER: readonly [ServicePhoto, ServicePhoto, ServicePhoto] = [
