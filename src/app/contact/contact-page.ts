@@ -3,7 +3,7 @@ import { PzCta } from '../shared/ui/pz-cta/pz-cta';
 import { PzStaticMap } from '../shared/ui/pz-static-map/pz-static-map';
 import { SeoService } from '../seo/application/seo.service';
 import { buildBreadcrumbListSchema } from '../seo/generators/breadcrumb-list.schema';
-import { SITE } from '../seo/domain/site';
+import { formatPeriods, SITE } from '../seo/domain/site';
 import { buildTelUrl, buildWhatsAppUrl } from '../shared/utils/contact-links';
 
 interface HoursRow {
@@ -31,19 +31,14 @@ export class ContactPage implements OnInit {
   protected readonly telUrl = buildTelUrl(SITE.telephone);
   protected readonly mapAddress = `${SITE.streetAddress}, ${SITE.postalCode} ${SITE.addressLocality}`;
 
-  // Real business hours (info/inicial.txt §4) — same data the (future)
-  // `openingHoursSpecification` JSON-LD would use; not added to the
-  // `HairSalon` schema here because `/contacto` deliberately carries no
+  // Google Business hours, from the single `SITE.openingHours` source — the
+  // same data the home page's `openingHoursSpecification` JSON-LD publishes.
+  // Not emitted as JSON-LD here because `/contacto` deliberately carries no
   // `HairSalon` block at all (see ngOnInit below).
-  protected readonly hours: readonly HoursRow[] = [
-    { day: 'Lunes', hours: '10:30–13:30 · 17:00–19:30' },
-    { day: 'Martes', hours: '10:30–13:30 · 17:00–19:30' },
-    { day: 'Miércoles', hours: '10:30–13:30' },
-    { day: 'Jueves', hours: '10:30–13:30 · 17:00–19:30' },
-    { day: 'Viernes', hours: '10:30–19:30' },
-    { day: 'Sábado', hours: '10:00–14:00' },
-    { day: 'Domingo', hours: null },
-  ];
+  protected readonly hours: readonly HoursRow[] = SITE.openingHours.map((day) => ({
+    day: day.label,
+    hours: formatPeriods(day.periods),
+  }));
 
   ngOnInit(): void {
     // No HairSalon block on /contacto: contact-page spec's "Navigational SEO

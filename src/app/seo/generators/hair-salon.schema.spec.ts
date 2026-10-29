@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { SCHEMA_ID } from '../domain/schema-ids';
 import { SITE } from '../domain/site';
-import { buildHairSalonSchema } from './hair-salon.schema';
+import { buildHairSalonSchema, buildOpeningHoursSpecification } from './hair-salon.schema';
 
 describe('buildHairSalonSchema', () => {
   it('produces a valid, parseable schema.org HairSalon object with required fields and a stable @id', () => {
@@ -29,5 +29,50 @@ describe('buildHairSalonSchema', () => {
     const second = buildHairSalonSchema();
     expect(first['@id']).toBe(second['@id']);
     expect(first['@id']).toBe(SCHEMA_ID.salon);
+  });
+
+  it('publishes the Google Business opening hours as openingHoursSpecification, one node per opening window', () => {
+    const parsed = JSON.parse(JSON.stringify(buildHairSalonSchema()));
+
+    expect(parsed.openingHoursSpecification).toEqual([
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Thursday', 'Saturday'],
+        opens: '10:00',
+        closes: '14:00',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Thursday'],
+        opens: '17:00',
+        closes: '19:30',
+      },
+      {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Friday'],
+        opens: '10:00',
+        closes: '19:00',
+      },
+    ]);
+  });
+
+  it('expresses closed days (Wednesday, Sunday) by leaving them out of every window', () => {
+    const days = buildOpeningHoursSpecification(SITE.openingHours).flatMap((spec) => spec.dayOfWeek);
+
+    expect(days).not.toContain('Wednesday');
+    expect(days).not.toContain('Sunday');
+  });
+
+  it('links the Instagram profile through sameAs', () => {
+    expect(buildHairSalonSchema()['sameAs']).toEqual([
+      'https://www.instagram.com/pureza_belleza_natural/',
+    ]);
+  });
+
+  it('never marks up the Google rating — no aggregateRating or review on a self-served LocalBusiness', () => {
+    const schema = buildHairSalonSchema();
+
+    expect(schema).not.toHaveProperty('aggregateRating');
+    expect(schema).not.toHaveProperty('review');
   });
 });
