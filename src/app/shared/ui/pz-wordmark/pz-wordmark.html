@@ -1,5 +1,25 @@
 <span class="pz-wordmark" [attr.aria-label]="label()">
-  <span class="pz-wordmark__name" aria-hidden="true">Pureza</span>
-  <span class="pz-wordmark__rule" aria-hidden="true"></span>
-  <span class="pz-wordmark__tagline" aria-hidden="true">Belleza Natural</span>
+  @if (size() === 'display') {
+    <img
+      class="pz-wordmark__img pz-wordmark__img--acuarela"
+      src="brand/pureza-acuarela.webp"
+      alt=""
+      width="520"
+      height="371"
+      loading="lazy"
+      decoding="async"
+    />
+  } @else {
+    <img
+      class="pz-wordmark__img pz-wordmark__img--firma"
+      src="brand/pureza-firma.png"
+      alt=""
+      width="524"
+      height="273"
+      decoding="async"
+    />
+  }
+  <!-- The image is the mark; this is its text, kept in the DOM for search,
+       copy-paste and assistive technology, but not drawn. -->
+  <span class="pz-wordmark__text">Pureza Belleza Natural</span>
 </span>

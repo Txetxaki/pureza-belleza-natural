@@ -150,8 +150,15 @@
   </a>
 
   <div class="site-header__zone site-header__zone--right">
+    <a class="site-header__phone" [href]="telUrl" [attr.aria-label]="'Llamar al ' + site.telephoneDisplay">
+      {{ site.telephoneDisplay }}
+    </a>
     @if (nav().reserveCta; as reserveCta) {
-      <a class="site-header__cta" [routerLink]="'/' + reserveCta.path">{{ reserveCta.label }}</a>
+      <!-- The salon's main conversion, so it is the one filled control in the
+           header and stays visible at every width (the header is sticky). -->
+      <a class="site-header__cta" [routerLink]="'/' + reserveCta.path" (click)="onNavigate()">
+        Reservar cita
+      </a>
     }
   </div>
 </header>

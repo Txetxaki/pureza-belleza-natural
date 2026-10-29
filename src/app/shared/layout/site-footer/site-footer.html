@@ -3,6 +3,42 @@
     <pz-wordmark size="display" />
   </a>
 
+  <div class="site-footer__info">
+    <div class="site-footer__nap">
+      <p class="site-footer__heading">Visítanos</p>
+      <p class="site-footer__name">{{ site.name }}</p>
+      <address class="site-footer__address">
+        {{ site.streetAddress }}, {{ site.postalCode }} {{ site.addressLocality }}
+      </address>
+      <a class="site-footer__phone" [href]="'tel:' + site.telephone">{{ site.telephoneDisplay }}</a>
+    </div>
+
+    <div class="site-footer__hours">
+      <p class="site-footer__heading">Horario</p>
+      <dl class="site-footer__hours-list">
+        @for (row of hours; track row.days) {
+          <div class="site-footer__hours-row">
+            <dt>{{ row.days }}</dt>
+            <dd>{{ row.hours ?? 'Cerrado' }}</dd>
+          </div>
+        }
+      </dl>
+    </div>
+
+    <div class="site-footer__social">
+      <p class="site-footer__heading">Síguenos</p>
+      <a class="site-footer__instagram" [href]="site.instagramUrl" target="_blank" rel="noopener">
+        Instagram · {{ site.instagramHandle }}
+      </a>
+      <!-- Plain text on purpose: no aggregateRating markup (see SITE.googleRating). -->
+      <p class="site-footer__rating">
+        <span class="site-footer__stars" aria-hidden="true">★★★★★</span>
+        {{ site.googleRating.value }} en Google · {{ site.googleRating.count }} reseñas
+      </p>
+      <a class="site-footer__cta" routerLink="/reservar">Reservar cita</a>
+    </div>
+  </div>
+
   @if (links().length > 0) {
     <nav class="site-footer__nav" aria-label="Footer">
       @for (link of links(); track link.path) {
@@ -21,13 +57,5 @@
     </nav>
   }
 
-  <div class="site-footer__nap">
-    <p class="site-footer__name">{{ site.name }}</p>
-    <address class="site-footer__address">
-      {{ site.streetAddress }}, {{ site.postalCode }} {{ site.addressLocality }}
-    </address>
-    <a class="site-footer__phone" [href]="'tel:' + site.telephone">{{ site.telephoneDisplay }}</a>
-  </div>
-
-  <p class="site-footer__legal">© {{ year }} {{ site.name }}</p>
+  <p class="site-footer__legal">© {{ year }} {{ site.name }} · Belleza natural en Ciudad Real</p>
 </footer>

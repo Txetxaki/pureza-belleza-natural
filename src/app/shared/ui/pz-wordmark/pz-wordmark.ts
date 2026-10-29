@@ -1,21 +1,24 @@
 import { Component, input } from '@angular/core';
 
 /**
- * The Pureza wordmark: the business's full registered name, set as a lockup
- * rather than as the single word "Pureza" the header shipped with.
+ * The Pureza mark, drawn from the salon's real logo (gold script "pureza /
+ * BELLEZA NATURAL" over a pink-and-grey watercolour circle).
  *
- * It is typographic, not an image — no SVG path data, no bitmap. That means it
- * inherits `currentColor`, scales with the type system, stays selectable and
- * searchable, and never needs a second file for a dark or small variant.
+ * It used to be typographic — EB Garamond italic over a hairline — because no
+ * logo file existed. Now there is one, and the business uses it everywhere
+ * else (Google Business, Instagram, the salon window), so the site follows.
  *
- * Shape: the display face carries `Pureza` in italic; a hairline sits beneath
- * it, and `Belleza Natural` follows in letterspaced small caps of the body
- * face. The hairline is what makes it read as one mark instead of two stacked
- * words.
+ * Two cuts, chosen by `size`:
+ * - `'lead'` (header): only the gold signature, cut out of the watercolour on
+ *   a transparent ground (`public/brand/pureza-firma.png`). At header height
+ *   the full circle would shrink the script to a few unreadable pixels.
+ * - `'display'` (footer): the full watercolour mark
+ *   (`public/brand/pureza-acuarela.webp`), blended with `multiply` so the
+ *   paper-white of the source disappears into the cream ground.
  *
- * `size` is the only knob. `'lead'` is the header's inline size; `'display'`
- * is the footer's, where the mark has room to breathe. Callers never set
- * font-size on the host — that would desynchronise the two lines and the rule.
+ * The accessible text stays in the DOM, visually hidden: the link around this
+ * component carries the name, and the text keeps "Pureza Belleza Natural"
+ * searchable and copyable.
  */
 @Component({
   selector: 'pz-wordmark',

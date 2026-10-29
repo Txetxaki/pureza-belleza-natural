@@ -1,12 +1,26 @@
+// The host carries the full-width ground and the sticky behaviour; `.site-header`
+// inside it is the constrained bar. That split is what keeps the header from
+// stretching edge to edge on a 2560px screen while its hairline and blur still
+// span the window.
+:host {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: block;
+  background: color-mix(in srgb, var(--pz-surface) 92%, transparent);
+  border-bottom: 1px solid var(--pz-hairline);
+  backdrop-filter: saturate(1.2) blur(10px);
+}
+
 .site-header {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   column-gap: var(--pz-space-m);
-  padding-block: var(--pz-space-s);
-  padding-inline: var(--pz-space-m);
-  border-bottom: 1px solid var(--pz-hairline);
-  background: var(--pz-surface);
+  min-height: var(--pz-header-height);
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-inline: var(--pz-gutter);
 }
 
 .site-header__zone {
@@ -16,23 +30,27 @@
 
 .site-header__zone--right {
   justify-content: flex-end;
+  gap: var(--pz-space-s);
 }
 
 .site-header__nav {
   position: relative;
   display: flex;
   align-items: center;
-  gap: var(--pz-space-m);
+  gap: clamp(var(--pz-space-s), 2vw, var(--pz-space-m));
 }
 
-// Type is `pz-wordmark`'s job now — this is only the link box around it.
+// Type is `pz-wordmark`'s job — this is only the link box around it.
 .site-header__brand {
   justify-self: center;
+  display: block;
+  padding-block: var(--pz-space-2xs);
   color: var(--pz-ink);
   text-decoration: none;
 }
 
 .site-header__link {
+  position: relative;
   font-family: var(--pz-body);
   font-size: var(--pz-text-body);
   color: var(--pz-ink-soft);
@@ -52,18 +70,58 @@
   }
 }
 
+// A small gold rule under the active section, desktop only — the drawer below
+// has its own row treatment.
+@media (min-width: 1024px) {
+  .site-header__link.is-active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1px;
+    background: var(--pz-gold);
+  }
+}
+
+.site-header__phone {
+  font-family: var(--pz-body);
+  font-size: var(--pz-text-small);
+  letter-spacing: 0.04em;
+  color: var(--pz-ink-soft);
+  text-decoration: none;
+  white-space: nowrap;
+
+  &:hover,
+  &:focus-visible {
+    color: var(--pz-ink);
+  }
+}
+
+// The one filled control in the header: booking is the salon's main goal.
+// Ink ground, cream text (~14.7:1); the gold appears on hover only, where the
+// cream-on-gold pair still clears AA (~5.2:1).
 .site-header__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding-inline: var(--pz-space-s);
+  border-radius: var(--pz-radius);
+  background: var(--pz-ink);
+  color: var(--pz-surface);
   font-family: var(--pz-body);
   font-size: var(--pz-text-small);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: var(--pz-track-label);
-  color: var(--pz-accent-text);
+  letter-spacing: 0.12em;
   text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.15s ease;
 
   &:hover,
   &:focus-visible {
-    text-decoration: underline;
+    background: var(--pz-gold);
   }
 }
 
@@ -75,40 +133,55 @@
   position: relative;
 }
 
+// The trigger reads as a menu, so it carries a small caret.
+.header-disclosure__trigger::after {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-left: 7px;
+  border-right: 1px solid currentcolor;
+  border-bottom: 1px solid currentcolor;
+  transform: translateY(-3px) rotate(45deg);
+}
+
 .header-disclosure__panel {
   position: absolute;
-  top: calc(100% + var(--pz-space-2xs));
-  left: 0;
+  top: calc(100% + var(--pz-space-s));
+  left: calc(-1 * var(--pz-space-xs));
   z-index: 10;
   margin: 0;
   padding: var(--pz-space-2xs) 0;
-  min-width: 12rem;
+  min-width: 14rem;
   list-style: none;
-  background: var(--pz-surface);
+  background: var(--pz-surface-raised);
   border: 1px solid var(--pz-hairline);
   border-radius: var(--pz-radius);
   box-shadow: none; // no elevation, ever — design.md §1
   visibility: hidden;
   opacity: 0;
-  transition:
-    opacity 0.15s ease,
-    visibility 0.15s ease;
+  // No transition on the CLOSED state, on purpose. With one here, any style
+  // recalculation that restarts it (a resize, a full-page capture, hydration)
+  // briefly paints both panels open over the hero — exactly what a 2560px
+  // headless capture showed. Closing is instant; only opening fades.
+  transition: none;
 }
 
 // No-JS path: focus entering any link inside the panel reveals it with zero
 // script. Known, accepted imperfection (design.md): aria-expanded stays
 // "false" here since no click ran — mitigated by the same five links also
-// living in the centred footer.
+// living in the footer.
 .header-disclosure:focus-within .header-disclosure__panel,
 .header-disclosure--open .header-disclosure__panel {
   visibility: visible;
   opacity: 1;
+  transition: opacity 0.15s ease;
 }
 
 // Article titles are full sentences, not two-word service names — they need
 // room to wrap instead of forcing a 30rem-wide panel off the viewport edge.
 .header-disclosure__panel--wide {
-  min-width: 18rem;
+  min-width: 20rem;
 
   .header-disclosure__link {
     white-space: normal;
@@ -117,8 +190,8 @@
 
 .header-disclosure__link {
   display: block;
-  padding-block: var(--pz-space-3xs);
-  padding-inline: var(--pz-space-xs);
+  padding-block: var(--pz-space-2xs);
+  padding-inline: var(--pz-space-s);
   font-family: var(--pz-body);
   font-size: var(--pz-text-body);
   color: var(--pz-ink-soft);
@@ -132,7 +205,7 @@
   &:hover,
   &:focus-visible {
     color: var(--pz-ink);
-    background: var(--pz-hairline);
+    background: var(--pz-surface);
   }
 }
 
@@ -145,11 +218,12 @@
   letter-spacing: var(--pz-track-label);
   border-bottom: 1px solid var(--pz-hairline);
   margin-bottom: var(--pz-space-3xs);
-  padding-bottom: var(--pz-space-3xs);
+  padding-bottom: var(--pz-space-2xs);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .header-disclosure__panel {
+  .header-disclosure:focus-within .header-disclosure__panel,
+  .header-disclosure--open .header-disclosure__panel {
     transition: none;
   }
 }
@@ -179,21 +253,22 @@
   transition: transform 0.2s ease;
 }
 
-// Below 720px the inline nav is 679px wide inside a 360px viewport: it forced
-// the whole document to ~940px and every page scrolled sideways. The nav now
-// leaves the flow entirely and becomes a drawer under the header bar.
-@media (max-width: 720px) {
+// Below 1024px six links, the centred mark and the booking button no longer
+// share one row, so the nav leaves the flow and becomes a drawer under the bar.
+// (It was 720px when the right zone held a single text link.)
+@media (max-width: 1023.98px) {
   .site-header {
-    // The 1fr auto 1fr centring survives, but the side zones no longer need to
-    // reserve room for a full nav — just the burger and the CTA.
     column-gap: var(--pz-space-2xs);
-    padding-inline: var(--pz-space-s);
     // Anchors the absolutely-positioned drawer to the header, not the page.
     position: relative;
   }
 
   .site-header__burger {
     display: flex;
+  }
+
+  .site-header__phone {
+    display: none;
   }
 
   .site-header__nav {
@@ -209,16 +284,14 @@
     flex-direction: column;
     align-items: stretch;
     gap: var(--pz-space-xs);
-    max-height: calc(100dvh - 100%);
+    max-height: calc(100dvh - var(--pz-header-height));
     overflow-y: auto;
-    padding: var(--pz-space-s) var(--pz-space-m) var(--pz-space-m);
+    padding: var(--pz-space-s) var(--pz-gutter) var(--pz-space-m);
     background: var(--pz-surface);
     border-bottom: 1px solid var(--pz-hairline);
     visibility: hidden;
     opacity: 0;
-    transition:
-      opacity 0.15s ease,
-      visibility 0.15s ease;
+    transition: none;
   }
 
   // Driven by `.is-open` ALONE — deliberately no `:focus-within` companion
@@ -232,6 +305,7 @@
   .site-header__zone--left.is-open .site-header__nav {
     visibility: visible;
     opacity: 1;
+    transition: opacity 0.15s ease;
   }
 
   .site-header__zone--left.is-open .site-header__burger-bar:first-child {
@@ -261,6 +335,7 @@
     border: none;
     border-left: 1px solid var(--pz-hairline);
     border-radius: 0;
+    background: none;
     margin-left: var(--pz-space-2xs);
     padding-block: 0;
     padding-inline: var(--pz-space-xs);
@@ -288,12 +363,27 @@
     letter-spacing: var(--pz-track-label);
     color: var(--pz-ink-soft);
     cursor: default;
+
+    &::after {
+      display: none;
+    }
+  }
+}
+
+// On a phone the button is the only thing in the right zone; it stays filled
+// and readable, just tighter.
+@media (max-width: 479.98px) {
+  .site-header__cta {
+    padding-inline: var(--pz-space-xs);
+    font-size: var(--pz-text-label);
+    letter-spacing: 0.1em;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .site-header__nav,
-  .site-header__burger-bar {
+  .site-header__burger-bar,
+  .site-header__cta {
     transition: none;
   }
 }

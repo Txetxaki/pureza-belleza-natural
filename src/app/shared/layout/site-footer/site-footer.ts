@@ -2,14 +2,16 @@ import { Component, computed } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { POSTS_MANIFEST } from '../../../diario/domain/post-manifest';
 import { SITE, type Site } from '../../site';
+import { summarizeOpeningHours, type HoursSummaryRow } from '../../../seo/domain/site';
 import { PzWordmark } from '../../ui/pz-wordmark/pz-wordmark';
 import { buildDiarioNav, filterNavEntries, NAV_ROUTES, type NavRouteEntry } from '../route-registry';
 
 /**
- * Site-wide footer. Column-centred (design.md "Closing the four Stitch
- * gaps" — row "Editorial centring"): italic wordmark, then a centred
- * small-caps link row, then NAP, then a centred copyright line, in that
- * order (app-shell spec: "Footer content order and centring"). Renders NAP
+ * Site-wide footer, on the deeper sand ground and capped at `--pz-wrap` like
+ * the header. Centred column (app-shell spec: "Footer content order and
+ * centring"): the watercolour logo, then three short columns (where, hours,
+ * Instagram + Google rating + booking), then the small-caps link row, the
+ * articles and the copyright line, in that order. Renders NAP
  * (Name, Address, Phone) from the single `SITE` constant — never hardcoded
  * per route (app-shell spec: "NAP consistency") — only re-laid-out here,
  * never removed.
@@ -28,6 +30,8 @@ import { buildDiarioNav, filterNavEntries, NAV_ROUTES, type NavRouteEntry } from
 export class SiteFooter {
   protected readonly site: Site = SITE;
   protected readonly year = new Date().getFullYear();
+  /** Google Business hours, one row per distinct schedule — fits a footer column. */
+  protected readonly hours: readonly HoursSummaryRow[] = summarizeOpeningHours(SITE.openingHours);
 
   /** Every live nav-eligible route except home — the wordmark already links there. */
   protected readonly links = computed<NavRouteEntry[]>(() =>

@@ -1,29 +1,151 @@
+// The host carries the full-width sand ground; `.site-footer` is the
+// constrained column inside it.
+:host {
+  display: block;
+  margin-top: var(--pz-space-xl);
+  background: var(--pz-sand);
+  border-top: 1px solid var(--pz-hairline);
+}
+
 .site-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--pz-space-s);
-  padding-block: var(--pz-space-l) var(--pz-space-m);
-  padding-inline: var(--pz-space-m);
-  border-top: 1px solid var(--pz-hairline);
-  background: var(--pz-surface);
+  gap: var(--pz-space-l);
+  max-width: var(--pz-wrap);
+  margin-inline: auto;
+  padding-block: var(--pz-space-xl) var(--pz-space-m);
+  padding-inline: var(--pz-gutter);
   color: var(--pz-ink-soft);
   font-family: var(--pz-body);
   font-size: var(--pz-text-small);
   text-align: center;
 }
 
-// Type is `pz-wordmark`'s job now — this is only the link box around it.
+// Type is `pz-wordmark`'s job — this is only the link box around it.
 .site-footer__brand {
+  display: block;
   color: var(--pz-ink);
   text-decoration: none;
+}
+
+.site-footer__info {
+  display: grid;
+  gap: var(--pz-space-l);
+  width: 100%;
+
+  @media (min-width: 720px) {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--pz-space-m);
+  }
+}
+
+.site-footer__nap,
+.site-footer__hours,
+.site-footer__social {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--pz-space-3xs);
+}
+
+.site-footer__heading {
+  margin: 0 0 var(--pz-space-2xs);
+  font-size: var(--pz-text-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--pz-track-label);
+  // Gold on sand is ~4.6:1 — clears AA for this 11px/700 label.
+  color: var(--pz-gold);
+}
+
+.site-footer__name {
+  margin: 0;
+  font-family: var(--pz-display);
+  font-size: var(--pz-text-lead);
+  color: var(--pz-ink);
+}
+
+.site-footer__address {
+  font-style: normal;
+}
+
+.site-footer__phone,
+.site-footer__instagram {
+  color: var(--pz-ink);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--pz-gold) 60%, transparent);
+  text-underline-offset: 0.25em;
+
+  &:hover,
+  &:focus-visible {
+    text-decoration-color: var(--pz-gold);
+  }
+}
+
+.site-footer__hours-list {
+  margin: 0;
+}
+
+.site-footer__hours-row {
+  display: flex;
+  justify-content: center;
+  gap: var(--pz-space-2xs);
+
+  dt {
+    color: var(--pz-ink-soft);
+  }
+
+  dt::after {
+    content: ':';
+  }
+
+  dd {
+    margin: 0;
+    color: var(--pz-ink);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.site-footer__rating {
+  margin: 0;
+  color: var(--pz-ink);
+}
+
+.site-footer__stars {
+  color: var(--pz-gold);
+  letter-spacing: 0.08em;
+  margin-right: var(--pz-space-3xs);
+}
+
+.site-footer__cta {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-top: var(--pz-space-xs);
+  padding-inline: var(--pz-space-s);
+  border-radius: var(--pz-radius);
+  background: var(--pz-ink);
+  color: var(--pz-surface);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+
+  &:hover,
+  &:focus-visible {
+    background: var(--pz-gold);
+  }
 }
 
 .site-footer__nav {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: var(--pz-space-m);
+  gap: var(--pz-space-xs) var(--pz-space-m);
+  padding-top: var(--pz-space-l);
+  width: 100%;
+  border-top: 1px solid var(--pz-hairline);
 }
 
 .site-footer__link {
@@ -50,6 +172,7 @@
   justify-content: center;
   gap: var(--pz-space-2xs) var(--pz-space-s);
   max-width: 46rem;
+  margin-top: calc(-1 * var(--pz-space-s));
 }
 
 .site-footer__article-link {
@@ -62,34 +185,6 @@
   &:focus-visible {
     color: var(--pz-ink);
     text-decoration: underline;
-  }
-}
-
-.site-footer__nap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--pz-space-3xs);
-}
-
-.site-footer__name {
-  margin: 0;
-  font-family: var(--pz-display);
-  font-size: var(--pz-text-body);
-  color: var(--pz-ink);
-}
-
-.site-footer__address {
-  font-style: normal;
-}
-
-.site-footer__phone {
-  color: var(--pz-ink-soft);
-  text-decoration: none;
-
-  &:hover,
-  &:focus-visible {
-    color: var(--pz-ink);
   }
 }
 

@@ -4,6 +4,8 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/ro
 import { filter, map } from 'rxjs/operators';
 import { POSTS_MANIFEST } from '../../../diario/domain/post-manifest';
 import { ROUTE_SEO_REGISTRY } from '../../../seo/domain/route-seo';
+import { SITE } from '../../../seo/domain/site';
+import { buildTelUrl } from '../../utils/contact-links';
 import { PzWordmark } from '../../ui/pz-wordmark/pz-wordmark';
 import { buildDiarioNav, buildHeaderNav, type HeaderNav, type NavRouteEntry } from '../route-registry';
 
@@ -53,16 +55,19 @@ export class SiteHeader {
   protected readonly nav = computed<HeaderNav>(() => buildHeaderNav(ROUTE_SEO_REGISTRY));
   protected readonly diarioPosts: readonly NavRouteEntry[] = buildDiarioNav(POSTS_MANIFEST);
 
+  protected readonly site = SITE;
+  protected readonly telUrl = buildTelUrl(SITE.telephone);
+
   protected readonly openPanel = signal<PanelId | null>(null);
 
   /**
    * The mobile drawer. Separate from `openPanel` because they are not
-   * alternatives: below 720px the drawer is the container and BOTH disclosure
+   * alternatives: below 1024px the drawer is the container and BOTH disclosure
    * panels render expanded inside it. A nested accordion on a phone hides five
    * service names behind an extra tap for no gain — the drawer already owns
    * the full height it needs.
    *
-   * Always `false` above 720px, where the drawer styles simply do not apply,
+   * Always `false` from 1024px up, where the drawer styles simply do not apply,
    * so no resize listener (or media-query signal) is needed to keep it honest.
    */
   protected readonly menuOpen = signal(false);
