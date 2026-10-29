@@ -158,7 +158,8 @@ the `externalDependencies` note in `angular.json`.
   `[data-planta="…"]` scope on an ancestor rebinds those two properties to one plant.
 - **`anyComponentStyle`'s warning budget is 5kB, not Angular's default 4kB.** `home-page.scss` is
   legitimately the largest stylesheet on the site — hero, five-tile frieze, Aveda band, manifest,
-  carta, salon strip, quote and CTA band all live on one route — and sits at ~4.5kB. The 8kB
+  carta, salon band, quote and CTA band all live on one route — and sits at ~6.4kB since the
+  redesign, so it now prints the 5kB warning (the header, at ~5.8kB, too). The 8kB
   **error** ceiling is untouched, so a genuinely ballooning stylesheet still fails the build.
   (`angular.json` is schema-validated and rejects unknown keys, so this note cannot live inline.)
 - **`info/direccion-diseno.build.SUPERSEDED-v2.html` is historical only** — an earlier mockup
@@ -167,39 +168,35 @@ the `externalDependencies` note in `angular.json`.
 
 ## Swapping in real photography
 
-Every photograph on the site is a **placeholder generated locally** with ComfyUI
-(`scripts/generate-photos-comfyui.mjs`, FLUX.1-schnell). They exist so the site can be shown to
-clients without empty frames — they are not the salon, and they are meant to be replaced.
+Every photograph on the site is a **real photo of the salon**: crops of the professional shoot on
+Pureza's own Google Business profile (Virginia, the interior, the Aveda colour table, the
+monsteras). Only Virginia appears in them. No stock, no generated people.
 
 **To replace any photo: drop a `.jpg` over the same filename in `public/images/`, then run
 `npm run build`.** Nothing else changes — no template edit, no code edit. The build regenerates the
 responsive `avif`/`webp`/`jpg` variants at 400/800/1200px and rewrites
-`src/app/shared/ui/pz-photo-pending/available-photos.generated.ts`.
-
-Aim for a landscape frame around 1200×800 (or 1400×930 for the salon interior) and square-ish for
-the before/after set; the pipeline downsizes but never upscales.
+`src/app/shared/ui/pz-photo-pending/available-photos.generated.ts`. Keep sources at most 2400px on
+the long side, JPEG quality ~82; the pipeline never needs more than 1200px.
 
 | File in `public/images/` | Where it appears |
 | --- | --- |
-| `retrato-virginia.jpg` | `/` hero portrait (the one duotone image on the site) and `/virginia` |
-| `salon-interior-1.jpg` | `/el-salon`, the interior slot |
-| `manos-pigmento.jpg` | `/` quote section |
-| `textura-lino.jpg` | `/` full-width strip between carta and quote |
-| `atmosfera-romero.jpg` | `/` carta plate · `/el-salon` opener |
-| `atmosfera-espliego.jpg` | `/` carta plate |
-| `atmosfera-esparto.jpg` | `/` carta plate |
-| `atmosfera-vid.jpg` | `/` carta plate |
-| `atmosfera-olivo.jpg` | `/` carta plate · `/el-salon` closer |
-| `resultado-romero.jpg` | `/coloracion-vegetal-aveda`, main result photo |
-| `antes-despues-romero-{1,2,3}.jpg` | `/coloracion-vegetal-aveda`, before/after row |
-| `resultado-espliego.jpg` | `/mechas-babylights-balayage`, main result photo |
-| `antes-despues-espliego-{1,2,3}.jpg` | `/mechas-babylights-balayage`, before/after row |
-| `resultado-esparto.jpg` | `/rastas`, main result photo |
-| `antes-despues-esparto-{1,2,3}.jpg` | `/rastas`, before/after row |
-| `resultado-vid.jpg` | `/extensiones-cabello-natural`, main result photo |
-| `antes-despues-vid-{1,2,3}.jpg` | `/extensiones-cabello-natural`, before/after row |
-| `resultado-olivo.jpg` | `/tratamientos-capilares`, main result photo |
-| `antes-despues-olivo-{1,2,3}.jpg` | `/tratamientos-capilares`, before/after row |
+| `retrato-virginia.jpg` | `/` hero portrait (3:4) |
+| `virginia-monstera.jpg` | `/virginia` hero portrait (3:4) |
+| `virginia-sonrisa.jpg` | `/virginia`, portrait between sections |
+| `virginia-sentada.jpg` | `/` quote section (4:5) |
+| `salon-banda.jpg` | `/` framed salon band between carta and quote (~3:1) |
+| `salon-interior-1.jpg` | `/el-salon`, the interior photograph (3:2) |
+| `salon-monstera.jpg`, `salon-herramientas.jpg`, `salon-ventana.jpg` | `/el-salon`, the three photo + text sections |
+| `atmosfera-{romero,espliego,esparto,vid,olivo}.jpg` | `/` carta plate thumbnails (square) |
+| `resultado-{romero,espliego,esparto,vid,olivo}.jpg` | each service page, the framed photo under the hero (2:1) |
+| `antes-despues-{planta}-{1,2,3}.jpg` | each service page, "Resultados reales" — **not on disk yet** |
+
+The before/after section only renders once at least one of its three files exists. Drop real
+client photos (with the client's consent) as `antes-despues-romero-1.jpg` etc. and the section
+appears on its own. Never fill it with generated or stock images: it is titled "Resultados reales".
+
+The logo lives in `public/brand/`: `pureza-firma.png` (the gold script cut out of the watercolour,
+transparent, for the header) and `pureza-acuarela.webp` (the full watercolour mark, footer).
 
 Ignore the `-400`/`-800`/`-1200` files — those are build output and are overwritten every time.
 
@@ -207,13 +204,8 @@ Ignore the `-400`/`-800`/`-1200` files — those are build output and are overwr
 entries, or the `alt=` attribute on `pz-picture`). Update it when the photo changes; it describes
 the picture, so a new picture needs new words.
 
-**Regenerating placeholders** (needs ComfyUI on `127.0.0.1:8188` with the `ComfyUI-GGUF` node,
-`flux1-schnell-Q4_K_S.gguf`, `t5xxl_fp8_e4m3fn` + `clip_l`, and the FLUX `ae.safetensors` VAE):
-
-```bash
-node scripts/generate-photos-comfyui.mjs                  # fills only missing slots
-node scripts/generate-photos-comfyui.mjs resultado-olivo  # forces one slot
-```
+`scripts/generate-photos-comfyui.mjs` is the old placeholder generator. Do not run it: it fills
+every missing slot, including the before/after ones, with generated people.
 
 ## Additional Resources
 

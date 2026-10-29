@@ -53,12 +53,11 @@ describe('available-photos.generated.ts — sync guard (design.md D9)', () => {
     expect(isSourceImage('atmosfera-romero-400.avif')).toBe(false);
   });
 
-  it('lists every before/after and result slot the service pages reference', () => {
+  it('lists every result slot the service pages reference (before/after stays optional until real client photos exist)', () => {
     const plantas = ['romero', 'espliego', 'esparto', 'vid', 'olivo'];
     const required = [
       'salon-interior-1',
       ...plantas.map((planta) => `resultado-${planta}`),
-      ...plantas.flatMap((planta) => [1, 2, 3].map((n) => `antes-despues-${planta}-${n}`)),
     ];
 
     expect(required.filter((base) => !AVAILABLE_PHOTO_BASES.includes(base))).toEqual([]);

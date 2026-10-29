@@ -32,6 +32,7 @@ export class VirginiaPage implements OnInit {
   private readonly seo = inject(SeoService);
 
   protected readonly whatsappUrl = buildWhatsAppUrl(SITE.telephone);
+  protected readonly site = SITE;
 
   ngOnInit(): void {
     // Defensive removal on a client-side navigation from `/` — same gap

@@ -15,8 +15,10 @@ const FIXTURE: ServiceContent = {
     base: 'resultado-romero',
     alt: 'Resultado de coloración vegetal, planta romero',
   },
+  // One base that exists on disk is enough to bring the section in; the other
+  // two exercise the silent placeholder branch side by side with it.
   beforeAfter: [
-    { base: 'antes-despues-romero-1', alt: 'Antes y después, caso 1' },
+    { base: 'salon-monstera', alt: 'Antes y después, caso 1' },
     { base: 'antes-despues-romero-2', alt: 'Antes y después, caso 2' },
     { base: 'antes-despues-romero-3', alt: 'Antes y después, caso 3' },
   ],
@@ -49,6 +51,15 @@ const FIXTURE: ServiceContent = {
 class TestHost {
   content: ServiceContent = FIXTURE;
 }
+
+const NO_BEFORE_AFTER_ON_DISK: ServiceContent = {
+  ...FIXTURE,
+  beforeAfter: [
+    { base: 'antes-despues-romero-1', alt: 'Antes y después, caso 1' },
+    { base: 'antes-despues-romero-2', alt: 'Antes y después, caso 2' },
+    { base: 'antes-despues-romero-3', alt: 'Antes y después, caso 3' },
+  ],
+};
 
 describe('PzServicePage (design.md D1/D2; service-pages spec)', () => {
   async function render() {
@@ -130,6 +141,25 @@ describe('PzServicePage (design.md D1/D2; service-pages spec)', () => {
     // whether a given base has landed on disk yet or not.
     expect(el.querySelectorAll('.pz-service-page__result-photo pz-photo-pending')).toHaveLength(1);
     expect(el.querySelectorAll('.pz-service-page__before-after pz-photo-pending')).toHaveLength(3);
+  });
+
+  it('omits the before/after section entirely while none of its photos is on disk — never empty frames under "Resultados reales"', async () => {
+    await TestBed.configureTestingModule({
+      imports: [TestHost],
+      providers: [provideRouter([])],
+    }).compileComponents();
+    const fixture = TestBed.createComponent(TestHost);
+    fixture.componentInstance.content = NO_BEFORE_AFTER_ON_DISK;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const el = fixture.nativeElement as HTMLElement;
+
+    expect(el.querySelector('.pz-service-page__before-after')).toBeNull();
+    expect(el.textContent).not.toContain('Resultados reales');
+    // The rest of the anatomy is unaffected.
+    expect(el.querySelector('.pz-service-page__pricing')).toBeTruthy();
+    expect(el.querySelector('.pz-service-page__faq')).toBeTruthy();
   });
 
   it('renders "Consultar" and the pending note for price/duration while pricing is pending — never a fabricated figure ("Pending entry renders Consultar")', async () => {

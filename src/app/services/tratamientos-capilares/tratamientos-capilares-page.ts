@@ -22,7 +22,7 @@ const PRIMARY_KEYWORD = REGISTRY.primaryKeyword;
 
 const RESULT_PHOTO: ServicePhoto = {
   base: 'resultado-olivo',
-  alt: 'Resultado de un tratamiento capilar botánico reparador, planta olivo',
+  alt: 'Virginia sentada en el salón, junto a una monstera y el mueble de madera',
 };
 
 const BEFORE_AFTER: readonly [ServicePhoto, ServicePhoto, ServicePhoto] = [

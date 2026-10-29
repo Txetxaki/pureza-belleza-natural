@@ -22,7 +22,7 @@ const PRIMARY_KEYWORD = REGISTRY.primaryKeyword;
 
 const RESULT_PHOTO: ServicePhoto = {
   base: 'resultado-esparto',
-  alt: 'Resultado de rastas creadas con técnica de aguja, planta esparto',
+  alt: 'Virginia con sus tijeras y el estuche de herramientas en la mesa del salón',
 };
 
 const BEFORE_AFTER: readonly [ServicePhoto, ServicePhoto, ServicePhoto] = [

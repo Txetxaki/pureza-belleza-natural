@@ -23,7 +23,7 @@ const PRIMARY_KEYWORD = REGISTRY.primaryKeyword;
 
 const RESULT_PHOTO: ServicePhoto = {
   base: 'resultado-romero',
-  alt: 'Resultado de coloración vegetal sin amoniaco sobre melena castaña, planta romero',
+  alt: 'Virginia preparando sus herramientas tras la mesa de madera, con la gama de color Aveda delante',
 };
 
 const BEFORE_AFTER: readonly [ServicePhoto, ServicePhoto, ServicePhoto] = [
